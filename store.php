@@ -55,7 +55,7 @@ else:
     if ($e) {
         die(sprintf($tpl, $e));
     } else {
-        die('<script type="text/javascript">window.close()</script>');
+        die('<script type="text/javascript">window.close()</script><a href="javascript:window.close()">Successfully stored bookmark.</a>');
     }
 endif;
 
