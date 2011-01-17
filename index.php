@@ -47,18 +47,33 @@ function fetch($limit=200, $tags=array(), $private=False) {
         $dbh = new PDO('mysql:host='.DB_HOST.';port='.DB_PORT.';dbname='.DB_NAME,
                         DB_USER, DB_PWD);
         if (count($tags) > 0) {
-            $query = 'SELECT b.href href, b.title title, b.notes notes, b.private private FROM bookmarks b, bookmark_tags t WHERE b.href = t.href AND ';
+            $query = 'SELECT b.href href, b.title title, b.notes notes, b.private private
+                        FROM bookmarks b, bookmark_tags t
+                       WHERE b.href = t.href
+                         AND b.private = :private
+                         AND ';
             $where = array();
             foreach ($tags as $tag) {
                 $where[] = 't.tag = '.$dbh->quote($tag);
             }
-            $query .= join(' AND ', $where).' LIMIT 0,'.$limit;
+            $query .= join(' AND ', $where).' LIMIT 0,:limit';
             $query = $dbh->prepare($query);
         } else {
-            $query = $dbh->prepare('SELECT href, title, notes, private FROM bookmarks LIMIT 0,'.$limit);
+            $query = $dbh->prepare('SELECT href, title, notes, private
+                                      FROM bookmarks
+                                     WHERE private = :private
+                                     LIMIT 0,:limit');
         }
+        $query->bindParam(':private', $private, PDO::PARAM_BOOL);
+        $query->bindParam(':limit', $limit, PDO::PARAM_INT);
         $query->execute();
         $bookmarks = $query->fetchAll(PDO::FETCH_ASSOC);
+        $qtags = $dbh->prepare('Select tag FROM bookmark_tags WHERE href = :href');
+        $href = Null;
+        for ($i = 0; $i < count($bookmarks); $i++) {
+            $qtags->execute(array(':href' => $bookmarks[$i]['href']));
+            $bookmarks[$i]['tags'] = $qtags->fetchAll(PDO::FETCH_COLUMN);
+        }
         $query->debugDumpParams();
         $dbh = null;
     } catch (PDOException $e) {
