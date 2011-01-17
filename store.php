@@ -36,6 +36,7 @@ $tpl = '<!DOCTYPE html>
             '.(v('private')? 'checked="checked"' : '').' />
         </p>
         <p>
+          <input type="hidden" name="store" value="1" />
           <button type="submit">'.__('Save').'</button>
         </p>
       </form>
@@ -44,7 +45,7 @@ $tpl = '<!DOCTYPE html>
 </html>
 ';
 
-if (! v('href')):
+if (! v('href') && ! v('store')):
     die(sprintf($tpl, ''));
 else:
     $href = v('href');
@@ -86,7 +87,7 @@ function store($href, $title, $tags, $notes, $private) {
         $stmt->bindParam(':href', $href);
         $stmt->bindParam(':title', $title);
         $stmt->bindParam(':notes', $notes);
-        $stmt->bindParam(':private', $private);
+        $stmt->bindParam(':private', $private, PDO::PARAM_BOOL);
         $stmt->execute();
         foreach ($tags as $tag) {
             $stmt = $dbh->prepare('INSERT INTO bookmark_tags (href, tag) VALUES (:href, :tag)');
