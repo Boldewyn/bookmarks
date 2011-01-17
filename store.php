@@ -51,7 +51,7 @@ else:
     $title = v('title', $href);
     $tags = explode(' ', preg_replace('/\s+/', ' ', v('tags')));
     $private = (bool)v('private');
-    $e = store($href, $title, $tags, v('notes'));
+    $e = store($href, $title, $tags, v('notes'), $private);
     if ($e) {
         die(sprintf($tpl, $e));
     } else {

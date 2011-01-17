@@ -2,18 +2,25 @@
 
 require_once "config.php";
 
+#header('Content-Type: application/json');
+header('Content-Type: text/plain');
+
 $tags = explode(' ', v('tags'));
+if (count($tags) == 1 && $tags[0] == "") {
+    $tags = array();
+}
 $private = False;
 $limit = v('n');
 if (! ctype_digit($limit)) {
-    $limit = '200';
+    $limit = 200;
+} else {
+    $limit = (int)$limit;
 }
-$bookmarks = fetch($limit, $tags, $private);
+$bookmarks = fetch(min($limit, 1000), $tags, $private);
 if ($bookmarks === Null) {
     $bookmarks = array();
 }
 
-header('Content-Type: application/json');
 die(json_encode($bookmarks));
 
 function v($s, $default='') {
@@ -40,21 +47,22 @@ function fetch($limit=200, $tags=array(), $private=False) {
         $dbh = new PDO('mysql:host='.DB_HOST.';port='.DB_PORT.';dbname='.DB_NAME,
                         DB_USER, DB_PWD);
         if (count($tags) > 0) {
-            $query = 'SELECT * FROM bookmarks b, bookmark_tags t WHERE b.href = t.href AND ';
+            $query = 'SELECT b.href href, b.title title, b.notes notes, b.private private FROM bookmarks b, bookmark_tags t WHERE b.href = t.href AND ';
             $where = array();
             foreach ($tags as $tag) {
-                $where[] = 't.tag = "'.$dbh->quote(tag).'"';
+                $where[] = 't.tag = '.$dbh->quote($tag);
             }
             $query .= join(' AND ', $where).' LIMIT 0,'.$limit;
+            $query = $dbh->prepare($query);
         } else {
-            $query = 'SELECT * FROM bookmarks LIMIT 0,'.$limit;
+            $query = $dbh->prepare('SELECT href, title, notes, private FROM bookmarks LIMIT 0,'.$limit);
         }
-        foreach($dbh->query($query) as $row) {
-            $bookmarks[] = $row;
-        }
+        $query->execute();
+        $bookmarks = $query->fetchAll(PDO::FETCH_ASSOC);
+        $query->debugDumpParams();
         $dbh = null;
     } catch (PDOException $e) {
-        return Null;
+        return $e->getMessage();
     }
     return $bookmarks;
 }
