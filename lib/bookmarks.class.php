@@ -94,7 +94,11 @@ class Bookmarks {
         $query = $this->db->prepare($query);
         $query->bindParam(':href', $href);
         $query->execute();
-        return $query->fetch(PDO::FETCH_ASSOC);
+        $bookmark = $query->fetch(PDO::FETCH_ASSOC);
+        if ($bookmark !== False) {
+            $bookmark['tags'] = $this->fetch_tags($href);
+        }
+        return $bookmark;
     }
 
     function fetch_all($tags=array(), $limit=200, $offset=0) {
