@@ -21,7 +21,7 @@ if (! ctype_digit($limit)) {
 $db = new PDO('mysql:host='.DB_HOST.';port='.DB_PORT.';dbname='.DB_NAME,
               DB_USER, DB_PWD);
 $store = new Bookmarks($db, $logged_in);
-$bookmarks = $store->fetch($tags);
+$bookmarks = $store->fetch_all($tags);
 if ($bookmarks === Null) {
     $bookmarks = array();
 }
