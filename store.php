@@ -1,6 +1,8 @@
 <?php
 
 require_once "config.php";
+require_once "lib.php";
+require_once "bookmarks.class.php";
 
 $tpl = '<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
@@ -52,53 +54,15 @@ else:
     $title = v('title', $href);
     $tags = explode(' ', preg_replace('/\s+/', ' ', v('tags')));
     $private = (bool)v('private');
-    $e = store($href, $title, $tags, v('notes'), $private);
-    if ($e) {
-        die(sprintf($tpl, $e));
+    $db = new PDO('mysql:host='.DB_HOST.';port='.DB_PORT.';dbname='.DB_NAME,
+                  DB_USER, DB_PWD);
+    $store = new Bookmarks($db);
+    $e = $store->save($href, $title, $tags, v('notes'), $private);
+    if (! $e) {
+        $error = $db->errorInfo();
+        die(sprintf($tpl, '<p class="error">'.__('An error occurred: ').$error[2].'</p>'));
     } else {
         die('<script type="text/javascript">window.close()</script><a href="javascript:window.close()">Successfully stored bookmark.</a>');
     }
 endif;
-
-function v($s, $default='') {
-    if (array_key_exists($s, $_POST)) {
-        return trim(preg_replace('/[\p{C}\\\]/u', '', $_POST[$s]));
-    } elseif (array_key_exists($s, $_GET)) {
-        return trim(preg_replace('/[\p{C}\\\]/u', '', $_GET[$s]));
-    } else {
-        return $default;
-    }
-}
-
-function h($s) {
-    return htmlspecialchars($s);
-}
-
-function __($s) {
-    return $s;
-}
-
-function store($href, $title, $tags, $notes, $private) {
-    try {
-        $dbh = new PDO('mysql:host='.DB_HOST.';port='.DB_PORT.';dbname='.DB_NAME,
-                        DB_USER, DB_PWD);
-        $stmt = $dbh->prepare('INSERT INTO bookmarks (href, title, notes, private)
-                                    VALUES (:href, :title, :notes, :private)');
-        $stmt->bindParam(':href', $href);
-        $stmt->bindParam(':title', $title);
-        $stmt->bindParam(':notes', $notes);
-        $stmt->bindParam(':private', $private, PDO::PARAM_BOOL);
-        $stmt->execute();
-        foreach ($tags as $tag) {
-            $stmt = $dbh->prepare('INSERT INTO bookmark_tags (href, tag) VALUES (:href, :tag)');
-            $stmt->bindParam(':href', $href);
-            $stmt->bindParam(':tag', $tag);
-            $stmt->execute();
-        }
-        $dbh = null;
-    } catch (PDOException $e) {
-        return $e->getMessage();
-    }
-    return '';
-}
 
