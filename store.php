@@ -1,8 +1,8 @@
 <?php
 
 require_once "config.php";
-require_once "lib.php";
-require_once "bookmarks.class.php";
+require_once "lib/utils.php";
+require_once "lib/bookmarks.class.php";
 
 $tpl = '<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">

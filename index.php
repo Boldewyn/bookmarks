@@ -1,8 +1,8 @@
 <?php
 
 require_once "config.php";
-require_once "lib.php";
-require_once "bookmarks.class.php";
+require_once "lib/utils.php";
+require_once "lib/bookmarks.class.php";
 
 #header('Content-Type: application/json');
 header('Content-Type: text/plain');
