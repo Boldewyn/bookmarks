@@ -7,3 +7,5 @@ define('DB_PWD', 'b00km4rk5');
 #define('OpenID', 'ASSUME_LOGGED_IN'); // For debugging only!
 define('OpenID', 'http://example.com/myopenid');
 
+define('BOOKMARKS_STAY_LOGGED_IN', 365);
+

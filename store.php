@@ -3,7 +3,9 @@
 require_once 'lib/lightopenid/openid.php';
 
 /* Authentication */
-if (OpenID !== 'ASSUME_LOGGED_IN') {
+session_set_cookie_params(60*60*24*BOOKMARKS_STAY_LOGGED_IN);
+session_start();
+if (! in_array('logged_in', $_SESSION) && OpenID !== 'ASSUME_LOGGED_IN') {
     $openid = new LightOpenID;
     if(!$openid->mode) {
         $openid->identity = OpenID;
@@ -17,6 +19,8 @@ if (OpenID !== 'ASSUME_LOGGED_IN') {
         die(tpl('error', array('body_id' => 'error',
                 'site_title' => 'Auth Error',
                 'msg' => 'Login was not successful.')));
+    } else {
+        $_SESSION['logged_in'] = Null;
     }
 }
 
