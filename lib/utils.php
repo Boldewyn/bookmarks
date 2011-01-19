@@ -30,6 +30,8 @@ function tpl($file, $ctx=array(), $safe=array()) {
     }
     $ctx += array(
         'body_id' => 'default',
+        'base_path' => h(dirname($_SERVER['PHP_SELF'])).'/',
+        'f' => h(v('f')),
     );
     extract($ctx);
     ob_start();
@@ -37,5 +39,28 @@ function tpl($file, $ctx=array(), $safe=array()) {
     $result = ob_get_contents();
     ob_end_clean();
     return $result;
+}
+
+function login() {
+    require_once 'lib/lightopenid/openid.php';
+
+    session_set_cookie_params(60*60*24*BOOKMARKS_STAY_LOGGED_IN);
+    session_name('Bookmarks');
+    session_start();
+    if (! in_array('logged_in', $_SESSION) && OpenID !== 'ASSUME_LOGGED_IN') {
+        $openid = new LightOpenID;
+        if(!$openid->mode) {
+            $openid->identity = OpenID;
+            header('Location: ' . $openid->authUrl());
+            die('Redirecting');
+        } elseif($openid->mode == 'cancel') {
+            return __('User has canceled authentication!');
+        } elseif (! $openid->validate()) {
+            return __('Login was not successful.');
+        } else {
+            $_SESSION['logged_in'] = True;
+        }
+    }
+    return True;
 }
 

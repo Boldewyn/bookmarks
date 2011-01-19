@@ -13,6 +13,16 @@ if (! isset($_GET['f']) || ! $_GET['f']) {
         $_GET['tags'] = substr($_GET['f'], 5);
     }
     require_once 'fetch.php';
+} elseif ($_GET['f'] === 'login') {
+    $status = login();
+    if ($status !== True) {
+        die(tpl('error', array('body_id' => 'error',
+            'site_title' => __('A Login Error Occurred'),
+            'msg' => $status)));
+    } else {
+        header('Location: '.dirname($_SERVER['PHP_SELF']).'/');
+        die('Redirecting');
+    }
 } elseif ($_GET['f'] === 'logout') {
     session_name('Bookmarks');
     session_start();
@@ -23,6 +33,8 @@ if (! isset($_GET['f']) || ! $_GET['f']) {
         $params["secure"], $params["httponly"]
     );
     session_destroy();
+    header('Location: '.dirname($_SERVER['PHP_SELF']).'/');
+    die('Redirecting');
 } else {
     header('HTTP/1.0 404 Not Found');
     die(tpl('error', array('body_id' => 'error',

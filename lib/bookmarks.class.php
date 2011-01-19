@@ -161,7 +161,6 @@ class Bookmarks {
             for ($i = 0; $i < count($bookmarks); $i++) {
                 $bookmarks[$i]['tags'] = $this->fetch_tags($bookmarks[$i]['href']);
             }
-            $query->debugDumpParams();
         } catch (PDOException $e) {
             return array();
         }
