@@ -4,6 +4,5 @@ RewriteEngine On
 
 RewriteRule index.php - [L]
 
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(.+)$ index.php?tags=$1 [L]
+RewriteRule ^(.+)$ index.php?f=$1 [L,QSA]
 </IfModule>

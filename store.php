@@ -1,23 +1,22 @@
 <?php
 
-require_once 'config.php';
-require_once 'lib/utils.php';
 require_once 'lib/tpl.php';
-require_once 'lib/bookmarks.class.php';
 require_once 'lib/lightopenid/openid.php';
 
 /* Authentication */
-$openid = new LightOpenID;
-if(!$openid->mode) {
-    $openid->identity = OpenID;
-    header('Location: ' . $openid->authUrl());
-    die('Redirecting');
-} elseif($openid->mode == 'cancel') {
-    die(tpl('error', array('site_title' => 'Auth Error',
-            'msg' => 'User has canceled authentication!')));
-} elseif (! $openid->validate()) {
-    die(tpl('error', array('site_title' => 'Auth Error',
-            'msg' => 'Login was not successful.')));
+if (OpenID !== 'ASSUME_LOGGED_IN') {
+    $openid = new LightOpenID;
+    if(!$openid->mode) {
+        $openid->identity = OpenID;
+        header('Location: ' . $openid->authUrl());
+        die('Redirecting');
+    } elseif($openid->mode == 'cancel') {
+        die(tpl('error', array('site_title' => 'Auth Error',
+                'msg' => 'User has canceled authentication!')));
+    } elseif (! $openid->validate()) {
+        die(tpl('error', array('site_title' => 'Auth Error',
+                'msg' => 'Login was not successful.')));
+    }
 }
 
 /* DB Access */
