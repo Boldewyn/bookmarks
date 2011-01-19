@@ -1,4 +1,4 @@
-<?php
+<?php defined('BOOKMARKS') or die('Access denied.');
 
 function v($s, $default='') {
     if (array_key_exists($s, $_POST)) {
@@ -28,6 +28,9 @@ function tpl($file, $ctx=array(), $safe=array()) {
             $ctx[$k] = h($v);
         }
     }
+    $ctx += array(
+        'body_id' => 'default',
+    );
     extract($ctx);
     ob_start();
     include("templates/$file.php");

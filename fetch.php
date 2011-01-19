@@ -1,4 +1,4 @@
-<?php
+<?php defined('BOOKMARKS') or die('Access denied.');
 
 #header('Content-Type: application/json');
 header('Content-Type: text/plain');

@@ -1,4 +1,4 @@
-<?php
+<?php defined('BOOKMARKS') or die('Access denied.');
 
 /**
  * Manage bookmarks
@@ -9,11 +9,17 @@ class Bookmarks {
     private $db;
     private $hard_limit = 1000;
 
+    /**
+     *
+     */
     public function __construct($db, $privates=False) {
         $this->db = $db;
         $this->privates = $privates;
     }
 
+    /**
+     * Save a bookmark in the database
+     */
     public function save($href, $title, $tags, $notes, $private) {
         $href = $this->_sanitize_url($href);
         if ($this->fetch($href)) {
@@ -40,6 +46,9 @@ class Bookmarks {
         return True;
     }
 
+    /**
+     * Change an already stored bookmark (defined by its href)
+     */
     public function change($href, $title=Null, $tags=Null, $notes=Null, $private=Null) {
         $href = $this->_sanitize_url($href);
         $bm = $this->fetch($href);
@@ -85,6 +94,9 @@ class Bookmarks {
         return True;
     }
 
+    /**
+     * Fetch a single bookmark
+     */
     function fetch($href) {
         $query = 'SELECT href, title, notes, private
                     FROM bookmarks WHERE href = :href';
@@ -101,6 +113,9 @@ class Bookmarks {
         return $bookmark;
     }
 
+    /**
+     * Fetch all (or some) bookmarks
+     */
     function fetch_all($tags=array(), $limit=200, $offset=0) {
         $limit = min($limit, $this->hard_limit);
         $bookmarks = array();
@@ -141,14 +156,48 @@ class Bookmarks {
         return $bookmarks;
     }
 
+    /**
+     * Fetch all tags for a given bookmark
+     */
     public function fetch_tags($href) {
         $query = $this->db->prepare('SELECT tag FROM bookmark_tags WHERE href = :href');
         $query->execute(array(':href' => $href));
         return $query->fetchAll(PDO::FETCH_COLUMN);
     }
 
+    /**
+     * Sanitize an URL
+     */
     protected function _sanitize_url($href) {
+        if (! preg_match('/^[a-z0-9_-]:/i', $href)) {
+            $href = "http://$href";
+        }
+        $enc = mb_detect_encoding($href);
+        switch ($enc) {
+            case 'ASCII':
+                break;
+            case 'UTF-8':
+                $href = $this->_urlencode($href);
+                break;
+            default:
+                $href = mb_convert_encoding($href, 'UTF-8', $enc);
+                $href = $this->_urlencode($href);
+                break;
+        }
         return $href;
+    }
+
+    /**
+     * URLencode a non-ASCII URL
+     *
+     * DON'T throw an ASCII URL onto this function, since '%' will also be quoted
+     */
+    protected function _urlencode($utf8) {
+        $utf8 = preg_replace_callback('/[^a-zA-Z0-9$\-_\.+#;\/?@=&:]/', create_function(
+            '$m',
+            'return rawurlencode($m[0]);'
+        ), $utf8);
+        return $utf8;
     }
 
 }

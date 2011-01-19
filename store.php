@@ -1,6 +1,5 @@
-<?php
+<?php defined('BOOKMARKS') or die('Access denied.');
 
-require_once 'lib/tpl.php';
 require_once 'lib/lightopenid/openid.php';
 
 /* Authentication */
@@ -22,7 +21,7 @@ if (OpenID !== 'ASSUME_LOGGED_IN') {
 /* DB Access */
 $db = new PDO('mysql:host='.DB_HOST.';port='.DB_PORT.';dbname='.DB_NAME,
                 DB_USER, DB_PWD);
-$store = new Bookmarks($db);
+$store = new Bookmarks($db, True);
 
 /* Main logic */
 if (! v('href') && ! v('store')):
@@ -32,7 +31,8 @@ elseif (! v('store')):
     $bm = $store->fetch(v('href'));
     if ($bm !== False) {
         if (! v('edit')) {
-            $msg = __('<p class="info">This bookmark does already exist.</p>');
+            $msg = sprintf('<p class="info">%s</p>',
+                           __('This bookmark does already exist.'));
         }
     } else {
         $bm = Null;
@@ -44,9 +44,13 @@ else:
     $tags = explode(' ', preg_replace('/\s+/', ' ', v('tags')));
     $private = (bool)v('private');
     $e = $store->save($href, $title, $tags, v('notes'), $private);
+    if ($e === Null) {
+        $e = $store->change($href, $title, $tags, v('notes'), $private);
+    }
     if (! $e) {
         $error = $db->errorInfo();
-        $msg = '<p class="error">'.__('An error occurred: ').$error[2].'</p>';
+        $msg = '<p class="error">'.sprintf(__('An error occurred: %s'), 
+                                           h($error[2])).'</p>';
         die(format_template(Null, $msg));
     } else {
         $msg = '<script type="text/javascript">window.close()</script><p class="success"><a href="javascript:window.close()">'.
@@ -72,11 +76,12 @@ function format_template($v=Null, $msg='') {
         $button = __('Change');
     }
     return tpl('store', array(
+        'body_id' => 'store',
         'site_title' => $title,
         'change' => $change,
         'button' => $button,
         'msg' => $msg,
         'private' => ($v['private']? 'checked="checked"' : ''),
         'tags' => join(' ', $v['tags']),
-    ) + $v);
+    ) + $v, array('msg'));
 }

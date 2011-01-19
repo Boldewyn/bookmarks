@@ -5,3 +5,5 @@
     <link rel="stylesheet" href="style.css" />
     <title><?php echo $site_title?></title>
   </head>
+  <body id="<?php echo $body_id?>">
+    <div>
