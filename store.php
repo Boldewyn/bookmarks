@@ -4,6 +4,7 @@ require_once 'lib/lightopenid/openid.php';
 
 /* Authentication */
 session_set_cookie_params(60*60*24*BOOKMARKS_STAY_LOGGED_IN);
+session_name('Bookmarks');
 session_start();
 if (! in_array('logged_in', $_SESSION) && OpenID !== 'ASSUME_LOGGED_IN') {
     $openid = new LightOpenID;
