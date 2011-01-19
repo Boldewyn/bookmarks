@@ -10,17 +10,18 @@ if (OpenID !== 'ASSUME_LOGGED_IN') {
         header('Location: ' . $openid->authUrl());
         die('Redirecting');
     } elseif($openid->mode == 'cancel') {
-        die(tpl('error', array('site_title' => 'Auth Error',
+        die(tpl('error', array('body_id' => 'error',
+                'site_title' => 'Auth Error',
                 'msg' => 'User has canceled authentication!')));
     } elseif (! $openid->validate()) {
-        die(tpl('error', array('site_title' => 'Auth Error',
+        die(tpl('error', array('body_id' => 'error',
+                'site_title' => 'Auth Error',
                 'msg' => 'Login was not successful.')));
     }
 }
 
 /* DB Access */
-$db = new PDO('mysql:host='.DB_HOST.';port='.DB_PORT.';dbname='.DB_NAME,
-                DB_USER, DB_PWD);
+$db = new PDO(DB_DSN, DB_USER, DB_PWD);
 $store = new Bookmarks($db, True);
 
 /* Main logic */
