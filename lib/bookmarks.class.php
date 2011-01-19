@@ -120,19 +120,26 @@ class Bookmarks {
         $limit = min($limit, $this->hard_limit);
         $bookmarks = array();
         try {
-            if (count($tags) > 0) {
+            if (count($tags) > 1) {
+                $query = sprintf(
+                         'SELECT href, title, notes, private
+                            FROM bookmarks
+                           WHERE (
+                                 SELECT COUNT(*)
+                                   FROM bookmark_tags
+                                  WHERE bookmarks.href = bookmark_tags.href
+                                    AND bookmark_tags.tag in (%s)
+                                ) = :n',
+                            join(',', array_map(array($this->db, 'quote'), $tags))
+                         );
+            } elseif (count($tags) === 1) {
                 $query = 'SELECT b.href href, b.title title, b.notes notes, b.private private
                             FROM bookmarks b, bookmark_tags t
-                        WHERE b.href = t.href
-                            AND ';
+                           WHERE b.href = t.href
+                             AND t.tag = :tag';
                 if (! $this->privates) {
-                    $query .= 'b.private = False AND ';
+                    $query .= ' AND b.private = False';
                 }
-                $where = array();
-                foreach ($tags as $tag) {
-                    $where[] = 't.tag = '.$this->db->quote($tag);
-                }
-                $query .= join(' AND ', $where);
             } else {
                 $query = 'SELECT href, title, notes, private
                                         FROM bookmarks ';
@@ -144,10 +151,15 @@ class Bookmarks {
             $query = $this->db->prepare($query);
             $query->bindParam(':offset', $offset, PDO::PARAM_INT);
             $query->bindParam(':limit', $limit, PDO::PARAM_INT);
+            if (count($tags) === 1) {
+                $query->bindParam(':tag', $tags[0]);
+            } elseif (count($tags) > 1) {
+                $query->bindParam(':n', count($tags));
+            }
             $query->execute();
             $bookmarks = $query->fetchAll(PDO::FETCH_ASSOC);
             for ($i = 0; $i < count($bookmarks); $i++) {
-                $bookmarks[$i]['tags'] = $this->fetch_tags($href);
+                $bookmarks[$i]['tags'] = $this->fetch_tags($bookmarks[$i]['href']);
             }
             $query->debugDumpParams();
         } catch (PDOException $e) {
