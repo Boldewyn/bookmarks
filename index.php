@@ -4,16 +4,31 @@ require_once 'config.php';
 require_once 'lib/utils.php';
 require_once 'lib/bookmarks.class.php';
 
-if (! isset($_GET['f']) || ! $_GET['f']) {
+session_set_cookie_params(60*60*24*BOOKMARKS_STAY_LOGGED_IN);
+session_name('Bookmarks');
+session_start();
+
+$db = new PDO(DB_DSN, DB_USER, DB_PWD);
+$store = new Bookmarks($db, (in_array('logged_in', $_SESSION)));
+
+$f = v('f');
+if ($f === '') {
     require_once 'fetch.php';
-} elseif ($_GET['f'] === 'store') {
+} elseif ($f === 'store') {
     require_once 'store.php';
-} elseif (substr($_GET['f'], 0, 5) === "tags/") {
-    if (! isset($_GET['tags'])) {
-        $_GET['tags'] = substr($_GET['f'], 5);
+} elseif (substr($f, 0, 5) === "tags/") {
+    $tags = v('tags');
+    if (! $tags) {
+        $tags = substr($f, 5);
     }
     require_once 'fetch.php';
-} elseif ($_GET['f'] === 'login') {
+} elseif (substr($f, 0, 8) === "all_tags") {
+    $prefix = substr($f, 9);
+    if ($prefix === False) { $prefix = ''; }
+    $tags = $store->fetch_all_tags($prefix);
+    header('Content-Type: application/json');
+    die(json_encode($tags));
+} elseif ($f === 'login') {
     $status = login();
     if ($status !== True) {
         die(tpl('error', array('body_id' => 'error',
@@ -23,9 +38,7 @@ if (! isset($_GET['f']) || ! $_GET['f']) {
         header('Location: '.dirname($_SERVER['PHP_SELF']).'/');
         die('Redirecting');
     }
-} elseif ($_GET['f'] === 'logout') {
-    session_name('Bookmarks');
-    session_start();
+} elseif ($f === 'logout') {
     $_SESSION = array();
     $params = session_get_cookie_params();
     setcookie(session_name(), '', time() - 42000,
@@ -40,6 +53,6 @@ if (! isset($_GET['f']) || ! $_GET['f']) {
     die(tpl('error', array('body_id' => 'error',
             'site_title' => __('Site not Found'),
             'msg' => sprintf(__('The site %s couldn’t be found.'),
-                             '<var>'.h(urlencode($_GET['f'])).'</var>'
+                             '<var>'.h(urlencode($f)).'</var>'
         )), array('msg')));
 }

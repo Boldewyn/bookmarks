@@ -8,10 +8,6 @@ if ($status !== True) {
         'msg' => $status)));
 }
 
-/* DB Access */
-$db = new PDO(DB_DSN, DB_USER, DB_PWD);
-$store = new Bookmarks($db, True);
-
 /* Main logic */
 if (! v('href') && ! v('store')):
     die(format_template());

@@ -18,6 +18,15 @@ class Bookmarks {
     }
 
     /**
+     * Determine, if private bookmarks are fetched
+     */
+    public function set_privacy($privates) {
+        $old = $this->privates;
+        $this->privates = $privates;
+        return $old;
+    }
+
+    /**
      * Save a bookmark in the database
      */
     public function save($href, $title, $tags, $notes, $private) {
@@ -174,6 +183,7 @@ class Bookmarks {
 
     /**
      * Fetch all tags for a given bookmark
+     * @param $href The URL of the bookmark
      */
     public function fetch_tags($href) {
         $query = $this->db->prepare('SELECT tag FROM bookmark_tags WHERE href = :href');
@@ -182,7 +192,30 @@ class Bookmarks {
     }
 
     /**
-     * Sanitize an URL
+     * Fetch all ever used tags
+     * @param $prefix An optional prefix tags have to start with
+     */
+    public function fetch_all_tags($prefix='') {
+        $query = $this->db->prepare(
+            'SELECT COUNT(t.tag) AS n, t.tag AS tag
+               FROM bookmark_tags t
+              WHERE t.tag LIKE :prefix'.
+             ($this->privates?'':'
+                AND (SELECT COUNT(*) FROM bookmarks b
+                      WHERE b.href = t.href
+                        AND b.private = 0 ) > 0').'
+           GROUP BY t.tag');
+        $query->execute(array(':prefix' => $prefix.'%'));
+        $query->debugDumpParams();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Sanitize a URL
+     *
+     * Checks for non-ASCII characters, prepends 'http://' if necessary,
+     * and quotes special chars
+     * @param $href A URL
      */
     protected function _sanitize_url($href) {
         if (! preg_match('/^[a-z0-9_-]:/i', $href)) {
@@ -207,6 +240,7 @@ class Bookmarks {
      * URLencode a non-ASCII URL
      *
      * DON'T throw an ASCII URL onto this function, since '%' will also be quoted
+     * @param $utf8 an almost-URL with unencoded UTF-8 chars
      */
     protected function _urlencode($utf8) {
         $utf8 = preg_replace_callback('/[^a-zA-Z0-9$\-_\.+#;\/?@=&:]/', create_function(

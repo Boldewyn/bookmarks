@@ -43,10 +43,6 @@ function tpl($file, $ctx=array(), $safe=array()) {
 
 function login() {
     require_once 'lib/lightopenid/openid.php';
-
-    session_set_cookie_params(60*60*24*BOOKMARKS_STAY_LOGGED_IN);
-    session_name('Bookmarks');
-    session_start();
     if (! in_array('logged_in', $_SESSION) && OpenID !== 'ASSUME_LOGGED_IN') {
         $openid = new LightOpenID;
         if(!$openid->mode) {
@@ -62,5 +58,32 @@ function login() {
         }
     }
     return True;
+}
+
+function get_accept_type($whitelist=array(), $default='html') {
+    $type = v('type');
+    if (! $type) {
+        if (isset($_SERVER['HTTP_ACCEPT'])) {
+            $a = $_SERVER['HTTP_ACCEPT'];
+            if (strstr($a, 'application/json') !== False) {
+                $type = 'json';
+            } elseif (strstr($a, 'application/atom+xml') !== False) {
+                $type = 'atom';
+            } elseif (strstr($a, 'application/rdf+xml') !== False) {
+                $type = 'rdf';
+            } else {
+                $type = 'html';
+            }
+        } elseif (isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+                strstr($_SERVER['HTTP_X_REQUESTED_WITH'], 'XmlHttpRequest') !== False) {
+            $type = 'json';
+        } else {
+            $type = $default;
+        }
+    }
+    if (count($whitelist) > 0 && ! in_array($type, $whitelist)) {
+        $type = $default;
+    }
+    return $type;
 }
 
