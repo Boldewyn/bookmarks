@@ -14,6 +14,17 @@ function h($s) {
     return htmlspecialchars($s);
 }
 
+function h_array($a) {
+    foreach ($a as $k => $v) {
+        if (is_string($v)) {
+            $a[$k] = h($v);
+        } elseif (is_array($v)) {
+            $a[$k] = h_array($v);
+        }
+    }
+    return $a;
+}
+
 function __($s) {
     return $s;
 }
@@ -24,8 +35,12 @@ function _e($s) {
 
 function tpl($file, $ctx=array(), $safe=array()) {
     foreach ($ctx as $k => $v) {
-        if (is_string($v) && ! in_array($k, $safe)) {
-            $ctx[$k] = h($v);
+        if (! in_array($k, $safe)) {
+            if (is_string($v)) {
+                $ctx[$k] = h($v);
+            } elseif (is_array($v)) {
+                $ctx[$k] = h_array($v);
+            }
         }
     }
     $ctx += array(

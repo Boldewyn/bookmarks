@@ -3,6 +3,7 @@
 RewriteEngine On
 
 RewriteRule index.php - [L]
+RewriteRule ^static/ - [L]
 
 RewriteRule ^(.+)$ index.php?f=$1 [L,QSA]
 </IfModule>

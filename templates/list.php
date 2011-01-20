@@ -9,7 +9,14 @@
 <?php endif?>
   <ul id="bookmarks">
     <?php foreach ($bookmarks as $bookmark):?>
-      <li><a href="<?php echo $bookmark['href']?>"><?php echo $bookmark['title']?></a></li>
+      <li>
+        <a class="href" rel="external" href="<?php echo $bookmark['href']?>"><?php echo $bookmark['title']?></a>
+        <span class="tags">
+          <?php foreach ($bookmark['tags'] as $tag):?>
+            <a rel="tag" href="<?php echo "${base_path}tags/$tag"?>"><?php echo $tag?></a>
+          <?php endforeach?>
+        </span>
+      </li>
     <?php endforeach?>
   </ul>
 <?php include "footer.php" ?>

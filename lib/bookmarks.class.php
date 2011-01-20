@@ -10,7 +10,7 @@ class Bookmarks {
     private $hard_limit = 1000;
 
     /**
-     *
+     * Set database connection (PDO) and whether private bookmarks are fetched
      */
     public function __construct($db, $privates=False) {
         $this->db = $db;

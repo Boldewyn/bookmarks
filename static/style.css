@@ -1,0 +1,253 @@
+@charset "UTF-8";
+
+/**
+ * R E S E T =============================================================== *
+ *
+ * This part resets many of the browsers' default rendering properties that
+ * are mostly incompatible to one another.
+ *
+ * We also establish a basic line height of 15px and take care, that headings
+ * and other elements are drawn with baseline heights that are a multiple of
+ * 5px.
+ *
+ * @see Bases loosely on Eric Meyer's reset stylesheet,
+ *      <http://meyerweb.com/eric/tools/css/reset/>
+ */
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote,
+ul, ol, dl, li, dt, dd,
+form, fieldset, pre, label, legend,
+a, abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+strong, sub, sup, tt, var, hr,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, dialog, figcaption, figure, footer, header,
+hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-weight: inherit;
+  font-style: inherit;
+  font-size: 100%;
+  font-family: inherit;
+  vertical-align: baseline;
+}
+
+article, aside, dialog, figcaption, figure, footer, header,
+hgroup, menu, nav, section {
+  display: block;
+}
+
+html {
+  overflow-y: scroll;
+}
+
+body {
+  font: 100%/1.25em "Droid Serif","DejaVu Serif",Times,serif;
+  color: #333;
+  background: #eeeeee;
+  margin: 0;
+}
+
+table {
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+caption, td, th {
+  text-align: left;
+}
+
+h1 {
+  font-size:  2.0em;
+  line-height: 1.25;
+  margin-bottom: .625em;
+}
+
+h2 {
+  font-size:  1.5em;
+  line-height: 1.25;
+  margin-bottom: .8333em;
+}
+
+h3 {
+  font-size:  1.25em;
+  line-height: 1.0;
+  margin-bottom: 1.0em;
+}
+
+label, button, input[type=submit], input[type=image], .ui-clickable {
+  cursor: pointer;
+}
+
+/**
+ * these are 'magic' statements to remove the also 'magic'
+ * padding in some browsers.
+ *
+ * @see <http://jehiah.cz/archive/button-width-in-ie>
+ * @bugfix
+ */
+button, input[type=submit] {
+  padding: 0.084em;
+  width: auto;
+  overflow: visible;
+}
+
+input[type=url], input[type=text], input[type=password], select, textarea {
+  padding: 0.084em;
+  font: normal 1em/1.25em Helvetica,Arial,sans-serif;
+  border: 0.084em solid #333;
+  background-color: white;
+  color: #333;
+  vertical-align: middle;
+}
+
+abbr[title], dfn[title] {
+  cursor: help;
+}
+
+blockquote:before, blockquote:after {
+  content: "";
+}
+
+q:lang(en) {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+
+q:lang(bar), q:lang(de) {
+  quotes: "\201E" "\201C" "\201A" "\2018";
+}
+
+q:before {
+  content: open-quote;
+}
+
+q:after {
+  content: close-quote;
+}
+
+em, i, var {
+  font-style: italic;
+}
+
+strong, b {
+  font-weight: bold;
+}
+
+sub, sup {
+  font-size: 0.84em;
+  /** This is needed, so that these two don't destroy the carefully
+   * arranged line height of surrounding elements. See
+   * <http://www.velvetblues.com/web-development-blog/superscripts-subscripts-uneven-line-height/>
+   */
+  line-height: 0;
+}
+
+sub {
+  vertical-align: sub;
+}
+
+sup {
+  vertical-align: super;
+}
+
+ins {
+  text-decoration: underline;
+}
+
+del {
+  text-decoration: line-through;
+}
+
+
+/**
+ * L A Y O U T ============================================================= *
+ */
+em em {
+  font-style: normal;
+}
+
+pre, code, kbd, samp {
+  font: 100%/1.25em "Droid Sans Mono","DejaVu SansMono",Inconsolata,Courier,monospace;
+}
+
+a {
+  color: #01a;
+  text-decoration: none;
+}
+
+a:visited {
+  color: #018;
+}
+
+a:hover, a:focus {
+  color: #35F;
+}
+
+a:active {
+  background: #01A;
+  color: #eee;
+}
+
+
+
+
+nav {
+  background: #eef;
+}
+
+nav ul {
+  list-style: none;
+  overflow: auto;
+}
+
+nav li {
+  float: left;
+}
+
+nav li a {
+  display: block;
+  padding: .625em;
+}
+
+nav li a:hover {
+  background: white;
+}
+
+
+
+
+article {
+  padding: .625em;
+}
+
+#bookmarks {
+  border-top: .0625em #01A solid;
+}
+
+#bookmarks li {
+  border-bottom: .0625em #01A solid;
+  list-style: none;
+}
+
+#bookmarks a.href {
+  display: block;
+  padding: .625em;
+}
+
+
+
+/**
+ * T A G   C L O U D ======================================================= *
+ */
+.tagcloud a {
+  border: none;
+}
+.tc_1 { font-size: .75em; opacity: .6; }
+.tc_2 { font-size: .90em; opacity: .8; }
+.tc_3 { font-size: 1.0em; }
+.tc_4 { font-size: 1.2em; }
+.tc_5 { font-size: 1.5em; }
+
