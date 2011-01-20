@@ -27,8 +27,8 @@ class Bookmarks {
         }
         try {
             $tag = Null;
-            $stmt = $this->db->prepare('INSERT INTO bookmarks (href, title, notes, private)
-                                       VALUES (:href, :title, :notes, :private)');
+            $stmt = $this->db->prepare('INSERT INTO bookmarks (href, title, notes, private, created, modified)
+                                       VALUES (:href, :title, :notes, :private, NOW(), NOW())');
             $stmt->bindParam(':href', $href);
             $stmt->bindParam(':title', $title);
             $stmt->bindParam(':notes', $notes);
@@ -98,7 +98,8 @@ class Bookmarks {
      * Fetch a single bookmark
      */
     function fetch($href) {
-        $query = 'SELECT href, title, notes, private
+        $query = 'SELECT href, title, notes, private, UNIX_TIMESTAMP(created) AS created,
+                         UNIX_TIMESTAMP(modified) AS modified
                     FROM bookmarks WHERE href = :href';
         if (! $this->privates) {
             $query .= ' AND private = False ';
@@ -122,7 +123,8 @@ class Bookmarks {
         try {
             if (count($tags) > 1) {
                 $query = sprintf(
-                         'SELECT href, title, notes, private
+                         'SELECT href, title, notes, private, UNIX_TIMESTAMP(created) AS created,
+                                 UNIX_TIMESTAMP(modified) AS modified
                             FROM bookmarks
                            WHERE (
                                  SELECT COUNT(*)
@@ -133,7 +135,9 @@ class Bookmarks {
                             join(',', array_map(array($this->db, 'quote'), $tags))
                          );
             } elseif (count($tags) === 1) {
-                $query = 'SELECT b.href href, b.title title, b.notes notes, b.private private
+                $query = 'SELECT b.href href, b.title title, b.notes notes, b.private private,
+                                 UNIX_TIMESTAMP(b.created) AS created,
+                                 UNIX_TIMESTAMP(b.modified) AS modified
                             FROM bookmarks b, bookmark_tags t
                            WHERE b.href = t.href
                              AND t.tag = :tag';
@@ -141,8 +145,9 @@ class Bookmarks {
                     $query .= ' AND b.private = False';
                 }
             } else {
-                $query = 'SELECT href, title, notes, private
-                                        FROM bookmarks ';
+                $query = 'SELECT href, title, notes, private, UNIX_TIMESTAMP(created) AS created,
+                                 UNIX_TIMESTAMP(modified) AS modified
+                            FROM bookmarks ';
                 if (! $this->privates) {
                     $query .= 'WHERE private = False ';
                 }
