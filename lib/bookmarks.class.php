@@ -218,7 +218,7 @@ class Bookmarks {
      * @param $href A URL
      */
     protected function _sanitize_url($href) {
-        if (! preg_match('/^[a-z0-9_-]:/i', $href)) {
+        if (! preg_match('/^[a-z0-9+\.-]+:/i', $href)) {
             $href = "http://$href";
         }
         $enc = mb_detect_encoding($href);
