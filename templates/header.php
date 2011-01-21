@@ -14,12 +14,12 @@
     <div id="global">
         <nav>
         <ul>
-            <li <?php if (! $f):?>class="active"<?php endif?>><a href="<?php echo $base_path?>"><?php _e('Overview')?></a></li>
+            <li class="start <?php if (! $f):?>active<?php endif?>"><a href="<?php echo $base_path?>"><?php _e('Overview')?></a></li>
             <?php if (in_array('logged_in', $_SESSION)):?>
-                <li <?php if ($f === 'save'):?>class="active"<?php endif?>><a href="<?php echo $base_path?>save"><?php _e('Create new')?></a></li>
-                <li><a href="<?php echo $base_path?>logout"><?php _e('Log out')?></a></li>
+                <li class="save <?php if ($f === 'save'):?>active<?php endif?>"><a href="<?php echo $base_path?>save"><?php _e('Create new')?></a></li>
+                <li class="logout"><a href="<?php echo $base_path?>logout"><?php _e('Log out')?></a></li>
             <?php else:?>
-                <li><a href="<?php echo $base_path?>login"><?php _e('Log in')?></a></li>
+                <li class="login"><a href="<?php echo $base_path?>login"><?php _e('Log in')?></a></li>
             <?php endif?>
         </ul>
         </nav>
