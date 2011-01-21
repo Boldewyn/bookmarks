@@ -31,13 +31,11 @@ if ($f === '') {
 } elseif ($f === 'login') {
     $status = login();
     if ($status !== True) {
-        die(tpl('message', array('body_id' => 'error',
-            'msg_class' => 'error',
-            'site_title' => __('A Login Error Occurred'),
-            'msg' => $status)));
+        messages_add(sprintf(__('A login error occurred: %s.'), $status), 'error');
+        redirect('/?from=login');
     } else {
-        header('Location: '.dirname($_SERVER['PHP_SELF']).'/');
-        die('Redirecting');
+        messages_add(sprintf(__('Successfully logged in. Welcome back.'), $status), 'success');
+        redirect('/?from=login');
     }
 } elseif ($f === 'logout') {
     $_SESSION = array();

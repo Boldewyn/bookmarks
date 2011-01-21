@@ -5,10 +5,6 @@ $status = login();
 if ($status !== True) {
     messages_add(sprintf(__('A login error occurred: %s.'), $status), 'error');
     redirect('/?from=login');
-    die(tpl('message', array('body_id' => 'error',
-        'msg_class' => 'error',
-        'site_title' => __('A Login Error Occurred'),
-        'msg' => $status)));
 }
 
 /* Main logic */
