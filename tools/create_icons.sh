@@ -5,8 +5,8 @@ if [[ $1 == half ]]; then
   MOD=.small
 fi
 
-SOURCE=static/icons.svg
-TARGET=static/
+SOURCE=../static/icons.svg
+TARGET=../static/
 PARAMS="--export-width=$WIDTH --export-height=$WIDTH"
 
 i=0
