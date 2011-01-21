@@ -31,7 +31,8 @@ if ($f === '') {
 } elseif ($f === 'login') {
     $status = login();
     if ($status !== True) {
-        die(tpl('error', array('body_id' => 'error',
+        die(tpl('message', array('body_id' => 'error',
+            'msg_class' => 'error',
             'site_title' => __('A Login Error Occurred'),
             'msg' => $status)));
     } else {
@@ -50,7 +51,8 @@ if ($f === '') {
     die('Redirecting');
 } else {
     header('HTTP/1.0 404 Not Found');
-    die(tpl('error', array('body_id' => 'error',
+    die(tpl('message', array('body_id' => 'error',
+            'msg_class' => 'error',
             'site_title' => __('Site not Found'),
             'msg' => sprintf(__('The site %s couldn’t be found.'),
                              '<var>'.h(urlencode($f)).'</var>'

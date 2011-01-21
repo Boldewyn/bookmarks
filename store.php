@@ -3,7 +3,8 @@
 /* Authentication */
 $status = login();
 if ($status !== True) {
-    die(tpl('error', array('body_id' => 'error',
+    die(tpl('message', array('body_id' => 'error',
+        'msg_class' => 'error',
         'site_title' => __('A Login Error Occurred'),
         'msg' => $status)));
 }
