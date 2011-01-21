@@ -1,3 +1,5 @@
+# -MultiViews, otherwise /store becomes /store.php before redirecting
+Options -MultiViews
 
 <IfModule rewrite_module>
 RewriteEngine On
