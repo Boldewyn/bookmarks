@@ -1,7 +1,7 @@
 -- SQL for MySQL
 
 CREATE TABLE bookmarks (
-    href VARCHAR(750) NOT NULL PRIMARY KEY,
+    url VARCHAR(750) NOT NULL PRIMARY KEY,
     title TEXT,
     notes TEXT,
     private BOOLEAN NOT NULL DEFAULT TRUE,
@@ -14,10 +14,10 @@ CREATE TABLE bookmarks (
 );
 
 CREATE TABLE bookmark_tags (
-    href VARCHAR(750) NOT NULL,
+    url VARCHAR(750) NOT NULL,
     tag VARCHAR(250) NOT NULL,
 
-    PRIMARY KEY (href, tag),
+    PRIMARY KEY (url, tag),
     INDEX has_tag (tag)
 );
 

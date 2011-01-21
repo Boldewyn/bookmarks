@@ -10,7 +10,7 @@
   <ul id="bookmarks">
     <?php foreach ($bookmarks as $bookmark):?>
       <li>
-        <a class="href" rel="external" href="<?php echo $bookmark['href']?>"><?php echo $bookmark['title']?></a>
+        <a class="url" rel="external" href="<?php echo $bookmark['url']?>"><?php echo $bookmark['title']?></a>
         <span class="tags">
           <?php foreach ($bookmark['tags'] as $tag):?>
             <a rel="tag" href="<?php echo "${base_path}tags/".rawurlencode($tag)?>"><?php echo $tag?></a>

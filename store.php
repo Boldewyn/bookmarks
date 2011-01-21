@@ -8,11 +8,11 @@ if ($status !== True) {
 }
 
 /* Main logic */
-if (! v('href') && ! v('store')):
+if (! v('url') && ! v('store')):
     die(format_template());
 elseif (! v('store')):
     $msg = '';
-    $bm = $store->fetch(v('href'));
+    $bm = $store->fetch(v('url'));
     if ($bm !== False) {
         if (! v('edit')) {
             $msg = sprintf('<p class="info">%s</p>',
@@ -23,13 +23,13 @@ elseif (! v('store')):
     }
     die(format_template($bm, $msg));
 else:
-    $href = v('href');
-    $title = v('title', $href);
+    $url = v('url');
+    $title = v('title', $url);
     $tags = explode(' ', preg_replace('/\s+/', ' ', v('tags')));
     $private = (bool)v('private');
-    $e = $store->save($href, $title, $tags, v('notes'), $private);
+    $e = $store->save($url, $title, $tags, v('notes'), $private);
     if ($e === Null) {
-        $e = $store->change($href, $title, $tags, v('notes'), $private);
+        $e = $store->change($url, $title, $tags, v('notes'), $private);
     }
     if (! $e) {
         $error = $db->errorInfo();
@@ -53,7 +53,7 @@ function format_template($v=Null, $msg='') {
     $change = '';
     if ($v === Null) {
         $v = array(
-            'href'=> v('href'),
+            'url'=> v('url'),
             'title'=> v('title'),
             'notes'=> v('notes'),
             'tags'=> explode(' ', v('tags')),

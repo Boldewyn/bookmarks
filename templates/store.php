@@ -3,8 +3,8 @@
       <?php echo $msg?>
       <form method="post" action="">
         <p>
-        <label for="href"><?php _e('URL')?></label>
-          <input type="url" name="href" id="href" value="<?php echo $href?>" <?php echo $change?> />
+        <label for="url"><?php _e('URL')?></label>
+          <input type="url" name="url" id="url" value="<?php echo $url?>" <?php echo $change?> />
         </p>
         <p>
           <label for="title"><?php _e('Title')?></label>

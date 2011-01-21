@@ -29,22 +29,22 @@ class Bookmarks {
     /**
      * Save a bookmark in the database
      */
-    public function save($href, $title, $tags, $notes, $private) {
-        $href = $this->_sanitize_url($href);
-        if ($this->fetch($href)) {
+    public function save($url, $title, $tags, $notes, $private) {
+        $url = $this->_sanitize_url($url);
+        if ($this->fetch($url)) {
             return Null;
         }
         try {
             $tag = Null;
-            $stmt = $this->db->prepare('INSERT INTO bookmarks (href, title, notes, private, created, modified)
-                                       VALUES (:href, :title, :notes, :private, NOW(), NOW())');
-            $stmt->bindParam(':href', $href);
+            $stmt = $this->db->prepare('INSERT INTO bookmarks (url, title, notes, private, created, modified)
+                                       VALUES (:url, :title, :notes, :private, NOW(), NOW())');
+            $stmt->bindParam(':url', $url);
             $stmt->bindParam(':title', $title);
             $stmt->bindParam(':notes', $notes);
             $stmt->bindParam(':private', $private, PDO::PARAM_BOOL);
             $stmt->execute();
-            $stmt = $this->db->prepare('INSERT INTO bookmark_tags (href, tag) VALUES (:href, :tag)');
-            $stmt->bindParam(':href', $href);
+            $stmt = $this->db->prepare('INSERT INTO bookmark_tags (url, tag) VALUES (:url, :tag)');
+            $stmt->bindParam(':url', $url);
             $stmt->bindParam(':tag', $tag);
             foreach ($tags as $tag) {
                 $stmt->execute();
@@ -56,11 +56,11 @@ class Bookmarks {
     }
 
     /**
-     * Change an already stored bookmark (defined by its href)
+     * Change an already stored bookmark (defined by its url)
      */
-    public function change($href, $title=Null, $tags=Null, $notes=Null, $private=Null) {
-        $href = $this->_sanitize_url($href);
-        $bm = $this->fetch($href);
+    public function change($url, $title=Null, $tags=Null, $notes=Null, $private=Null) {
+        $url = $this->_sanitize_url($url);
+        $bm = $this->fetch($url);
         if ($bm === False) {
             return Null;
         }
@@ -82,17 +82,17 @@ class Bookmarks {
                                         title = :title,
                                         notes = :notes,
                                         private = :private
-                                        WHERE href = :href');
-            $stmt->bindParam(':href', $href);
+                                        WHERE url = :url');
+            $stmt->bindParam(':url', $url);
             $stmt->bindParam(':title', $title);
             $stmt->bindParam(':notes', $notes);
             $stmt->bindParam(':private', $private, PDO::PARAM_BOOL);
             $stmt->execute();
             # TODO: Only diff change
-            $stmt = $this->db->prepare('DELETE * FROM bookmark_tags WHERE href = :href');
+            $stmt = $this->db->prepare('DELETE * FROM bookmark_tags WHERE url = :url');
             $stmt->execute();
-            $stmt = $this->db->prepare('INSERT INTO bookmark_tags (href, tag) VALUES (:href, :tag)');
-            $stmt->bindParam(':href', $href);
+            $stmt = $this->db->prepare('INSERT INTO bookmark_tags (url, tag) VALUES (:url, :tag)');
+            $stmt->bindParam(':url', $url);
             $stmt->bindParam(':tag', $tag);
             foreach ($tags as $tag) {
                 $stmt->execute();
@@ -106,19 +106,19 @@ class Bookmarks {
     /**
      * Fetch a single bookmark
      */
-    function fetch($href) {
-        $query = 'SELECT href, title, notes, private, UNIX_TIMESTAMP(created) AS created,
+    function fetch($url) {
+        $query = 'SELECT url, title, notes, private, UNIX_TIMESTAMP(created) AS created,
                          UNIX_TIMESTAMP(modified) AS modified
-                    FROM bookmarks WHERE href = :href';
+                    FROM bookmarks WHERE url = :url';
         if (! $this->privates) {
             $query .= ' AND private = False ';
         }
         $query = $this->db->prepare($query);
-        $query->bindParam(':href', $href);
+        $query->bindParam(':url', $url);
         $query->execute();
         $bookmark = $query->fetch(PDO::FETCH_ASSOC);
         if ($bookmark !== False) {
-            $bookmark['tags'] = $this->fetch_tags($href);
+            $bookmark['tags'] = $this->fetch_tags($url);
         }
         return $bookmark;
     }
@@ -132,29 +132,29 @@ class Bookmarks {
         try {
             if (count($tags) > 1) {
                 $query = sprintf(
-                         'SELECT href, title, notes, private, UNIX_TIMESTAMP(created) AS created,
+                         'SELECT url, title, notes, private, UNIX_TIMESTAMP(created) AS created,
                                  UNIX_TIMESTAMP(modified) AS modified
                             FROM bookmarks
                            WHERE (
                                  SELECT COUNT(*)
                                    FROM bookmark_tags
-                                  WHERE bookmarks.href = bookmark_tags.href
+                                  WHERE bookmarks.url = bookmark_tags.url
                                     AND bookmark_tags.tag in (%s)
                                 ) = :n',
                             join(',', array_map(array($this->db, 'quote'), $tags))
                          );
             } elseif (count($tags) === 1) {
-                $query = 'SELECT b.href href, b.title title, b.notes notes, b.private private,
+                $query = 'SELECT b.url url, b.title title, b.notes notes, b.private private,
                                  UNIX_TIMESTAMP(b.created) AS created,
                                  UNIX_TIMESTAMP(b.modified) AS modified
                             FROM bookmarks b, bookmark_tags t
-                           WHERE b.href = t.href
+                           WHERE b.url = t.url
                              AND t.tag = :tag';
                 if (! $this->privates) {
                     $query .= ' AND b.private = False';
                 }
             } else {
-                $query = 'SELECT href, title, notes, private, UNIX_TIMESTAMP(created) AS created,
+                $query = 'SELECT url, title, notes, private, UNIX_TIMESTAMP(created) AS created,
                                  UNIX_TIMESTAMP(modified) AS modified
                             FROM bookmarks ';
                 if (! $this->privates) {
@@ -173,7 +173,7 @@ class Bookmarks {
             $query->execute();
             $bookmarks = $query->fetchAll(PDO::FETCH_ASSOC);
             for ($i = 0; $i < count($bookmarks); $i++) {
-                $bookmarks[$i]['tags'] = $this->fetch_tags($bookmarks[$i]['href']);
+                $bookmarks[$i]['tags'] = $this->fetch_tags($bookmarks[$i]['url']);
             }
         } catch (PDOException $e) {
             return array();
@@ -183,11 +183,11 @@ class Bookmarks {
 
     /**
      * Fetch all tags for a given bookmark
-     * @param $href The URL of the bookmark
+     * @param $url The URL of the bookmark
      */
-    public function fetch_tags($href) {
-        $query = $this->db->prepare('SELECT tag FROM bookmark_tags WHERE href = :href');
-        $query->execute(array(':href' => $href));
+    public function fetch_tags($url) {
+        $query = $this->db->prepare('SELECT tag FROM bookmark_tags WHERE url = :url');
+        $query->execute(array(':url' => $url));
         return $query->fetchAll(PDO::FETCH_COLUMN);
     }
 
@@ -202,7 +202,7 @@ class Bookmarks {
               WHERE t.tag LIKE :prefix'.
              ($this->privates?'':'
                 AND (SELECT COUNT(*) FROM bookmarks b
-                      WHERE b.href = t.href
+                      WHERE b.url = t.url
                         AND b.private = 0 ) > 0').'
            GROUP BY t.tag');
         $query->execute(array(':prefix' => $prefix.'%'));
@@ -215,25 +215,25 @@ class Bookmarks {
      *
      * Checks for non-ASCII characters, prepends 'http://' if necessary,
      * and quotes special chars
-     * @param $href A URL
+     * @param $url A URL
      */
-    protected function _sanitize_url($href) {
-        if (! preg_match('/^[a-z0-9+\.-]+:/i', $href)) {
-            $href = "http://$href";
+    protected function _sanitize_url($url) {
+        if (! preg_match('/^[a-z0-9+\.-]+:/i', $url)) {
+            $url = "http://$url";
         }
-        $enc = mb_detect_encoding($href);
+        $enc = mb_detect_encoding($url);
         switch ($enc) {
             case 'ASCII':
                 break;
             case 'UTF-8':
-                $href = $this->_urlencode($href);
+                $url = $this->_urlencode($url);
                 break;
             default:
-                $href = mb_convert_encoding($href, 'UTF-8', $enc);
-                $href = $this->_urlencode($href);
+                $url = mb_convert_encoding($url, 'UTF-8', $enc);
+                $url = $this->_urlencode($url);
                 break;
         }
-        return $href;
+        return $url;
     }
 
     /**
