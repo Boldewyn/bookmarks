@@ -16,11 +16,18 @@
         <ul>
             <li <?php if (! $f):?>class="active"<?php endif?>><a href="<?php echo $base_path?>"><?php _e('Overview')?></a></li>
             <?php if (in_array('logged_in', $_SESSION)):?>
-                <li <?php if ($f === 'store'):?>class="active"<?php endif?>><a href="<?php echo $base_path?>store"><?php _e('Create new')?></a></li>
+                <li <?php if ($f === 'save'):?>class="active"<?php endif?>><a href="<?php echo $base_path?>store"><?php _e('Create new')?></a></li>
                 <li><a href="<?php echo $base_path?>logout"><?php _e('Log out')?></a></li>
             <?php else:?>
                 <li><a href="<?php echo $base_path?>login"><?php _e('Log in')?></a></li>
             <?php endif?>
         </ul>
         </nav>
+        <?php if (messages_have()):?>
+          <ul id="messages">
+            <?php foreach (messages_get() as $msg):?>
+              <li class="<?php echo $msg['type']?>"><?php echo $msg['message']?></li>
+            <?php endforeach?>
+          </ul>
+        <?php endif?>
         <article>

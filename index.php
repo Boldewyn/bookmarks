@@ -14,7 +14,7 @@ $store = new Bookmarks($db, (in_array('logged_in', $_SESSION)));
 $f = v('f');
 if ($f === '') {
     require_once 'fetch.php';
-} elseif ($f === 'store') {
+} elseif ($f === 'save') {
     require_once 'store.php';
 } elseif (substr($f, 0, 5) === "tags/") {
     $tags = v('tags');
@@ -51,10 +51,7 @@ if ($f === '') {
     die('Redirecting');
 } else {
     header('HTTP/1.0 404 Not Found');
-    die(tpl('message', array('body_id' => 'error',
-            'msg_class' => 'error',
-            'site_title' => __('Site not Found'),
-            'msg' => sprintf(__('The site %s couldn’t be found.'),
-                             '<var>'.h(urlencode($f)).'</var>'
-        )), array('msg')));
+    messages_add(sprintf(__('The site %s couldn’t be found.'), '<var>'.h(urlencode($f)).'</var>'),
+        'error', True);
+    require_once 'fetch.php';
 }

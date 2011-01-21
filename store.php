@@ -3,6 +3,8 @@
 /* Authentication */
 $status = login();
 if ($status !== True) {
+    messages_add(sprintf(__('A login error occurred: %s.'), $status), 'error');
+    redirect('/?from=login');
     die(tpl('message', array('body_id' => 'error',
         'msg_class' => 'error',
         'site_title' => __('A Login Error Occurred'),
@@ -39,9 +41,14 @@ else:
                                            h($error[2])).'</p>';
         die(format_template(Null, $msg));
     } else {
-        $msg = '<script type="text/javascript">window.close()</script><p class="success"><a href="javascript:window.close()">'.
-                __('Successfully stored bookmark.').'</a></p>';
-        die(format_template(Null, $msg));
+        if (is_bookmarklet()) {
+            $msg = '<script type="text/javascript">window.close()</script><p class="success"><a href="javascript:window.close()">'.
+                    __('Successfully stored bookmark.').'</a></p>';
+            die(format_template(Null, $msg));
+        } else {
+            messages_add(__('Successfully stored bookmark.'), 'success');
+            redirect('/?from=store');
+        }
     }
 endif;
 
