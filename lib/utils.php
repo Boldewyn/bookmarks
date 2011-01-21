@@ -102,3 +102,6 @@ function get_accept_type($whitelist=array(), $default='html') {
     return $type;
 }
 
+function is_bookmarklet() {
+    return (isset($_GET['bookmarklet']));
+}
