@@ -23,7 +23,7 @@
           <input type="checkbox" name="private" id="private" <?php echo $private?> />
         </p>
         <p>
-          <input type="hidden" name="store" value="1" />
+          <input type="hidden" name="save" value="1" />
           <button type="submit"><?php echo $button?></button>
         </p>
       </form>

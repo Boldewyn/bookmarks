@@ -8,9 +8,9 @@ if ($status !== True) {
 }
 
 /* Main logic */
-if (! v('url') && ! v('store')):
+if (! v('url') && ! v('save')):
     die(format_template());
-elseif (! v('store')):
+elseif (! v('save')):
     $msg = '';
     $bm = $store->fetch(v('url'));
     if ($bm !== False) {
@@ -39,11 +39,11 @@ else:
     } else {
         if (is_bookmarklet()) {
             $msg = '<script type="text/javascript">window.close()</script><p class="success"><a href="javascript:window.close()">'.
-                    __('Successfully stored bookmark.').'</a></p>';
+                    __('Successfully saved bookmark.').'</a></p>';
             die(format_template(Null, $msg));
         } else {
-            messages_add(__('Successfully stored bookmark.'), 'success');
-            redirect('/?from=store');
+            messages_add(__('Successfully saved bookmark.'), 'success');
+            redirect('/?from=save');
         }
     }
 endif;
@@ -64,8 +64,8 @@ function format_template($v=Null, $msg='') {
         $change = ' disabled="disabled" readonly="readonly';
         $button = __('Change');
     }
-    return tpl('store', array(
-        'body_id' => 'store',
+    return tpl('save', array(
+        'body_id' => 'save',
         'site_title' => $title,
         'change' => $change,
         'button' => $button,

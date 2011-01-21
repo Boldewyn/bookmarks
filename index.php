@@ -15,7 +15,7 @@ $f = v('f');
 if ($f === '') {
     require_once 'fetch.php';
 } elseif ($f === 'save') {
-    require_once 'store.php';
+    require_once 'save.php';
 } elseif (substr($f, 0, 5) === "tags/") {
     $tags = v('tags');
     if (! $tags) {
