@@ -1,5 +1,6 @@
 <?php define('BOOKMARKS', '0.9');
 
+require_once 'fetch.php';
 require_once 'config.php';
 require_once 'lib/utils.php';
 require_once 'lib/bookmarks.class.php';
@@ -13,16 +14,15 @@ $store = new Bookmarks($db, (in_array('logged_in', $_SESSION)));
 
 $f = v('f', '');
 if ($f === '') {
-    require_once 'fetch.php';
     echo fetch($store);
 } elseif ($f === 'save') {
     require_once 'save.php';
+    echo save($store);
 } elseif (substr($f, 0, 5) === "tags/") {
     $tags = v('tags');
     if (! $tags) {
         $tags = substr($f, 5);
     }
-    require_once 'fetch.php';
     echo fetch($store, $tags);
 } elseif (substr($f, 0, 8) === "all_tags") {
     $prefix = substr($f, 9);
@@ -49,8 +49,8 @@ if ($f === '') {
     session_destroy();
     redirect('/?from=logout');
 } else {
-    header('HTTP/1.0 404 Not Found');
     messages_add(sprintf(__('The site %s couldn’t be found.'), '<var>'.h(urlencode($f)).'</var>'),
         'error', True);
-    require_once 'fetch.php';
+    header('HTTP/1.0 404 Not Found');
+    echo fetch($store);
 }
