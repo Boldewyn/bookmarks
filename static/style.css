@@ -90,9 +90,11 @@ label, button, input[type=submit], input[type=image], .ui-clickable {
  * @bugfix
  */
 button, input[type=submit] {
+  font: 100%/1.25em "Droid Serif","DejaVu Serif",Times,serif;
   padding: 0.084em;
   width: auto;
   overflow: visible;
+  background: white;
 }
 
 input[type=url], input[type=text], input[type=password], select, textarea {
@@ -165,6 +167,12 @@ del {
 /**
  * L A Y O U T ============================================================= *
  */
+#global {
+  background: #D3FFAF;
+  padding: 0 0 .625em;
+  max-width: 60em;
+}
+
 em em {
   font-style: normal;
 }
@@ -174,28 +182,30 @@ pre, code, kbd, samp {
 }
 
 a {
-  color: #01a;
+  color: #409300;
   text-decoration: none;
 }
 
 a:visited {
-  color: #018;
+  color: #326F00;
 }
 
 a:hover, a:focus {
-  color: #35F;
+  background-color: #eee;
+  color: #62E200;
 }
 
 a:active {
-  background: #01A;
-  color: #eee;
+  background-color: #62E200;
+  color: #D3FFAF;
 }
 
 
 
 
 nav {
-  background: #eef;
+  background: #FFDFE9;
+  padding: 0 .625em;
 }
 
 nav ul {
@@ -210,33 +220,114 @@ nav li {
 nav li a {
   display: block;
   padding: .625em;
+  padding-left: 2.5em;
+  background-repeat: no-repeat;
+  background-position: .625em center;
+  color: #95002B;
 }
 
-nav li a:hover {
-  background: white;
+nav li.start a {
+  background-image: url(list.png);
 }
 
+nav li.save a {
+  background-image: url(new.png);
+}
+
+nav li.logout a {
+  background-image: url(logout.png);
+}
+
+nav li.login a {
+  background-image: url(login.png);
+}
+
+nav li a:visited {
+  color: #6F0021;
+}
+
+nav li a:hover, nav li a:focus {
+  background-color: #eee;
+  color: #E60042;
+}
+
+nav li a:active {
+  background-color: #E60042;
+  color: #FF9FBC;
+}
+
+
+
+#messages {
+  padding: .625em;
+}
+
+#messages li {
+  list-style: none;
+  background: #CFCFCF;
+  color: black;
+  padding: .625em;
+  margin: 0 0 .0625em;
+}
+
+#messages li a {
+  color: white;
+}
+
+#messages li.success {
+  background: #62E200;
+}
+
+#messages li.info {
+  background: #E6BD00;
+}
+
+#messages li.error {
+  background: #E60042;
+}
 
 
 
 article {
   padding: .625em;
+  border-top: .0625em #409300 solid;
 }
 
 #bookmarks {
-  border-top: .0625em #01A solid;
+  border-top: .0625em #409300 solid;
 }
 
 #bookmarks li {
-  border-bottom: .0625em #01A solid;
+  border-bottom: .0625em #409300 solid;
   list-style: none;
+  overflow: auto;
 }
 
-#bookmarks a.href {
+#bookmarks a.url {
   display: block;
+  min-width: 62%;
+  float: left;
   padding: .625em;
 }
 
+#bookmarks .tags {
+  float: right;
+}
+
+
+
+
+button[type=submit] {
+  padding: .625em .625em .625em 2.5em;
+  background: white url(save.png) no-repeat .625em center;
+  border: .0625em solid white;
+}
+
+button.cancel {
+  padding: .625em .625em .625em 2.5em;
+  background: white url(cancel.png) no-repeat .625em center;
+  border: .0625em solid white;
+}
 
 
 /**
