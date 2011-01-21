@@ -11,9 +11,10 @@ session_start();
 $db = new PDO(DB_DSN, DB_USER, DB_PWD);
 $store = new Bookmarks($db, (in_array('logged_in', $_SESSION)));
 
-$f = v('f');
+$f = v('f', '');
 if ($f === '') {
     require_once 'fetch.php';
+    echo fetch($store);
 } elseif ($f === 'save') {
     require_once 'save.php';
 } elseif (substr($f, 0, 5) === "tags/") {
@@ -22,6 +23,7 @@ if ($f === '') {
         $tags = substr($f, 5);
     }
     require_once 'fetch.php';
+    echo fetch($store, $tags);
 } elseif (substr($f, 0, 8) === "all_tags") {
     $prefix = substr($f, 9);
     if ($prefix === False) { $prefix = ''; }
