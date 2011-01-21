@@ -45,8 +45,7 @@ if ($f === '') {
         $params["secure"], $params["httponly"]
     );
     session_destroy();
-    header('Location: '.dirname($_SERVER['PHP_SELF']).'/');
-    die('Redirecting');
+    redirect('/?from=logout');
 } else {
     header('HTTP/1.0 404 Not Found');
     messages_add(sprintf(__('The site %s couldn’t be found.'), '<var>'.h(urlencode($f)).'</var>'),
