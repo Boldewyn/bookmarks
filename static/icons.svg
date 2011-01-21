@@ -1,13 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
-   width="960" height="960" viewBox="0 0 240 240">
-  <rect fill="red" fill-opacity=".3" width="24" height="24" x="0"  y="0" />
-  <rect fill="red" fill-opacity=".3" width="24" height="24" x="25" y="0" />
-  <rect fill="red" fill-opacity=".3" width="24" height="24" x="50" y="0" />
-  <rect fill="red" fill-opacity=".3" width="24" height="24" x="75" y="0" />
-  <rect fill="red" fill-opacity=".3" width="24" height="24" x="0"  y="25" />
-  <rect fill="red" fill-opacity=".3" width="24" height="24" x="25" y="25" />
-  <rect fill="red" fill-opacity=".3" width="24" height="24" x="50" y="25" />
-  <rect fill="red" fill-opacity=".3" width="24" height="24" x="75" y="25" />
+   width="400" height="200" viewBox="0 0 100 50">
+  <g opacity="0">
+    <rect fill="red" fill-opacity=".3" width="24" height="24" x="0"  y="0" />
+    <rect fill="red" fill-opacity=".3" width="24" height="24" x="25" y="0" />
+    <rect fill="red" fill-opacity=".3" width="24" height="24" x="50" y="0" />
+    <rect fill="red" fill-opacity=".3" width="24" height="24" x="75" y="0" />
+    <rect fill="red" fill-opacity=".3" width="24" height="24" x="0"  y="25" />
+    <rect fill="red" fill-opacity=".3" width="24" height="24" x="25" y="25" />
+    <rect fill="red" fill-opacity=".3" width="24" height="24" x="50" y="25" />
+    <rect fill="red" fill-opacity=".3" width="24" height="24" x="75" y="25" />
+  </g>
   <g fill="none" stroke="black" stroke-width="4">
     <path id="new" d="M 3,2 V 22 H 21 V 2 H 16 V 15 L 14,13 12,15 V 2 z" transform="translate(0,0)" />
     <path id="list" d="M 3,2 V 22 H 21 V 2 z M 6,7 H 18 M 6,12 H 18 M 6,17 H 18" transform="translate(25,0)" />
