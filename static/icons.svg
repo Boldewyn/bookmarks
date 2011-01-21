@@ -1,15 +1,22 @@
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
-   width="400" height="200" viewBox="0 0 100 50">
-  <g opacity="0">
-    <rect fill="red" fill-opacity=".3" width="24" height="24" x="0"  y="0" />
-    <rect fill="red" fill-opacity=".3" width="24" height="24" x="25" y="0" />
-    <rect fill="red" fill-opacity=".3" width="24" height="24" x="50" y="0" />
-    <rect fill="red" fill-opacity=".3" width="24" height="24" x="75" y="0" />
-    <rect fill="red" fill-opacity=".3" width="24" height="24" x="0"  y="25" />
-    <rect fill="red" fill-opacity=".3" width="24" height="24" x="25" y="25" />
-    <rect fill="red" fill-opacity=".3" width="24" height="24" x="50" y="25" />
-    <rect fill="red" fill-opacity=".3" width="24" height="24" x="75" y="25" />
-  </g>
+     width="800" height="800" viewBox="0 0 200 200">
+  <defs>
+    <clipPath id="beamLeft">
+      <path d="M 0,0 H 24 V 24 H 0 V 15 H 12 V 9 H 0 V 0 z" />
+    </clipPath>
+    <clipPath id="beamRight">
+      <path d="M 0,0 H 24 V 9 H 12 V 15 H 24 V 24 H 0 V 0 z" />
+    </clipPath>
+    <clipPath id="beamTop">
+      <path d="M 0,0 H 9 V 12 H 15 V 0 H 24 V 24 H 0 V 0 z" />
+    </clipPath>
+    <clipPath id="beamBottom">
+      <path d="M 0,0 H 24 V 24 H 15 V 12 H 9 V 24 H 0 V 0 z" />
+    </clipPath>
+    <clipPath id="noLeftBottom">
+      <path d="M 0,0 H 24 V 24 H 14 V 12 H 0 V 0 z" />
+    </clipPath>
+  </defs>
   <g fill="none" stroke="black" stroke-width="4">
     <path id="new" d="M 3,2 V 22 H 21 V 2 H 16 V 15 L 14,13 12,15 V 2 z" transform="translate(0,0)" />
     <path id="list" d="M 3,2 V 22 H 21 V 2 z M 6,7 H 18 M 6,12 H 18 M 6,17 H 18" transform="translate(25,0)" />
@@ -21,12 +28,34 @@
                C 16.25,11.5 17.5,10.25 17.5,8 17.5,5.25 15.5,3.5 12,3.5 11.5,3.5 8.75,4 7,5
                L 7,9
                C 8.5,8 9,7.75 9.5,7.5 10.75,7 13,6.75 13,8.25 13,9.25 12,10 10.75,11 9,12.5 9,14 9,14 z
-               M 9,16 H 14 V 21 H 9 V 16 Z"
-               fill="black" stroke-width="0" />
+               M 9,16 H 14 V 21 H 9 V 16 Z" fill="black" stroke-width="0" />
     </g>
     <path id="login" d="M 7,6 V 2 H 21 V 22 H 7 V 18 M 1,12 H 13 M 10,7 15,12 10,17" transform="translate(75,25)" />
     <path id="save" d="M 18,8 H 22 V 22 H 2 V 8 H 6 M 12,2 V 14 M 17,11 12,16 7,11" transform="translate(25,25)" />
     <path id="cancel" d="M 5,4 20,20 M 20,4 5,20" transform="translate(50,0)" />
     <path id="check" d="M 5,10 10,17 19,5" transform="translate(50,25)" />
+    <path id="excl" d="M 10,20 H 14 V 24 H 10 V 20 z M 10,19 H 14 Q 14,10 15,2 H 9 Q 10,10 10,15 z" fill="black" stroke-width="0" transform="translate(0,50)" />
+    <g id="export" transform="translate(25,50)">
+      <circle cx="12" cy="12" r="10" clip-path="url(#beamLeft)" />
+      <path d="M 0,12 H 14 M 10,7 15,12 10,17" />
+    </g>
+    <path id="pencil" d="M 9,20 H 2 V 13 M 9,19 20,8 14,2 3,13 z" transform="translate(50,50)" />
+    <g id="on-off" transform="translate(75,50)">
+      <circle cx="12" cy="12" r="8" clip-path="url(#beamTop)" />
+      <path d="M 12,0 V 12" />
+    </g>
+    <path id="tag" d="M 2,9 V 2 H 9 M 3,9 14,20 20,14 9,3 z" transform="translate(0,75)" />
+    <path id="plus" d="M 12,4 V 20 M 4,12 H 20 z" transform="translate(25,75)" />
+    <path id="minus" d="M 4,12 H 20 z" transform="translate(50,75)" />
+    <g id="refresh" transform="translate(75,75)">
+      <circle cx="14" cy="12" r="7" clip-path="url(#noLeftBottom)" />
+      <path d="M 7,15 V 12 M 2,11 7,16 12,11" />
+    </g>
+    <path id="document" d="M 3,2 V 22 H 21 V 10 L 14,2 H 3 z M 14,2 V 10 H 22" transform="translate(0,100)" />
+    <g id="magnifier" transform="translate(25,100)">
+      <circle cx="9" cy="9" r="7" />
+      <path d="M 22,22 14,14" />
+    </g>
+    <path id="folder" d="M 2,22 H 22 V 10 H 14 L 10,6 H 2 V 22 z M 10,6 H 22 V 10 H 14 L 10,6 z" transform="translate(50,100)" />
   </g>
 </svg>
