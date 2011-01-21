@@ -129,7 +129,7 @@ function login() {
         $openid = new LightOpenID;
         if(!$openid->mode) {
             $openid->identity = OpenID;
-            redirect($openid->uathUrl());
+            redirect($openid->authUrl());
         } elseif($openid->mode == 'cancel') {
             return __('User has canceled authentication!');
         } elseif (! $openid->validate()) {
