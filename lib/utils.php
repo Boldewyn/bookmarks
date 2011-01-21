@@ -131,9 +131,9 @@ function login() {
             $openid->identity = OpenID;
             redirect($openid->authUrl());
         } elseif($openid->mode == 'cancel') {
-            return __('User has canceled authentication!');
+            return __('User has canceled authentication');
         } elseif (! $openid->validate()) {
-            return __('Login was not successful.');
+            return __('Login was not successful');
         } else {
             $_SESSION['logged_in'] = True;
         }
