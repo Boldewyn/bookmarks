@@ -1,5 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
-     width="800" height="800" viewBox="0 0 200 200">
+     xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="800" height="800" viewBox="0 0 200 200"
+     onclick="
+       var svg = document.documentElement;
+       if (svg.style.height &amp;&amp; svg.style.height == '200px') {
+         svg.style.height = '800px';
+       } else {
+         svg.style.height = '200px';
+       }">
   <defs>
     <clipPath id="beamLeft">
       <path d="M 0,0 H 24 V 24 H 0 V 15 H 12 V 9 H 0 V 0 z" />
@@ -17,6 +25,23 @@
       <path d="M 0,0 H 24 V 24 H 14 V 12 H 0 V 0 z" />
     </clipPath>
   </defs>
+  <g id="bg">
+    <rect id="b" x="0" y="0" width="24" height="24" fill="red" opacity=".3" />
+    <use xlink:href="#b" x="25" />
+    <use xlink:href="#b" x="50" />
+    <use xlink:href="#b" x="75" />
+    <use xlink:href="#b" x="100" />
+    <use xlink:href="#b" x="125" />
+    <use xlink:href="#b" x="150" />
+    <use xlink:href="#b" x="175" />
+  </g>
+  <use xlink:href="#bg" y="25" />
+  <use xlink:href="#bg" y="50" />
+  <use xlink:href="#bg" y="75" />
+  <use xlink:href="#bg" y="100" />
+  <use xlink:href="#bg" y="125" />
+  <use xlink:href="#bg" y="150" />
+  <use xlink:href="#bg" y="175" />
   <g fill="none" stroke="black" stroke-width="4">
     <path id="new" d="M 3,2 V 22 H 21 V 2 H 16 V 15 L 14,13 12,15 V 2 z" transform="translate(0,0)" />
     <path id="list" d="M 3,2 V 22 H 21 V 2 z M 6,7 H 18 M 6,12 H 18 M 6,17 H 18" transform="translate(25,0)" />
@@ -32,19 +57,19 @@
     </g>
     <path id="login" d="M 7,6 V 2 H 21 V 22 H 7 V 18 M 1,12 H 13 M 10,7 15,12 10,17" transform="translate(75,25)" />
     <path id="save" d="M 18,8 H 22 V 22 H 2 V 8 H 6 M 12,2 V 14 M 17,11 12,16 7,11" transform="translate(25,25)" />
-    <path id="cancel" d="M 5,4 20,20 M 20,4 5,20" transform="translate(50,0)" />
+    <path id="cancel" d="M 6,5 19,19 M 19,5 6,19" transform="translate(50,0)" />
     <path id="check" d="M 5,10 10,17 19,5" transform="translate(50,25)" />
     <path id="excl" d="M 10,20 H 14 V 24 H 10 V 20 z M 10,19 H 14 Q 14,10 15,2 H 9 Q 10,10 10,15 z" fill="black" stroke-width="0" transform="translate(0,50)" />
     <g id="export" transform="translate(25,50)">
       <circle cx="12" cy="12" r="10" clip-path="url(#beamLeft)" />
       <path d="M 0,12 H 14 M 10,7 15,12 10,17" />
     </g>
-    <path id="pencil" d="M 9,20 H 2 V 13 M 9,19 20,8 14,2 3,13 z" transform="translate(50,50)" />
+    <path id="pencil" d="M 9,22 H 2 V 15 M 9,21 21,9 15,3 3,15 z" transform="translate(50,50)" />
     <g id="on-off" transform="translate(75,50)">
       <circle cx="12" cy="12" r="8" clip-path="url(#beamTop)" />
       <path d="M 12,0 V 12" />
     </g>
-    <path id="tag" d="M 2,9 V 2 H 9 M 3,9 14,20 20,14 9,3 z" transform="translate(0,75)" />
+    <path id="tag" d="M 2,9 V 2 H 9 M 3,9 15,21 21,15 9,3 z" transform="translate(0,75)" />
     <path id="plus" d="M 12,4 V 20 M 4,12 H 20 z" transform="translate(25,75)" />
     <path id="minus" d="M 4,12 H 20 z" transform="translate(50,75)" />
     <g id="refresh" transform="translate(75,75)">
@@ -57,5 +82,14 @@
       <path d="M 22,22 14,14" />
     </g>
     <path id="folder" d="M 2,22 H 22 V 10 H 14 L 10,6 H 2 V 22 z M 10,6 H 22 V 10 H 14 L 10,6 z" transform="translate(50,100)" />
+    <g id="cog" transform="translate(75,100)">
+      <circle cx="12" cy="12" r="7" />
+      <path d="M 18,12 H 24 M 0,12 H 6 M 12,0 V 6 M 12,18 V 24 M 18,18 L 20.5,20.5 M 6,18 L 3.5,20.5 M 6,6 L 3.5,3.5 M 18,6 L 20.5,3.5" />
+    </g>
+    <g id="cut" transform="translate(0,125)">
+      <circle cx="5" cy="19" r="3" />
+      <circle cx="19" cy="19" r="3" />
+      <path d="M 8,20 20,2 M 16,20 4,2" />
+    </g>
   </g>
 </svg>
