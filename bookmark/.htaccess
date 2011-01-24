@@ -1,5 +1,5 @@
 # -MultiViews, otherwise /store becomes /store.php before redirecting
-Options -MultiViews
+Options -MultiViews FollowSymLinks
 
 <IfModule rewrite_module>
 RewriteEngine On
