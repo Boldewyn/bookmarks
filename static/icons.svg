@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
      xmlns:xlink="http://www.w3.org/1999/xlink"
-     width="800" height="800" viewBox="0 0 200 200"
+     width="200" height="200" viewBox="0 0 200 200"
      onclick="
        var svg = document.documentElement;
-       if (svg.style.height &amp;&amp; svg.style.height == '200px') {
-         svg.style.height = '800px';
-       } else {
+       if (svg.style.height &amp;&amp; svg.style.height == '800px') {
          svg.style.height = '200px';
+       } else {
+         svg.style.height = '800px';
        }">
   <defs>
     <clipPath id="beamLeft">
@@ -59,7 +59,7 @@
     <path id="save" d="M 18,8 H 22 V 22 H 2 V 8 H 6 M 12,2 V 14 M 17,11 12,16 7,11" transform="translate(25,25)" />
     <path id="cancel" d="M 6,5 19,19 M 19,5 6,19" transform="translate(50,0)" />
     <path id="check" d="M 5,10 10,17 19,5" transform="translate(50,25)" />
-    <path id="excl" d="M 10,20 H 14 V 24 H 10 V 20 z M 10,19 H 14 Q 14,10 15,2 H 9 Q 10,10 10,15 z" fill="black" stroke-width="0" transform="translate(0,50)" />
+    <path id="excl" d="M 10,20 H 14 V 24 H 10 V 20 z M 10,19 H 14 Q 14,10 15,0 H 9 Q 10,10 10,15 z" fill="black" stroke-width="0" transform="translate(0,50)" />
     <g id="export" transform="translate(25,50)">
       <circle cx="12" cy="12" r="10" clip-path="url(#beamLeft)" />
       <path d="M 0,12 H 14 M 10,7 15,12 10,17" />
@@ -91,5 +91,11 @@
       <circle cx="19" cy="19" r="3" />
       <path d="M 8,20 20,2 M 16,20 4,2" />
     </g>
+    <path id="arrowLeftRight" d="M 5,12 H 17 M 12,7 17,12 12,17" transform="translate(100,0)" />
+    <path id="arrowRightLeft" d="M 7,12 H 19 M 12,7 7,12 12,17" transform="translate(100,25)" />
+    <path id="arrowTopBottom" d="M 12,5 V 17 M 7,12 12,17 17,12" transform="translate(100,50)" />
+    <path id="arrowBottomTop" d="M 12,7 V 19 M 7,12 12,7 17,12" transform="translate(100,75)" />
+    <path id="arrowHorizontal" d="M 5,12 H 19 M 16,7 21,12 16,17 M 8,7 3,12 8,17" transform="translate(100,100)" />
+    <path id="arrowVertical" d="M 12,5 V 19 M 7,16 12,21 17,16 M 7,8 12,3 17,8" transform="translate(100,125)" />
   </g>
 </svg>
