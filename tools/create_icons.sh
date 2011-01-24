@@ -14,8 +14,8 @@ if [[ $1 ]]; then
 fi
 
 cd $(dirname $0)
-SOURCE_FILE=../static/icons.svg
-TARGET=../static/
+SOURCE_FILE=../bookmark/static/icons.svg
+TARGET=../bookmark/static/
 PARAMS="--export-width=$WIDTH --export-height=$WIDTH"
 
 SOURCE=$(sed -e 's/opacity="\.3"/opacity="0"/' -e "s/black/$COLOR/" "$SOURCE_FILE")
