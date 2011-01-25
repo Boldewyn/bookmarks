@@ -48,6 +48,9 @@ if ($f === '') {
     );
     session_destroy();
     redirect('/?from=logout');
+} elseif ($f === 'help') {
+    echo tpl('help', array('body_id' => 'help',
+        'site_title' => __('Help')));
 } else {
     messages_add(sprintf(__('The site %s couldn’t be found.'), '<var>'.h(urlencode($f)).'</var>'),
         'error', True);

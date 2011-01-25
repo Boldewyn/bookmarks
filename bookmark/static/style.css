@@ -256,6 +256,13 @@ nav li a:active {
   color: #FF9FBC;
 }
 
+@media (min-width: 60em) {
+  nav li.login,
+  nav li.logout {
+    margin-left: 35em;
+  }
+}
+
 
 
 #messages {

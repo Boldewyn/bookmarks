@@ -21,6 +21,7 @@
             <?php else:?>
                 <li class="login"><a href="<?php echo $base_path?>login"><?php _e('Log in')?></a></li>
             <?php endif?>
+            <li class="help <?php if ($f === 'help'):?>active<?php endif?>"><a href="<?php echo $base_path?>help"><?php _e('Help')?></a></li>
         </ul>
         </nav>
         <?php if (messages_have()):?>
