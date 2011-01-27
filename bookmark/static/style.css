@@ -47,7 +47,7 @@ html {
 body {
   font: 100%/1.25em "Droid Serif","DejaVu Serif",Times,serif;
   color: #333;
-  background: #eeeeee;
+  background: #F5FBF0;
   margin: 0;
 }
 
@@ -63,19 +63,19 @@ caption, td, th {
 h1 {
   font-size:  2.0em;
   line-height: 1.25;
-  margin-bottom: .625em;
+  margin-bottom: .3125em;
 }
 
 h2 {
   font-size:  1.5em;
   line-height: 1.25;
-  margin-bottom: .8333em;
+  margin-bottom: .41666em;
 }
 
 h3 {
   font-size:  1.25em;
   line-height: 1.0;
-  margin-bottom: 1.0em;
+  margin-bottom: .5em;
 }
 
 label, button, input[type=submit], input[type=image], .ui-clickable {
@@ -168,9 +168,11 @@ del {
  * L A Y O U T ============================================================= *
  */
 #global {
-  background: #D3FFAF;
+  background: #FDFDFD;
   padding: 0 0 .625em;
   max-width: 60em;
+  margin: 0 auto;
+  border: .625em solid white;
 }
 
 em em {
@@ -191,7 +193,7 @@ a:visited {
 }
 
 a:hover, a:focus {
-  background-color: #eee;
+  background-color: #FDFDFD;
   color: #62E200;
 }
 
@@ -205,12 +207,16 @@ a:active {
 
 nav {
   background: #FFDFE9;
-  padding: 0 .625em;
+  border-bottom: .0625em solid #95002B;
+  height: 2.4375em;
 }
 
 nav ul {
+  padding: 0 .625em;
   list-style: none;
-  overflow: auto;
+  background: #FFEFF4;
+  border-bottom: .0625em solid #FFE7EF;
+  height: 2.25em;
 }
 
 nav li {
@@ -222,8 +228,9 @@ nav li a {
   padding: .625em;
   padding-left: 2.5em;
   background-repeat: no-repeat;
-  background-position: .625em center;
-  color: #95002B;
+  background-position: .625em 8px;
+  color: #E60042;
+  text-shadow: 0 1px 1px rgba(0,0,0,.3);
 }
 
 nav li.start a {
@@ -242,24 +249,38 @@ nav li.login a {
   background-image: url(login.png);
 }
 
-nav li a:visited {
-  color: #6F0021;
+nav li.help a {
+  background-image: url(help.png);
 }
 
+nav li a:visited {
+  color: #DB0041;
+}
+
+nav li.active a,
 nav li a:hover, nav li a:focus {
-  background-color: #eee;
-  color: #E60042;
+  background-color: #FDFDFD;
+  color: #95002B;
+  background-position: .625em -88px;
 }
 
 nav li a:active {
   background-color: #E60042;
-  color: #FF9FBC;
+  background-position: .625em -40px;
+  color: #FFFFFF;
+}
+
+nav li a:active,
+nav li a:hover,
+nav li a:focus {
+  text-shadow: 0 0 .3125em rgba(255,255,0,1);
 }
 
 @media (min-width: 60em) {
+  nav li.help,
   nav li.login,
   nav li.logout {
-    margin-left: 35em;
+    float: right;
   }
 }
 
@@ -267,6 +288,7 @@ nav li a:active {
 
 #messages {
   padding: .625em;
+  border-bottom: .0625em #409300 solid;
 }
 
 #messages li {
@@ -275,6 +297,9 @@ nav li a:active {
   color: black;
   padding: .625em;
   margin: 0 0 .0625em;
+  -moz-border-radius: .125em;
+  -webkit-border-radius: .125em;
+  border-radius: .125em;
 }
 
 #messages li a {
@@ -291,13 +316,13 @@ nav li a:active {
 
 #messages li.error {
   background: #E60042;
+  color: white;
 }
 
 
 
 article {
   padding: .625em;
-  border-top: .0625em #409300 solid;
 }
 
 #bookmarks {
@@ -322,6 +347,30 @@ article {
 }
 
 
+
+#tags {
+  overflow: auto;
+  margin: 0 0 .625em;
+}
+
+#tags li {
+  list-style: none;
+  margin-right: .625em;
+  float: left;
+  padding: .125em;
+  background: #F5FBF0;
+  cursor: pointer;
+}
+
+#tags li:after {
+  content: "\00A0\00D7";
+  font-weight: bold;
+  color: #999;
+}
+
+#tags li:hover:after {
+  color: #333;
+}
 
 
 button[type=submit] {
