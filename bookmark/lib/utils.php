@@ -137,6 +137,8 @@ function login() {
         } else {
             $_SESSION['logged_in'] = True;
         }
+    } elseif (OpenID === 'ASSUME_LOGGED_IN') {
+        $_SESSION['logged_in'] = True;
     }
     return True;
 }

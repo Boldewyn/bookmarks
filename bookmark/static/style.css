@@ -231,6 +231,7 @@ nav li a {
   background-position: .625em 8px;
   color: #E60042;
   text-shadow: 0 1px 1px rgba(0,0,0,.3);
+  outline: none;
 }
 
 nav li.start a {
@@ -239,6 +240,10 @@ nav li.start a {
 
 nav li.save a {
   background-image: url(new.png);
+}
+
+nav li.search a {
+  background-image: url(magnifier.png);
 }
 
 nav li.logout a {
@@ -348,12 +353,12 @@ article {
 
 
 
-#tags {
+#tag-list {
   overflow: auto;
   margin: 0 0 .625em;
 }
 
-#tags li {
+#tag-list li {
   list-style: none;
   margin-right: .625em;
   float: left;
@@ -362,28 +367,68 @@ article {
   cursor: pointer;
 }
 
-#tags li:after {
+#tag-list li:after {
   content: "\00A0\00D7";
   font-weight: bold;
   color: #999;
 }
 
-#tags li:hover:after {
+#tag-list li:hover:after {
   color: #333;
 }
 
 
-button[type=submit] {
+button {
   padding: .625em .625em .625em 2.5em;
-  background: white url(save.png) no-repeat .625em center;
+  background-color: #FFEFF4;
+  background-repeat: no-repeat;
+  background-position: .625em 8px;
   border: .0625em solid white;
+  outline: none;
+}
+
+button[type=submit] {
+  background-image: url(save.png);
 }
 
 button.cancel {
-  padding: .625em .625em .625em 2.5em;
-  background: white url(cancel.png) no-repeat .625em center;
-  border: .0625em solid white;
+  background-image: url(cancel.png);
 }
+
+button:focus, button:hover {
+  background-color: #FDFDFD;
+  color: #95002B;
+  background-position: .625em -88px;
+}
+
+button:active {
+  background-color: #E60042;
+  background-position: .625em -40px;
+  color: #FFFFFF;
+}
+
+
+
+
+form p {
+  margin: 0 0 .625em;
+  overflow: auto;
+}
+
+form label {
+  display: block;
+  font-size: .8em;
+}
+
+form .text {
+  width: 100%;
+  padding: .1875em;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  font: normal 1em/1.25 "Droid Serif","DejaVu Serif",serif;
+}
+
 
 
 /**

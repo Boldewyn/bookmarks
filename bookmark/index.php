@@ -51,6 +51,23 @@ if ($f === '') {
 } elseif ($f === 'help') {
     echo tpl('help', array('body_id' => 'help',
         'site_title' => __('Help')));
+} elseif ($f === 'search') {
+    if (v('q', '') === '') {
+        echo tpl('search',  array('body_id' => 'search',
+            'site_title' => __('Search')));
+    } else {
+        $bookmarks = $store->search(explode(' ', v('q')));
+        if (count($bookmarks) === 0) {
+            messages_add(__('There is no match for your query.'));
+            echo tpl('search',  array('body_id' => 'search',
+                'site_title' => __('Search')));
+        } else {
+            messages_add(sprintf(__('Your search for %s yields %s results.'), v('q'), count($bookmarks)), 'success');
+            echo tpl('list',  array('body_id' => 'search',
+                'site_title' => __('Search'),
+                'bookmarks' => $bookmarks));
+        }
+    }
 } else {
     messages_add(sprintf(__('The site %s couldn’t be found.'), '<var>'.h(urlencode($f)).'</var>'),
         'error', True);

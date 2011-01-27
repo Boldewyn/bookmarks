@@ -106,7 +106,7 @@ class Bookmarks {
     /**
      * Fetch a single bookmark
      */
-    function fetch($url) {
+    public function fetch($url) {
         $query = 'SELECT url, title, notes, private, UNIX_TIMESTAMP(created) AS created,
                          UNIX_TIMESTAMP(modified) AS modified
                     FROM bookmarks WHERE url = :url';
@@ -124,9 +124,49 @@ class Bookmarks {
     }
 
     /**
+     * Search for Bookmarks
+     */
+    public function search($qarray, $limit=200, $offset=0) {
+        $limit = min($limit, $this->hard_limit);
+        $bookmarks = array();
+        try {
+            $query = sprintf(
+                'SELECT b.url AS url,
+                        b.title AS title,
+                        b.notes AS notes,
+                        b.private AS private,
+                        UNIX_TIMESTAMP(b.created) AS created,
+                        UNIX_TIMESTAMP(b.modified) AS modified
+                   FROM bookmarks b
+                          WHERE b.url REGEXP %1$s
+                          OR b.title REGEXP %1$s
+                          OR b.notes REGEXP %1$s
+                        ',
+                        join('|', array_map(array($this->db, 'quote'),
+                            $qarray))
+                        );
+            if (! $this->privates) {
+                $query .= ' AND private = False';
+            }
+            $query .= ' LIMIT :offset,:limit';
+            $query = $this->db->prepare($query);
+            $query->bindParam(':offset', $offset, PDO::PARAM_INT);
+            $query->bindParam(':limit', $limit, PDO::PARAM_INT);
+            $query->execute();
+            $bookmarks = $query->fetchAll(PDO::FETCH_ASSOC);
+            for ($i = 0; $i < count($bookmarks); $i++) {
+                $bookmarks[$i]['tags'] = $this->fetch_tags($bookmarks[$i]['url']);
+            }
+        } catch (PDOException $e) {
+            return array();
+        }
+        return $bookmarks;
+    }
+
+    /**
      * Fetch all (or some) bookmarks
      */
-    function fetch_all($tags=array(), $limit=200, $offset=0) {
+    public function fetch_all($tags=array(), $limit=200, $offset=0) {
         $limit = min($limit, $this->hard_limit);
         $bookmarks = array();
         try {
@@ -143,6 +183,9 @@ class Bookmarks {
                                 ) = :n',
                             join(',', array_map(array($this->db, 'quote'), $tags))
                          );
+                if (! $this->privates) {
+                    $query .= ' AND private = False';
+                }
             } elseif (count($tags) === 1) {
                 $query = 'SELECT b.url url, b.title title, b.notes notes, b.private private,
                                  UNIX_TIMESTAMP(b.created) AS created,
