@@ -254,6 +254,29 @@ class Bookmarks {
     }
 
     /**
+     * Create the necessary tables
+     */
+    public function install() {
+        $this->db->exec('
+        CREATE TABLE bookmarks (
+            url VARCHAR(750) NOT NULL PRIMARY KEY,
+            title TEXT,
+            notes TEXT,
+            private BOOLEAN NOT NULL DEFAULT TRUE,
+            modified TIMESTAMP NOT NULL,
+            created TIMESTAMP NOT NULL,
+            INDEX is_private (private)
+        )');
+        $this->db->exec('
+        CREATE TABLE bookmark_tags (
+            url VARCHAR(750) NOT NULL,
+            tag VARCHAR(250) NOT NULL,
+            PRIMARY KEY (url, tag),
+            INDEX has_tag (tag)
+        )');
+    }
+
+    /**
      * Sanitize a URL
      *
      * Checks for non-ASCII characters, prepends 'http://' if necessary,
