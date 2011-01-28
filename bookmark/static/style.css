@@ -6,10 +6,6 @@
  * This part resets many of the browsers' default rendering properties that
  * are mostly incompatible to one another.
  *
- * We also establish a basic line height of 15px and take care, that headings
- * and other elements are drawn with baseline heights that are a multiple of
- * 5px.
- *
  * @see Bases loosely on Eric Meyer's reset stylesheet,
  *      <http://meyerweb.com/eric/tools/css/reset/>
  */
@@ -173,6 +169,7 @@ del {
   max-width: 60em;
   margin: 0 auto;
   border: .625em solid white;
+  border-top-width: 0;
 }
 
 em em {
@@ -230,7 +227,7 @@ nav li a {
   background-repeat: no-repeat;
   background-position: .625em 8px;
   color: #E60042;
-  text-shadow: 0 1px 1px rgba(0,0,0,.3);
+  text-shadow: 0 .0625em .0625em rgba(0,0,0,.3);
   outline: none;
 }
 
