@@ -94,15 +94,26 @@ if ($f === '') {
             fclose($fp);
             $data = explode("\n\n", str_replace("\r\n", "\n", $data), 2);
             $data = $data[1];
-            $xml = simplexml_load_string($data);
-            $posts = $xml->xpath('/posts/post');
+            try {
+                $xml = simplexml_load_string($data);
+                if (! $xml) {
+                    throw new Exception();
+                }
+                $posts = $xml->xpath('/posts/post');
+            } catch (Exception $e) {
+                messages_add(__('Couldn’t parse the response from Delicious.'), 'error');
+                redirect('/');
+            }
             $added = 0;
             $needs_update = 0;
             for ($i = 0; $i < count($posts); $i++) {
-                $atts = (array)$posts[$i]->attributes();
+                $atts = array();
+                foreach ($posts[$i]->attributes() as $k => $v) {
+                    $atts[$k] = trim($v);
+                }
                 $atts += array("extended"=>"","shared"=>"yes");
                 $r = $store->save(
-                    $atts['url'],
+                    $atts['href'],
                     $atts['description'],
                     explode(" ", $atts['tag']),
                     $atts['extended'],
