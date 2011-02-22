@@ -18,7 +18,7 @@ function save($store) {
         if ($bm !== False) {
             if (! v('edit')) {
                 $msg = sprintf('<p class="info">%s</p>',
-                            __('This bookmark does already exist.'));
+                            __('This bookmark already exists.'));
             }
         } else {
             $bm = Null;

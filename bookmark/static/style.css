@@ -345,7 +345,9 @@ article {
 }
 
 #bookmarks .tags {
-  float: right;
+  text-align: right;
+  display: block;
+  font-size: 80%;
 }
 
 
