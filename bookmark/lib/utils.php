@@ -189,6 +189,6 @@ function redirect($to) {
         $to = "$base_path$to";
     }
     header('Location: '.$to);
-    die('Redirecting to ');
+    die('Redirecting to '.h($to));
 }
 
