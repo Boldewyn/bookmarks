@@ -1,11 +1,25 @@
 <?php
 
-define('DB_DSN', 'mysql:host=127.0.0.1;port=3306;dbname=bookmarks');
-define('DB_USER', 'bookmarks');
-define('DB_PWD', 'b00km4rk5');
 
-#define('OpenID', 'ASSUME_LOGGED_IN'); // For debugging only!
-define('OpenID', 'http://example.com/myopenid');
+$bookmark_config = array(
+    'database' => array(
+        'dsn' => 'mysql:host=127.0.0.1;port=3306;dbname=bookmarks',
+                                // database definition
+        'user' => 'root',       // your database username
+        'password' => 'root',   // your database password
+    ),
+    'auth' => array(
+        'openid' => '',         // OpenID you want to use for login
+    ),
+    'session_days' => 365,      // Session length before login needs renewal
+    'external' => array(
+        'delicious' => array(   // Interact with Delicious:
+            'auth' => '',       // The Delicious auth string. Set it to
+                                // base64_encode('username:password')
+            'sync' => True,     // whether newly created bookmarks should be
+                                // synced with Delicious
+        ),
+    ),
+);
 
-define('BOOKMARKS_STAY_LOGGED_IN', 365);
 

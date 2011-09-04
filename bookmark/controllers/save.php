@@ -1,13 +1,17 @@
 <?php defined('BOOKMARKS') or die('Access denied.');
 
-/* Authentication */
-$status = login();
-if ($status !== True) {
-    messages_add(sprintf(__('A login error occurred: %s.'), $status), 'error');
-    redirect('/?from=login');
-}
 
+/**
+ * Save a bookmark
+ */
 function save($store) {
+    global $db;
+    /* Authentication */
+    $status = login();
+    if ($status !== True) {
+        messages_add(sprintf(__('A login error occurred: %s.'), $status), 'error');
+        redirect('/login?next=save');
+    }
     $html = "";
     /* Main logic */
     if (! v('url') && ! v('save')):
@@ -30,40 +34,8 @@ function save($store) {
         $tags = explode(' ', preg_replace('/\s+/', ' ', v('tags')));
         $private = (bool)v('private');
         $e = $store->save($url, $title, $tags, v('notes'), $private);
-        if ($e === True && defined('DELICIOUS_SYNC') && DELICIOUS_SYNC) {
-            if (defined('DELICIOUS_AUTH')) {
-                $fp = fsockopen("ssl://api.delicious.com", 443);
-                if (!$fp) {
-                    messages_add(__('Couldn’t connect to the delicious API server to sync bookmarks.'), 'error');
-                } else {
-                    $out = sprintf("GET /v1/posts/add?url=%s&description=%s&tags=%s&shared=%s&extended=%s HTTP/1.1\r\n",
-                          rawurlencode($url),
-                          rawurlencode($title),
-                          rawurlencode(implode(' ', $tags)),
-                          ($private? 'no' : 'yes'),
-                          rawurlencode(v('notes'))
-                        );
-                    $out .= "Host: api.delicious.com\r\n";
-                    $out .= "User-Agent: Personal Bookmarks Manager\r\n";
-                    $out .= "Authorization: Basic ".DELICIOUS_AUTH."\r\n";
-                    $out .= "Connection: Close\r\n\r\n";
-                    fwrite($fp, $out);
-                    $data = "";
-                    while (!feof($fp)) {
-                        $data .= fgets($fp, 128);
-                    }
-                    fclose($fp);
-                    $data = explode("\n\n", str_replace("\r\n", "\n", $data), 2);
-                    $data = $data[1];
-                    if (strpos($data, 'code="done"') !== False) {
-                        messages_add(__('The bookmark was exported to delicious.'), 'success');
-                    } else {
-                        messages_add(sprintf(__('There was an error exporting the bookmark to delicious: %s'), preg_replace('/.+code="([^"]*)".+/s', '\1', $data)), 'error');
-                    }
-                }
-            } else {
-                messages_add(__('You need to provide your access data for the delicious API server to sync bookmarks.'), 'error');
-            }
+        if ($e === True && cfg('external/delicious/sync', False)) {
+            _sync_to_delicious($url, $title, $tags, $private);
         } elseif ($e === Null) {
             $e = $store->change($url, $title, $tags, v('notes'), $private);
         }
@@ -79,13 +51,57 @@ function save($store) {
                 $html = format_template(Null, $msg);
             } else {
                 messages_add(__('Successfully saved bookmark.'), 'success');
-                redirect('/?from=save');
+                redirect('/');
             }
         }
     endif;
     return $html;
 }
 
+
+/**
+ * Save bookmark to delicious
+ */
+function sync_to_delicious($url, $title, $tags, $private) {
+    if (cfg('external/delicious/auth', False)) {
+        $fp = fsockopen("ssl://api.delicious.com", 443);
+        if (!$fp) {
+            messages_add(__('Couldn’t connect to the delicious API server to sync bookmarks.'), 'error');
+        } else {
+            $out = sprintf("GET /v1/posts/add?url=%s&description=%s&tags=%s&shared=%s&extended=%s HTTP/1.1\r\n",
+                    rawurlencode($url),
+                    rawurlencode($title),
+                    rawurlencode(implode(' ', $tags)),
+                    ($private? 'no' : 'yes'),
+                    rawurlencode(v('notes'))
+                );
+            $out .= "Host: api.delicious.com\r\n";
+            $out .= "User-Agent: Personal Bookmarks Manager\r\n";
+            $out .= "Authorization: Basic ".cfg('external/delicious/auth', '')."\r\n";
+            $out .= "Connection: Close\r\n\r\n";
+            fwrite($fp, $out);
+            $data = "";
+            while (!feof($fp)) {
+                $data .= fgets($fp, 128);
+            }
+            fclose($fp);
+            $data = explode("\n\n", str_replace("\r\n", "\n", $data), 2);
+            $data = $data[1];
+            if (strpos($data, 'code="done"') !== False) {
+                messages_add(__('The bookmark was exported to delicious.'), 'success');
+            } else {
+                messages_add(sprintf(__('There was an error exporting the bookmark to delicious: %s'), preg_replace('/.+code="([^"]*)".+/s', '\1', $data)), 'error');
+            }
+        }
+    } else {
+        messages_add(__('You need to provide your access data for the delicious API server to sync bookmarks.'), 'error');
+    }
+}
+
+
+/**
+ * Do some basic template formatting
+ */
 function format_template($v=Null, $msg='') {
     $title = __('Save Bookmark');
     $change = '';
@@ -112,3 +128,6 @@ function format_template($v=Null, $msg='') {
         'tags' => join(' ', $v['tags']),
     ) + $v, array('msg'));
 }
+
+
+//__END__

@@ -38,41 +38,6 @@ function h_array($a) {
 }
 
 /**
- * Add a message to the queue
- */
-function messages_add($m, $type='info', $safe=False) {
-    if (! isset($_SESSION['messages'])) {
-        $_SESSION['messsages'] = array();
-    }
-    $_SESSION['messages'][] = array(
-        'type' => $type,
-        'message' => $safe? $m : h($m),
-    );
-}
-
-/**
- * Fetch all messages from the queue and empty it
- */
-function messages_get() {
-    if (! isset($_SESSION['messages'])) {
-        return array();
-    }
-    $m = $_SESSION['messages'];
-    $_SESSION['messages'] = array();
-    return $m;
-}
-
-/**
- * Check, if there are messages in the queue
- */
-function messages_have() {
-    if (! isset($_SESSION['messages'])) {
-        return 0;
-    }
-    return count($_SESSION['messages']);
-}
-
-/**
  * Poor man's i18n
  *
  * @todo Implement me
@@ -109,7 +74,8 @@ function tpl($file, $ctx=array(), $safe=array()) {
     }
     $ctx += array(
         'body_id' => 'default',
-        'base_path' => h(dirname($_SERVER['PHP_SELF'])).'/',
+        'base_path' => h(dirname($_SERVER['SCRIPT_NAME'])).'/',
+        'script_path' => h(get_script_path()).'/',
         'f' => h(v('f')),
     );
     extract($ctx);
@@ -120,28 +86,19 @@ function tpl($file, $ctx=array(), $safe=array()) {
     return $result;
 }
 
+
 /**
- * Log the user in (requires OpenID)
+ *
  */
-function login() {
-    require_once 'lib/lightopenid/openid.php';
-    if (! in_array('logged_in', $_SESSION) && OpenID !== 'ASSUME_LOGGED_IN') {
-        $openid = new LightOpenID;
-        if(!$openid->mode) {
-            $openid->identity = OpenID;
-            redirect($openid->authUrl());
-        } elseif($openid->mode == 'cancel') {
-            return __('User has canceled authentication');
-        } elseif (! $openid->validate()) {
-            return __('Login was not successful');
-        } else {
-            $_SESSION['logged_in'] = True;
-        }
-    } elseif (OpenID === 'ASSUME_LOGGED_IN') {
-        $_SESSION['logged_in'] = True;
+function get_script_path() {
+    $base_path = dirname($_SERVER['SCRIPT_NAME']);
+    if (isset($_SERVER['PATH_INFO'])) {
+        return $base_path.'/index.php';
+    } else {
+        return $base_path;
     }
-    return True;
 }
+
 
 /**
  * Determine the expected content type for the answer
@@ -184,7 +141,7 @@ function is_bookmarklet() {
  * Redirect to another URL. Prepend site path, if necessary
  */
 function redirect($to) {
-    $base_path = dirname($_SERVER['PHP_SELF']);
+    $base_path = get_script_path();
     if (substr($to, 0, 1) === '/' && substr($to, 0, strlen($base_path)) !== $base_path) {
         $to = "$base_path$to";
     }

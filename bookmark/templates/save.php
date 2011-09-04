@@ -25,7 +25,7 @@
         <p>
           <input type="hidden" name="save" value="1" />
           <button type="submit"><?php echo $button?></button>
-          <button type="button" class="cancel" onclick="window.location.href='<?php echo $base_path?>'"><?php _e('Cancel')?></button>
+          <button type="button" class="cancel" onclick="window.location.href='<?php echo $script_path?>'"><?php _e('Cancel')?></button>
         </p>
       </form>
 <?php include "footer.php" ?>

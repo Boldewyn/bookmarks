@@ -14,15 +14,15 @@
     <div id="global">
         <nav>
         <ul>
-            <li class="start <?php if (! $f):?>active<?php endif?>"><a href="<?php echo $base_path?>"><?php _e('Overview')?></a></li>
-            <li class="search <?php if ($f === 'search'):?>active<?php endif?>"><a href="<?php echo $base_path?>search"><?php _e('Search')?></a></li>
+            <li class="start <?php if (! $f):?>active<?php endif?>"><a href="<?php echo $script_path?>"><?php _e('Overview')?></a></li>
+            <li class="search <?php if ($f === 'search'):?>active<?php endif?>"><a href="<?php echo $script_path?>search"><?php _e('Search')?></a></li>
             <?php if (in_array('logged_in', $_SESSION)):?>
-                <li class="save <?php if ($f === 'save'):?>active<?php endif?>"><a href="<?php echo $base_path?>save"><?php _e('Create new')?></a></li>
-                <li class="logout"><a href="<?php echo $base_path?>logout"><?php _e('Log out')?></a></li>
+                <li class="save <?php if ($f === 'save'):?>active<?php endif?>"><a href="<?php echo $script_path?>save"><?php _e('Create new')?></a></li>
+                <li class="logout"><a href="<?php echo $script_path?>logout"><?php _e('Log out')?></a></li>
             <?php else:?>
-                <li class="login"><a href="<?php echo $base_path?>login"><?php _e('Log in')?></a></li>
+                <li class="login"><a href="<?php echo $script_path?>login"><?php _e('Log in')?></a></li>
             <?php endif?>
-            <li class="help <?php if ($f === 'help'):?>active<?php endif?>"><a href="<?php echo $base_path?>help"><?php _e('Help')?></a></li>
+            <li class="help <?php if ($f === 'help'):?>active<?php endif?>"><a href="<?php echo $script_path?>help"><?php _e('Help')?></a></li>
         </ul>
         </nav>
         <?php if (messages_have()):?>

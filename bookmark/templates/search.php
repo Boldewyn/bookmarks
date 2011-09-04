@@ -7,7 +7,7 @@
         </p>
         <p>
           <button type="submit"><?php _e('search')?></button>
-          <button type="button" class="cancel" onclick="window.location.href='<?php echo $base_path?>'"><?php _e('Cancel')?></button>
+          <button type="button" class="cancel" onclick="window.location.href='<?php echo $script_path?>'"><?php _e('Cancel')?></button>
         </p>
       </form>
 <?php include "footer.php" ?>

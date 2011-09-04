@@ -1,5 +1,6 @@
 <?php defined('BOOKMARKS') or die('Access denied.');
 
+
 /**
  * Manage bookmarks
  */
@@ -249,7 +250,7 @@ class Bookmarks {
                         AND b.private = 0 ) > 0').'
            GROUP BY t.tag');
         $query->execute(array(':prefix' => $prefix.'%'));
-        $query->debugDumpParams();
+        //$query->debugDumpParams();
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -318,4 +319,5 @@ class Bookmarks {
 
 }
 
-#__END__
+
+//__END__

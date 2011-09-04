@@ -13,7 +13,7 @@
       <a class="url" rel="external" href="<?php echo $bookmark['url']?>"><?php echo $bookmark['title']?></a>
       <span class="tags">
         <?php foreach ($bookmark['tags'] as $tag):?>
-          <a rel="tag" href="<?php echo "${base_path}tags/".rawurlencode($tag)?>"><?php echo $tag?></a>
+          <a rel="tag" href="<?php echo "${script_path}tags/".rawurlencode($tag)?>"><?php echo $tag?></a>
         <?php endforeach?>
       </span>
     </li>

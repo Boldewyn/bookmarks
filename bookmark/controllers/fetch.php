@@ -1,4 +1,6 @@
 <?php defined('BOOKMARKS') or die('Access denied.');
+
+
 /**
  * Fetch bookmarks from the database
  */
@@ -38,3 +40,6 @@ function fetch($store, $tags='') {
     }
     return $html;
 }
+
+
+//__END__
