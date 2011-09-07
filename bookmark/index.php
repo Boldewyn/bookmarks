@@ -1,5 +1,8 @@
 <?php define('BOOKMARKS', '0.9');
 
+error_reporting(-1);
+ini_set('display_errors', 1);
+
 require_once 'lib/config.php';
 require_once 'lib/utils.php';
 require_once 'lib/session.php';
@@ -35,25 +38,7 @@ if (substr($f, 0, 5) === 'tags/') {
     $tags = $store->fetch_all_tags($prefix);
     header('Content-Type: application/json');
     die(json_encode($tags));
-} elseif ($f === 'login') {
-    $status = login();
-    if ($status !== True) {
-        messages_add(sprintf(__('A login error occurred: %s.'), $status), 'error');
-        redirect('/');
-    } else {
-        messages_add(sprintf(__('Successfully logged in. Welcome back.'), $status), 'success');
-        redirect('/');
-    }
-} elseif ($f === 'logout') {
-    $_SESSION = array();
-    $params = session_get_cookie_params();
-    setcookie(session_name(), '', time() - 42000,
-        $params["path"], $params["domain"],
-        $params["secure"], $params["httponly"]
-    );
-    session_destroy();
-    redirect('/');
-} elseif (in_array($f, array('fetch', 'help', 'search', 'import', 'install', 'save'))) {
+} elseif (in_array($f, array('login', 'logout', 'fetch', 'help', 'search', 'import', 'install', 'save'))) {
     require_once 'controllers/'.$f.'.php';
     echo $f($store);
 } else {
@@ -63,3 +48,6 @@ if (substr($f, 0, 5) === 'tags/') {
     header('HTTP/1.0 404 Not Found');
     echo fetch($store);
 }
+
+
+//__END__

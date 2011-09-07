@@ -7,7 +7,7 @@
 function save($store) {
     global $db;
     /* Authentication */
-    $status = login();
+    $status = do_login();
     if ($status !== True) {
         messages_add(sprintf(__('A login error occurred: %s.'), $status), 'error');
         redirect('/login?next=save');

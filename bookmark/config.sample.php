@@ -11,7 +11,10 @@ $bookmark_config = array(
     'auth' => array(
         'openid' => '',         // OpenID you want to use for login
     ),
-    'session_days' => 365,      // Session length before login needs renewal
+    'session' => array(
+        'days' => 365,          // Session length before login needs renewal
+        'secure' => false,      // Set this to true, if you use HTTPS
+    ),
     'external' => array(
         'delicious' => array(   // Interact with Delicious:
             'auth' => '',       // The Delicious auth string. Set it to

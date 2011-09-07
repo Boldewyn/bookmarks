@@ -4,7 +4,7 @@
 /**
  * Log the user in (requires OpenID)
  */
-function login() {
+function do_login() {
     require_once 'lib/lightopenid/openid.php';
     if (! in_array('logged_in', $_SESSION) && ! cfg('auth/assume_logged_in', False)) {
         $openid = new LightOpenID;
@@ -31,6 +31,22 @@ function login() {
 function logged_in() {
     return in_array('logged_in', $_SESSION) ||
            cfg('auth/assume_logged_in', False);
+}
+
+
+/**
+ * log out the user
+ */
+function do_logout() {
+    session_regenerate_id();
+    //$params = session_get_cookie_params();
+    //setcookie(session_name(), '', time() - 42000,
+    //    $params["path"], $params["domain"],
+    //    $params["secure"], $params["httponly"]
+    //);
+    session_destroy();
+    $_SESSION = array();
+    session_start();
 }
 
 

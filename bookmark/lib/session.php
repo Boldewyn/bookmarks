@@ -5,7 +5,9 @@
  * Start a session
  */
 function start_session() {
-    session_set_cookie_params(60*60*24*cfg('session_days', 1));
+    session_set_cookie_params(60*60*24*cfg('session/days', 1),
+        cfg('base_path', '/').'/', $_SERVER['HTTP_HOST'],
+        cfg('session/secure', false), true);
     session_name('Bookmarks');
     session_start();
 }
@@ -16,7 +18,7 @@ function start_session() {
  */
 function messages_add($m, $type='info', $safe=False) {
     if (! isset($_SESSION['messages'])) {
-        $_SESSION['messsages'] = array();
+        $_SESSION['messages'] = array();
     }
     $_SESSION['messages'][] = array(
         'type' => $type,

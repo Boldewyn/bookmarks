@@ -5,7 +5,7 @@
  * Import bookmarks from delicious
  */
 function import($store) {
-    $status = login();
+    $status = do_login();
     if ($status !== True) {
         messages_add(__('You need to login for this.'), 'error');
         redirect('/login?next=import');
@@ -13,13 +13,15 @@ function import($store) {
     if (cfg('external/delicious/auth', False)) {
         $fp = fsockopen("ssl://api.delicious.com", 443);
         if (!$fp) {
-            messages_add(__('Couldn’t connect to the delicious API server.'), 'error');
+            messages_add(__('Couldn’t connect to the delicious API server.'),
+                         'error');
             redirect('/');
         } else {
-            $out = "GET /v1/posts/all HTTP/1.1\r\n";
+            $out  = "GET /v1/posts/all HTTP/1.1\r\n";
             $out .= "Host: api.delicious.com\r\n";
             $out .= "User-Agent: Personal Bookmarks Manager\r\n";
-            $out .= "Authorization: Basic ".cfg('external/delicious/auth', '')."\r\n";
+            $out .= 'Authorization: Basic ' .
+                                  cfg('external/delicious/auth', '') . "\r\n";
             $out .= "Connection: Close\r\n\r\n";
             fwrite($fp, $out);
             $data = "";
@@ -36,7 +38,8 @@ function import($store) {
                 }
                 $posts = $xml->xpath('/posts/post');
             } catch (Exception $e) {
-                messages_add(__('Couldn’t parse the response from Delicious.'), 'error');
+                messages_add(__('Couldn’t parse the response from Delicious.'),
+                             'error');
                 redirect('/');
             }
             $added = 0;
@@ -60,17 +63,22 @@ function import($store) {
                     $needs_update++;
                 }
             }
-            messages_add(sprintf(__('Added %s new bookmarks.'), $added), 'success');
+            messages_add(sprintf(__('Added %s new bookmarks.'), $added),
+                         'success');
             if ($needs_update > 0) {
-                messages_add(sprintf(__('%s bookmarks were already imported.'), $needs_update), 'info');
+                messages_add(sprintf(__('%s bookmarks were already imported.'),
+                                     $needs_update), 'info');
             }
             if (count($posts) > $added + $needs_update) {
-                messages_add(sprintf(__('%s bookmarks couldn’t be imported.'), count($posts) - $added -$needs_update), 'error');
+                messages_add(sprintf(__('%s bookmarks couldn’t be imported.'),
+                                     count($posts) - $added -$needs_update),
+                             'error');
             }
             redirect('/');
         }
     } else {
-        messages_add(__('You need to provide your access data for the delicious API server.'), 'error');
+        messages_add(__('You need to provide your access data for the delicious API server.'),
+                     'error');
         redirect('/');
     }
     return '';

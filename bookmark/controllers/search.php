@@ -15,7 +15,8 @@ function search($store) {
             $r = tpl('search', array('body_id' => 'search',
                                      'site_title' => __('Search')));
         } else {
-            messages_add(sprintf(__('Your search for %s yields %s results.'), v('q'), count($bookmarks)), 'success');
+            messages_add(sprintf(__('Your search for “%s” yields %s results.'),
+                         v('q'), count($bookmarks)), 'success');
             $r = tpl('list', array('body_id' => 'search',
                                    'site_title' => __('Search'),
                                    'bookmarks' => $bookmarks));

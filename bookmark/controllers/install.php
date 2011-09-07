@@ -6,7 +6,7 @@
  */
 function install($store) {
     global $db;
-    $status = login();
+    $status = do_login();
     if ($status !== True) {
         messages_add(__('You need to login for this.'), 'error');
         redirect('/login?next=install');
@@ -21,12 +21,14 @@ function install($store) {
         }
         if (count($not) === 0) {
             $store->install();
-            messages_add(__('Installation successfully completed.'), 'success');
+            messages_add(__('Installation successfully completed.'),
+                         'success');
         } else {
             messages_add(__('There is already an installation.'), 'error');
         }
     } else {
-        messages_add(__('There was an error establishing the database connection.'), 'error');
+        messages_add(__('There was an error establishing the database connection.'),
+                     'error');
     }
     redirect('/');
 }
