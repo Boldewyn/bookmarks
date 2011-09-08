@@ -12,7 +12,7 @@ function install($store) {
         redirect('/login?next=install');
     }
     $test = $db->query('SHOW TABLES LIKE "bookmark%"');
-    $not = array('bookmarks', 'bookmark_tags');
+    $not = array(cfg('database/prefix', '').'bookmarks', cfg('database/prefix', '').'bookmark_tags');
     if ($test !== False) {
         while ($row = $test->fetch(PDO::FETCH_NUM)) {
             if (in_array($row[0], $not)) {

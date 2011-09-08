@@ -7,6 +7,7 @@ $bookmark_config = array(
                                 // database definition
         'user' => 'root',       // your database username
         'password' => 'root',   // your database password
+        'prefix' => '',         // a prefix to the bookmark tables
     ),
     'auth' => array(
         'openid' => '',         // OpenID you want to use for login

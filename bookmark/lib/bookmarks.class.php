@@ -37,14 +37,16 @@ class Bookmarks {
         }
         try {
             $tag = Null;
-            $stmt = $this->db->prepare('INSERT INTO bookmarks (url, title, notes, private, created, modified)
-                                       VALUES (:url, :title, :notes, :private, NOW(), NOW())');
+            $stmt = $this->db->prepare('INSERT INTO '.cfg('database/prefix').
+                                       'bookmarks (url, title, notes, private, created, modified)
+                                        VALUES (:url, :title, :notes, :private, NOW(), NOW())');
             $stmt->bindParam(':url', $url);
             $stmt->bindParam(':title', $title);
             $stmt->bindParam(':notes', $notes);
             $stmt->bindParam(':private', $private, PDO::PARAM_BOOL);
             $stmt->execute();
-            $stmt = $this->db->prepare('INSERT INTO bookmark_tags (url, tag) VALUES (:url, :tag)');
+            $stmt = $this->db->prepare('INSERT INTO '.cfg('database/prefix').'bookmark_tags
+                                        (url, tag) VALUES (:url, :tag)');
             $stmt->bindParam(':url', $url);
             $stmt->bindParam(':tag', $tag);
             foreach ($tags as $tag) {
@@ -79,7 +81,7 @@ class Bookmarks {
         }
         try {
             $tag = Null;
-            $stmt = $this->db->prepare('UPDATE bookmarks SET
+            $stmt = $this->db->prepare('UPDATE '.cfg('database/prefix').'bookmarks SET
                                         title = :title,
                                         notes = :notes,
                                         private = :private
@@ -90,9 +92,11 @@ class Bookmarks {
             $stmt->bindParam(':private', $private, PDO::PARAM_BOOL);
             $stmt->execute();
             # TODO: Only diff change
-            $stmt = $this->db->prepare('DELETE * FROM bookmark_tags WHERE url = :url');
+            $stmt = $this->db->prepare('DELETE * FROM '.cfg('database/prefix').'bookmark_tags
+                                        WHERE url = :url');
             $stmt->execute();
-            $stmt = $this->db->prepare('INSERT INTO bookmark_tags (url, tag) VALUES (:url, :tag)');
+            $stmt = $this->db->prepare('INSERT INTO '.cfg('database/prefix').'bookmark_tags
+                                        (url, tag) VALUES (:url, :tag)');
             $stmt->bindParam(':url', $url);
             $stmt->bindParam(':tag', $tag);
             foreach ($tags as $tag) {
@@ -110,7 +114,7 @@ class Bookmarks {
     public function fetch($url) {
         $query = 'SELECT url, title, notes, private, UNIX_TIMESTAMP(created) AS created,
                          UNIX_TIMESTAMP(modified) AS modified
-                    FROM bookmarks WHERE url = :url';
+                    FROM '.cfg('database/prefix').'bookmarks WHERE url = :url';
         if (! $this->privates) {
             $query .= ' AND private = False ';
         }
@@ -138,7 +142,7 @@ class Bookmarks {
                         b.private AS private,
                         UNIX_TIMESTAMP(b.created) AS created,
                         UNIX_TIMESTAMP(b.modified) AS modified
-                   FROM bookmarks b
+                   FROM '.cfg('database/prefix').'bookmarks b
                           WHERE b.url REGEXP %1$s
                           OR b.title REGEXP %1$s
                           OR b.notes REGEXP %1$s
@@ -173,14 +177,15 @@ class Bookmarks {
         try {
             if (count($tags) > 1) {
                 $query = sprintf(
-                         'SELECT url, title, notes, private, UNIX_TIMESTAMP(created) AS created,
+                         'SELECT url, title, notes, private,
+                                 UNIX_TIMESTAMP(created) AS created,
                                  UNIX_TIMESTAMP(modified) AS modified
-                            FROM bookmarks
+                            FROM '.cfg('database/prefix').'bookmarks b
                            WHERE (
                                  SELECT COUNT(*)
-                                   FROM bookmark_tags
-                                  WHERE bookmarks.url = bookmark_tags.url
-                                    AND bookmark_tags.tag in (%s)
+                                   FROM '.cfg('database/prefix').'bookmark_tags t
+                                  WHERE b.url = t.url
+                                    AND t.tag in (%s)
                                 ) = :n',
                             join(',', array_map(array($this->db, 'quote'), $tags))
                          );
@@ -191,16 +196,18 @@ class Bookmarks {
                 $query = 'SELECT b.url url, b.title title, b.notes notes, b.private private,
                                  UNIX_TIMESTAMP(b.created) AS created,
                                  UNIX_TIMESTAMP(b.modified) AS modified
-                            FROM bookmarks b, bookmark_tags t
+                            FROM '.cfg('database/prefix').'bookmarks b,
+                                 '.cfg('database/prefix').'bookmark_tags t
                            WHERE b.url = t.url
                              AND t.tag = :tag';
                 if (! $this->privates) {
                     $query .= ' AND b.private = False';
                 }
             } else {
-                $query = 'SELECT url, title, notes, private, UNIX_TIMESTAMP(created) AS created,
+                $query = 'SELECT url, title, notes, private,
+                                 UNIX_TIMESTAMP(created) AS created,
                                  UNIX_TIMESTAMP(modified) AS modified
-                            FROM bookmarks ';
+                            FROM '.cfg('database/prefix').'bookmarks ';
                 if (! $this->privates) {
                     $query .= 'WHERE private = False ';
                 }
@@ -230,7 +237,8 @@ class Bookmarks {
      * @param $url The URL of the bookmark
      */
     public function fetch_tags($url) {
-        $query = $this->db->prepare('SELECT tag FROM bookmark_tags WHERE url = :url');
+        $query = $this->db->prepare('SELECT tag FROM '.cfg('database/prefix').
+                                    'bookmark_tags WHERE url = :url');
         $query->execute(array(':url' => $url));
         return $query->fetchAll(PDO::FETCH_COLUMN);
     }
@@ -242,10 +250,10 @@ class Bookmarks {
     public function fetch_all_tags($prefix='') {
         $query = $this->db->prepare(
             'SELECT COUNT(t.tag) AS n, t.tag AS tag
-               FROM bookmark_tags t
+               FROM '.cfg('database/prefix').'bookmark_tags t
               WHERE t.tag LIKE :prefix'.
              ($this->privates?'':'
-                AND (SELECT COUNT(*) FROM bookmarks b
+                AND (SELECT COUNT(*) FROM '.cfg('database/prefix').'bookmarks b
                       WHERE b.url = t.url
                         AND b.private = 0 ) > 0').'
            GROUP BY t.tag');
@@ -259,7 +267,7 @@ class Bookmarks {
      */
     public function install() {
         $this->db->exec('
-        CREATE TABLE bookmarks (
+        CREATE TABLE '.cfg('database/prefix').'bookmarks (
             url VARCHAR(750) NOT NULL PRIMARY KEY,
             title TEXT,
             notes TEXT,
@@ -269,7 +277,7 @@ class Bookmarks {
             INDEX is_private (private)
         )');
         $this->db->exec('
-        CREATE TABLE bookmark_tags (
+        CREATE TABLE '.cfg('database/prefix').'bookmark_tags (
             url VARCHAR(750) NOT NULL,
             tag VARCHAR(250) NOT NULL,
             PRIMARY KEY (url, tag),
