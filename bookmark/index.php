@@ -1,8 +1,5 @@
 <?php define('BOOKMARKS', '0.9');
 
-error_reporting(-1);
-ini_set('display_errors', 1);
-
 require_once 'lib/config.php';
 require_once 'lib/utils.php';
 require_once 'lib/session.php';
@@ -14,6 +11,11 @@ start_session();
 $db = new PDO(cfg('database/dsn'),
               cfg('database/user'),
               cfg('database/password'));
+if (cfg('debug')) {
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+    error_reporting(-1);
+    ini_set('display_errors', 1);
+}
 $store = new Bookmarks($db, (in_array('logged_in', $_SESSION)));
 
 $f = v('f', '');
