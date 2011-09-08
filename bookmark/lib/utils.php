@@ -74,7 +74,7 @@ function tpl($file, $ctx=array(), $safe=array()) {
     }
     $ctx += array(
         'body_id' => 'default',
-        'base_path' => h(dirname($_SERVER['SCRIPT_NAME'])).'/',
+        'base_path' => h(rtrim('/', dirname($_SERVER['SCRIPT_NAME']))).'/',
         'script_path' => h(get_script_path()).'/',
         'f' => h(v('f')),
     );
@@ -91,7 +91,7 @@ function tpl($file, $ctx=array(), $safe=array()) {
  *
  */
 function get_script_path() {
-    $base_path = dirname($_SERVER['SCRIPT_NAME']);
+    $base_path = rtrim('/', dirname($_SERVER['SCRIPT_NAME']));
     if (isset($_SERVER['PATH_INFO'])) {
         return $base_path.'/index.php';
     } else {
