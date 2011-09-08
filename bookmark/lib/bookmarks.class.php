@@ -45,6 +45,7 @@ class Bookmarks {
             $stmt->bindParam(':notes', $notes);
             $stmt->bindParam(':private', $private, PDO::PARAM_BOOL);
             $stmt->execute();
+            $stmt->closeCursor();
             $stmt = $this->db->prepare('INSERT INTO '.cfg('database/prefix').'bookmark_tags
                                         (url, tag) VALUES (:url, :tag)');
             $stmt->bindParam(':url', $url);
@@ -52,6 +53,7 @@ class Bookmarks {
             foreach ($tags as $tag) {
                 $stmt->execute();
             }
+            $stmt->closeCursor();
         } catch (PDOException $e) {
             return False;
         }
@@ -91,10 +93,12 @@ class Bookmarks {
             $stmt->bindParam(':notes', $notes);
             $stmt->bindParam(':private', $private, PDO::PARAM_BOOL);
             $stmt->execute();
+            $stmt->closeCursor();
             # TODO: Only diff change
             $stmt = $this->db->prepare('DELETE * FROM '.cfg('database/prefix').'bookmark_tags
                                         WHERE url = :url');
             $stmt->execute();
+            $stmt->closeCursor();
             $stmt = $this->db->prepare('INSERT INTO '.cfg('database/prefix').'bookmark_tags
                                         (url, tag) VALUES (:url, :tag)');
             $stmt->bindParam(':url', $url);
@@ -102,6 +106,7 @@ class Bookmarks {
             foreach ($tags as $tag) {
                 $stmt->execute();
             }
+            $stmt->closeCursor();
         } catch (PDOException $e) {
             return False;
         }
@@ -122,6 +127,7 @@ class Bookmarks {
         $query->bindParam(':url', $url);
         $query->execute();
         $bookmark = $query->fetch(PDO::FETCH_ASSOC);
+        $query->closeCursor();
         if ($bookmark !== False) {
             $bookmark['tags'] = $this->fetch_tags($url);
         }
@@ -162,6 +168,7 @@ class Bookmarks {
             for ($i = 0; $i < count($bookmarks); $i++) {
                 $bookmarks[$i]['tags'] = $this->fetch_tags($bookmarks[$i]['url']);
             }
+            $query->closeCursor();
         } catch (PDOException $e) {
             return array();
         }
@@ -226,6 +233,7 @@ class Bookmarks {
             for ($i = 0; $i < count($bookmarks); $i++) {
                 $bookmarks[$i]['tags'] = $this->fetch_tags($bookmarks[$i]['url']);
             }
+            $query->closeCursor();
         } catch (PDOException $e) {
             return array();
         }
@@ -240,7 +248,9 @@ class Bookmarks {
         $query = $this->db->prepare('SELECT tag FROM '.cfg('database/prefix').
                                     'bookmark_tags WHERE url = :url');
         $query->execute(array(':url' => $url));
-        return $query->fetchAll(PDO::FETCH_COLUMN);
+        $return = $query->fetchAll(PDO::FETCH_COLUMN);
+        $query->closeCursor();
+        return $return;
     }
 
     /**
@@ -259,7 +269,9 @@ class Bookmarks {
            GROUP BY t.tag');
         $query->execute(array(':prefix' => $prefix.'%'));
         //$query->debugDumpParams();
-        return $query->fetchAll(PDO::FETCH_ASSOC);
+        $return = $query->fetchAll(PDO::FETCH_ASSOC);
+        $query->closeCursor();
+        return $return;
     }
 
     /**
