@@ -101,7 +101,7 @@ class Bookmarks {
             $stmt->execute();
             $stmt->closeCursor();
             # TODO: Only diff change
-            $stmt = $this->db->prepare('DELETE * FROM '.cfg('database/prefix').'bookmark_tags
+            $stmt = $this->db->prepare('DELETE FROM '.cfg('database/prefix').'bookmark_tags
                                         WHERE url = :url');
             $stmt->execute();
             $stmt->closeCursor();
@@ -247,6 +247,9 @@ class Bookmarks {
             }
             $query .= ' ORDER BY modified LIMIT :offset,:limit';
             $query = $this->db->prepare($query);
+            if (! $query) {
+                redirect('/install');
+            }
             $query->bindParam(':offset', $offset, PDO::PARAM_INT);
             $query->bindParam(':limit', $limit, PDO::PARAM_INT);
             if (count($tags) === 1) {
