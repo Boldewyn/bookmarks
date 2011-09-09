@@ -55,7 +55,8 @@ function import($store) {
                     $atts['description'],
                     explode(" ", $atts['tag']),
                     $atts['extended'],
-                    ($atts['shared'] === 'no')
+                    ($atts['shared'] === 'no'),
+                    $atts['time']
                 );
                 if ($r === True) {
                     $added++;

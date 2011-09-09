@@ -1,22 +1,18 @@
-<?php include "header.php" ?>
-<h1><?php echo $site_title?></h1>
-<?php if (isset($tags) && count($tags) > 0):?>
-  <ul id="tag-list">
-    <?php foreach ($tags as $tag):?>
-      <li title="<?php _e('remove this tag')?>"><?php echo h($tag)?></li>
-    <?php endforeach?>
-  </ul>
-<?php endif?>
-<ul id="bookmarks">
-  <?php foreach ($bookmarks as $bookmark):?>
-    <li>
+<?php if (isset($bookmarks)):?>
+  <ul id="bookmarks">
+    <?php foreach ($bookmarks as $bookmark):?>
+      <li>
       <a class="url" rel="external" href="<?php echo $bookmark['url']?>"><?php echo $bookmark['title']?></a>
       <span class="tags">
         <?php foreach ($bookmark['tags'] as $tag):?>
           <a rel="tag" href="<?php echo "${script_path}tags/".rawurlencode($tag)?>"><?php echo $tag?></a>
         <?php endforeach?>
       </span>
-    </li>
-  <?php endforeach?>
-</ul>
-<?php include "footer.php" ?>
+      <span class="functions">
+        <a class="edit" href="<?php echo $script_path?>save?edit=1&amp;url=<?php echo rawurlencode($bookmark['url'])?>"><?php _e('edit')?></a>
+        <a class="edit" href="<?php echo $script_path?>delete?url=<?php echo rawurlencode($bookmark['url'])?>"><?php _e('delete')?></a>
+      </span>
+      </li>
+    <?php endforeach?>
+  </ul>
+<?php endif?>

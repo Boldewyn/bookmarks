@@ -5,7 +5,6 @@
  * Save a bookmark
  */
 function save($store) {
-    global $db;
     /* Authentication */
     $status = do_login();
     if ($status !== True) {
@@ -35,12 +34,12 @@ function save($store) {
         $private = (bool)v('private');
         $e = $store->save($url, $title, $tags, v('notes'), $private);
         if ($e === True && cfg('external/delicious/sync', False)) {
-            _sync_to_delicious($url, $title, $tags, $private);
+            sync_to_delicious($url, $title, $tags, $private);
         } elseif ($e === Null) {
             $e = $store->change($url, $title, $tags, v('notes'), $private);
         }
         if (! $e) {
-            $error = $db->errorInfo();
+            $error = get_db()->errorInfo();
             $msg = '<p class="error">'.sprintf(__('An error occurred: %s'), 
                                             h($error[2])).'</p>';
             $html = format_template(Null, $msg);

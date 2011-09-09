@@ -1,20 +1,21 @@
 <?php define('BOOKMARKS', '0.9');
 
-error_reporting(-1);
-ini_set('display_errors', 1);
 
 require_once 'lib/config.php';
+if (cfg('debug')) {
+    error_reporting(-1);
+    ini_set('display_errors', 1);
+}
 require_once 'lib/utils.php';
 require_once 'lib/session.php';
 require_once 'lib/auth.php';
+require_once 'lib/sql.php';
 require_once 'lib/bookmarks.class.php';
 
-start_session();
 
-$db = new PDO(cfg('database/dsn'),
-              cfg('database/user'),
-              cfg('database/password'));
-$store = new Bookmarks($db, (in_array('logged_in', $_SESSION)));
+start_session();
+$store = new Bookmarks(in_array('logged_in', $_SESSION));
+
 
 $f = v('f', '');
 if ($f === '') {
@@ -38,7 +39,7 @@ if (substr($f, 0, 5) === 'tags/') {
     $tags = $store->fetch_all_tags($prefix);
     header('Content-Type: application/json');
     die(json_encode($tags));
-} elseif (in_array($f, array('login', 'logout', 'fetch', 'help', 'search', 'import', 'install', 'save'))) {
+} elseif (in_array($f, array('delete', 'login', 'logout', 'fetch', 'help', 'search', 'import', 'install', 'save'))) {
     require_once 'controllers/'.$f.'.php';
     echo $f($store);
 } else {

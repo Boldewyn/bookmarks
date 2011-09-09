@@ -26,7 +26,7 @@ function cfg($key, $default=NULL) {
     } elseif (array_key_exists($key, $bookmark_config)) {
         return $bookmark_config[$key];
     } elseif ($key === 'base_path') {
-        return dirname($_SERVER['SCRIPT_NAME']);
+        return rtrim('/', dirname($_SERVER['SCRIPT_NAME'])).'/';
     }
     return $default;
 }
