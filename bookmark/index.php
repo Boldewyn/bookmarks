@@ -7,12 +7,14 @@ if (cfg('debug')) {
     ini_set('display_errors', 1);
 }
 require_once 'lib/utils.php';
+require_once 'lib/hooks.php';
 require_once 'lib/session.php';
 require_once 'lib/auth.php';
 require_once 'lib/sql.php';
 require_once 'lib/bookmarks.class.php';
 
 
+load_plugins();
 start_session();
 $store = new Bookmarks(in_array('logged_in', $_SESSION));
 

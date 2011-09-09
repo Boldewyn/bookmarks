@@ -19,7 +19,10 @@ $bookmark_config = array(
         'days' => 365,          // Session length before login needs renewal
         'secure' => false,      // Set this to true, if you use HTTPS
     ),
-    'external' => array(
+    'plugins' => array(
+        'active' => array(      // active plugins
+            'delicious',        // allows syncing with Delicious
+        ),
         'delicious' => array(   // Interact with Delicious:
             'auth' => '',       // The Delicious auth string. Set it to
                                 // base64_encode('username:password')
