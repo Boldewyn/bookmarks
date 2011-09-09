@@ -32,7 +32,7 @@ function fetch($store, $tags='') {
             $html = tpl('rdf.xml', array('bookmarks' => $bookmarks));
             break;
         default:
-            $html = tpl('list', array('body_id' => 'index',
+            $html = tpl('fetch', array('body_id' => 'index',
                 'site_title' => __('Bookmarks'),
                 'tags' => $tags,
                 'bookmarks' => $bookmarks));

@@ -1,4 +1,4 @@
-<?php include "header.php" ?>
+<?php include 'header.php'?>
       <h1><?php echo $site_title?></h1>
       <form method="get" action="" id="search_form">
         <p>
@@ -10,4 +10,5 @@
           <button type="button" class="cancel" onclick="window.location.href='<?php echo $script_path?>'"><?php _e('Cancel')?></button>
         </p>
       </form>
-<?php include "footer.php" ?>
+<?php include 'list.php'?>
+<?php include 'footer.php'?>

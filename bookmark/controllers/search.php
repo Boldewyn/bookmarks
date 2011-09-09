@@ -17,7 +17,7 @@ function search($store) {
         } else {
             messages_add(sprintf(__('Your search for “%s” yields %s results.'),
                          v('q'), count($bookmarks)), 'success');
-            $r = tpl('list', array('body_id' => 'search',
+            $r = tpl('search', array('body_id' => 'search',
                                    'site_title' => __('Search'),
                                    'bookmarks' => $bookmarks));
         }

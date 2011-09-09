@@ -34,6 +34,7 @@ class Bookmarks {
      * Save a bookmark in the database
      */
     public function save($url, $title, $tags, $notes, $private) {
+        $private = (int)$private;
         $url = $this->_sanitize_url($url);
         if ($this->fetch($url)) {
             return Null;
@@ -83,6 +84,8 @@ class Bookmarks {
         }
         if ($private === Null) {
             $private = $bm['private'];
+        } else {
+            $private = (int)$private;
         }
         try {
             $tag = Null;
@@ -162,7 +165,7 @@ class Bookmarks {
             if (! $this->privates) {
                 $query .= ' AND private = 0';
             }
-            $query .= ' LIMIT :offset,:limit';
+            $query .= ' ORDER BY modified LIMIT :offset,:limit';
             $query = $this->db->prepare($query);
             //$query->debugDumpParams();
             $query->bindParam(':offset', $offset, PDO::PARAM_INT);
@@ -223,7 +226,7 @@ class Bookmarks {
                     $query .= 'WHERE private = 0 ';
                 }
             }
-            $query .= ' LIMIT :offset,:limit';
+            $query .= ' ORDER BY modified LIMIT :offset,:limit';
             $query = $this->db->prepare($query);
             $query->bindParam(':offset', $offset, PDO::PARAM_INT);
             $query->bindParam(':limit', $limit, PDO::PARAM_INT);

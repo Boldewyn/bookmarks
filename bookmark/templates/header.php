@@ -17,7 +17,7 @@
             <li class="start <?php if (! $f):?>active<?php endif?>"><a href="<?php echo $script_path?>"><?php _e('Overview')?></a></li>
             <li class="search <?php if ($f === 'search'):?>active<?php endif?>"><a href="<?php echo $script_path?>search"><?php _e('Search')?></a></li>
             <?php if (in_array('logged_in', $_SESSION)):?>
-                <li class="save <?php if ($f === 'save'):?>active<?php endif?>"><a href="<?php echo $script_path?>save"><?php _e('Create new')?></a></li>
+                <li class="save <?php if ($f === 'save'):?>active<?php endif?>"><a href="<?php echo $script_path?>save"><?php v('edit', False)? _e('Edit') : _e('Create new')?></a></li>
                 <li class="logout"><a href="<?php echo $script_path?>logout"><?php _e('Log out')?></a></li>
             <?php else:?>
                 <li class="login"><a href="<?php echo $script_path?>login"><?php _e('Log in')?></a></li>
