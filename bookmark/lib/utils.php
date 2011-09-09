@@ -134,7 +134,8 @@ function get_accept_type($whitelist=array(), $default='html') {
  * Test, if we are called from a bookmarklet
  */
 function is_bookmarklet() {
-    return (isset($_GET['bookmarklet']));
+    return (isset($_GET['bookmarklet']) ||
+        (isset($_GET['noui']) && $_GET['noui'] === '1'));
 }
 
 /**
