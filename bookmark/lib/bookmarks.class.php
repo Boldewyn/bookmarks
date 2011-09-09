@@ -171,7 +171,7 @@ class Bookmarks {
     /**
      * Search for Bookmarks
      */
-    public function search($qarray, $limit=200, $offset=0) {
+    public function search($qarray, $offset=0, $limit=1000) {
         $limit = min($limit, $this->hard_limit);
         $bookmarks = array();
         try {
@@ -213,15 +213,19 @@ class Bookmarks {
     /**
      * Fetch all (or some) bookmarks
      */
-    public function fetch_all($tags=array(), $limit=200, $offset=0) {
+    public function fetch_all($tags=array(), $offset=0, $limit=1000) {
         $limit = min($limit, $this->hard_limit);
+        $select = 'b.url url, b.title title, b.notes notes, b.private private,
+                  '.unix_timestamp('b.created').' AS created,
+                  '.unix_timestamp('b.modified').' AS modified';
+        if ($offset === 'count') {
+            $select = 'COUNT(*) AS count';
+        }
         $bookmarks = array();
         try {
             if (count($tags) > 1) {
                 $query = sprintf(
-                         'SELECT url, title, notes, private,
-                                 '.unix_timestamp('created').' AS created,
-                                 '.unix_timestamp('modified').' AS modified
+                         'SELECT '.$select.'
                             FROM '.cfg('database/prefix').'bookmarks b
                            WHERE (
                                  SELECT COUNT(*)
@@ -231,36 +235,31 @@ class Bookmarks {
                                 ) = :n',
                             join(',', array_map(array($this->db, 'quote'), $tags))
                          );
-                if (! $this->privates) {
-                    $query .= ' AND private = 0';
-                }
             } elseif (count($tags) === 1) {
-                $query = 'SELECT b.url url, b.title title, b.notes notes, b.private private,
-                                 '.unix_timestamp('b.created').' AS created,
-                                 '.unix_timestamp('b.modified').' AS modified
+                $query = 'SELECT '.$select.'
                             FROM '.cfg('database/prefix').'bookmarks b,
                                  '.cfg('database/prefix').'bookmark_tags t
                            WHERE b.url = t.url
                              AND t.tag = :tag';
-                if (! $this->privates) {
-                    $query .= ' AND b.private = 0';
-                }
             } else {
-                $query = 'SELECT url, title, notes, private,
-                                 '.unix_timestamp('created').' AS created,
-                                 '.unix_timestamp('modified').' AS modified
-                            FROM '.cfg('database/prefix').'bookmarks ';
-                if (! $this->privates) {
-                    $query .= 'WHERE private = 0 ';
-                }
+                $query = 'SELECT '.$select.'
+                            FROM '.cfg('database/prefix').'bookmarks b
+                           WHERE 1 = 1';
             }
-            $query .= ' ORDER BY modified DESC LIMIT :offset,:limit';
+            if (! $this->privates) {
+                $query .= ' AND private = 0 ';
+            }
+            if ($offset !== 'count') {
+                $query .= ' ORDER BY modified DESC LIMIT :offset,:limit';
+            }
             $query = $this->db->prepare($query);
             if (! $query) {
                 redirect('/install');
             }
-            $query->bindParam(':offset', $offset, PDO::PARAM_INT);
-            $query->bindParam(':limit', $limit, PDO::PARAM_INT);
+            if ($offset !== 'count') {
+                $query->bindParam(':offset', $offset, PDO::PARAM_INT);
+                $query->bindParam(':limit', $limit, PDO::PARAM_INT);
+            }
             if (count($tags) === 1) {
                 $query->bindParam(':tag', $tags[0]);
             } elseif (count($tags) > 1) {
@@ -268,8 +267,12 @@ class Bookmarks {
             }
             $query->execute();
             $bookmarks = $query->fetchAll(PDO::FETCH_ASSOC);
-            for ($i = 0; $i < count($bookmarks); $i++) {
-                $bookmarks[$i]['tags'] = $this->fetch_tags($bookmarks[$i]['url']);
+            if ($offset === 'count') {
+                $bookmarks = $bookmarks[0]['count'];
+            } else {
+                for ($i = 0; $i < count($bookmarks); $i++) {
+                    $bookmarks[$i]['tags'] = $this->fetch_tags($bookmarks[$i]['url']);
+                }
             }
             $query->closeCursor();
         } catch (PDOException $e) {

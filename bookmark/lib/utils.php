@@ -149,3 +149,17 @@ function redirect($to) {
     die('Redirecting to '.h($to));
 }
 
+
+/**
+ * update the current URL with new GET params
+ */
+function update_url($params) {
+    $base = $_SERVER['PATH_INFO'];
+    if (isset($_SERVER['ORIG_PATH_INFO'])) {
+        $base = $_SERVER['ORIG_PATH_INFO'];
+    }
+    return $base.'?'.http_build_query(array_merge($_GET, $params));
+}
+
+
+//__END__

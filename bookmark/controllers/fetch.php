@@ -6,13 +6,15 @@
  */
 function fetch($store, $tags='') {
     $tags = array_filter(array_map('trim', explode(' ', $tags)));
-    $limit = v('n');
-    if (! ctype_digit($limit)) {
-        $limit = 200;
+    $page = v('page');
+    if (! ctype_digit($page)) {
+        $page = 1;
     } else {
-        $limit = (int)$limit;
+        $page = (int)$page;
     }
-    $bookmarks = $store->fetch_all($tags, $limit);
+    $bookmarks = $store->fetch_all($tags, ($page-1)*cfg('display/pagination', 100),
+                                   cfg('display/pagination', 100));
+    $all = $store->fetch_all($tags, 'count');
     if ($bookmarks === Null) {
         $bookmarks = array();
     }
@@ -35,6 +37,9 @@ function fetch($store, $tags='') {
             $html = tpl('fetch', array('body_id' => 'index',
                 'site_title' => __('Bookmarks'),
                 'tags' => $tags,
+                'page' => $page,
+                'pages' => ceil((float)$all/(float)cfg('display/pagination', 100)),
+                'all' => $all,
                 'bookmarks' => $bookmarks));
             break;
     }

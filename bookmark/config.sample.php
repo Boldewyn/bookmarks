@@ -12,6 +12,9 @@ $bookmark_config = array(
     'auth' => array(
         'openid' => '',         // OpenID you want to use for login
     ),
+    'display' => array(
+        'pagination' => 100,    // pagination length
+    ),
     'session' => array(
         'days' => 365,          // Session length before login needs renewal
         'secure' => false,      // Set this to true, if you use HTTPS
