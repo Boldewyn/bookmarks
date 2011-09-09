@@ -26,6 +26,7 @@ function delete($store) {
         $result = $store->delete(v('url'));
         if ($result) {
             messages_add(__('Bookmark deleted.', 'success'));
+            call_hook('delete', array($url));
         } else {
             messages_add(__('There was an error deleting this bookmark.'),
                          'error');
