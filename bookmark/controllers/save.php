@@ -34,7 +34,7 @@ function save($store) {
         $private = (bool)v('private');
         $e = $store->save($url, $title, $tags, v('notes'), $private);
         if ($e === True && cfg('external/delicious/sync', False)) {
-            _sync_to_delicious($url, $title, $tags, $private);
+            sync_to_delicious($url, $title, $tags, $private);
         } elseif ($e === Null) {
             $e = $store->change($url, $title, $tags, v('notes'), $private);
         }
