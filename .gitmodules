@@ -1,3 +1,0 @@
-[submodule "bookmark/lib/lightopenid"]
-	path = bookmark/lib/lightopenid
-	url = http://git.gitorious.org/lightopenid/lightopenid.git
