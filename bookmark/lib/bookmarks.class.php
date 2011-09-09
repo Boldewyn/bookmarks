@@ -47,7 +47,7 @@ class Bookmarks {
             $stmt->bindParam(':url', $url);
             $stmt->bindParam(':title', $title);
             $stmt->bindParam(':notes', $notes);
-            $stmt->bindParam(':private', $private, PDO::PARAM_BOOL);
+            $stmt->bindParam(':private', $private, db_bool());
             $stmt->execute();
             $stmt->closeCursor();
             $stmt = $this->db->prepare('INSERT INTO '.cfg('database/prefix').'bookmark_tags
@@ -97,7 +97,7 @@ class Bookmarks {
             $stmt->bindParam(':url', $url);
             $stmt->bindParam(':title', $title);
             $stmt->bindParam(':notes', $notes);
-            $stmt->bindParam(':private', $private, PDO::PARAM_BOOL);
+            $stmt->bindParam(':private', $private, db_bool());
             $stmt->execute();
             $stmt->closeCursor();
             # TODO: Only diff change

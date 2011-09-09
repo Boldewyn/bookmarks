@@ -38,6 +38,20 @@ function db_type() {
 
 
 /**
+ * Get PDO boolean type
+ */
+function db_bool() {
+    switch (db_type()) {
+        case 'sqlite':
+            return PDO::PARAM_INT;
+            break;
+        default:
+            return PDO::PARAM_BOOL;
+    }
+}
+
+
+/**
  * Return a db-specific way of creating a unix timestamp
  */
 function unix_timestamp($field) {
