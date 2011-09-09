@@ -39,7 +39,7 @@ if (substr($f, 0, 5) === 'tags/') {
     $tags = $store->fetch_all_tags($prefix);
     header('Content-Type: application/json');
     die(json_encode($tags));
-} elseif (in_array($f, array('login', 'logout', 'fetch', 'help', 'search', 'import', 'install', 'save'))) {
+} elseif (in_array($f, array('delete', 'login', 'logout', 'fetch', 'help', 'search', 'import', 'install', 'save'))) {
     require_once 'controllers/'.$f.'.php';
     echo $f($store);
 } else {

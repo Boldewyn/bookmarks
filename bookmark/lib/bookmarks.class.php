@@ -141,6 +141,25 @@ class Bookmarks {
     }
 
     /**
+     * delete a bookmark
+     */
+    public function delete($url) {
+        $query = $this->db->prepare('DELETE
+                                     FROM '.cfg('database/prefix').'bookmarks
+                                     WHERE url = :url');
+        $query->bindParam(':url', $url);
+        $query->execute();
+        $query->closeCursor();
+        $query = $this->db->prepare('DELETE
+                                     FROM '.cfg('database/prefix').'bookmark_tags
+                                     WHERE url = :url');
+        $query->bindParam(':url', $url);
+        $query->execute();
+        $query->closeCursor();
+        return True;
+    }
+
+    /**
      * Search for Bookmarks
      */
     public function search($qarray, $limit=200, $offset=0) {
