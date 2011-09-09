@@ -33,21 +33,30 @@ class Bookmarks {
     /**
      * Save a bookmark in the database
      */
-    public function save($url, $title, $tags, $notes, $private) {
+    public function save($url, $title, $tags, $notes, $private, $time=NULL) {
         $private = (int)$private;
         $url = $this->_sanitize_url($url);
         if ($this->fetch($url)) {
             return Null;
         }
+        if ($time === NULL) {
+            $time_statement = db_now().', '.db_now();
+        } else {
+            $time_statement = ':created, :modified';
+        }
         try {
             $tag = Null;
             $stmt = $this->db->prepare('INSERT INTO '.cfg('database/prefix').
                                        'bookmarks (url, title, notes, private, created, modified)
-                                        VALUES (:url, :title, :notes, :private, '.db_now().', '.db_now().')');
+                                        VALUES (:url, :title, :notes, :private, '.$time_statement.')');
             $stmt->bindParam(':url', $url);
             $stmt->bindParam(':title', $title);
             $stmt->bindParam(':notes', $notes);
             $stmt->bindParam(':private', $private, db_bool());
+            if ($time !== NULL) {
+                $stmt->bindParam(':created', $time);
+                $stmt->bindParam(':modified', $time);
+            }
             $stmt->execute();
             $stmt->closeCursor();
             $stmt = $this->db->prepare('INSERT INTO '.cfg('database/prefix').'bookmark_tags
@@ -184,7 +193,7 @@ class Bookmarks {
             if (! $this->privates) {
                 $query .= ' AND private = 0';
             }
-            $query .= ' ORDER BY modified LIMIT :offset,:limit';
+            $query .= ' ORDER BY modified DESC LIMIT :offset,:limit';
             $query = $this->db->prepare($query);
             //$query->debugDumpParams();
             $query->bindParam(':offset', $offset, PDO::PARAM_INT);
@@ -245,7 +254,7 @@ class Bookmarks {
                     $query .= 'WHERE private = 0 ';
                 }
             }
-            $query .= ' ORDER BY modified LIMIT :offset,:limit';
+            $query .= ' ORDER BY modified DESC LIMIT :offset,:limit';
             $query = $this->db->prepare($query);
             if (! $query) {
                 redirect('/install');
