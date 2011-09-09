@@ -164,7 +164,7 @@ class Bookmarks {
             }
             $query .= ' LIMIT :offset,:limit';
             $query = $this->db->prepare($query);
-            $query->debugDumpParams();
+            //$query->debugDumpParams();
             $query->bindParam(':offset', $offset, PDO::PARAM_INT);
             $query->bindParam(':limit', $limit, PDO::PARAM_INT);
             $query->execute();
