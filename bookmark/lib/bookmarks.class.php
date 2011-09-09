@@ -16,8 +16,8 @@ class Bookmarks {
     /**
      * Set database connection (PDO) and whether private bookmarks are fetched
      */
-    public function __construct($db, $privates=False) {
-        $this->db = $db;
+    public function __construct($privates=False) {
+        $this->db = get_db();
         $this->privates = $privates;
     }
 
@@ -149,8 +149,8 @@ class Bookmarks {
                         b.title AS title,
                         b.notes AS notes,
                         b.private AS private,
-                        '.unix_timestamp('b.created').' AS created,
-                        '.unix_timestamp('b.modified').' AS modified
+                        '.str_replace('%', '%%', unix_timestamp('b.created')).' AS created,
+                        '.str_replace('%', '%%', unix_timestamp('b.modified')).' AS modified
                    FROM '.cfg('database/prefix').'bookmarks b
                           WHERE b.url REGEXP %1$s
                           OR b.title REGEXP %1$s
@@ -160,10 +160,11 @@ class Bookmarks {
                             $qarray))
                         );
             if (! $this->privates) {
-                $query .= ' AND private = False';
+                $query .= ' AND private = 0';
             }
             $query .= ' LIMIT :offset,:limit';
             $query = $this->db->prepare($query);
+            $query->debugDumpParams();
             $query->bindParam(':offset', $offset, PDO::PARAM_INT);
             $query->bindParam(':limit', $limit, PDO::PARAM_INT);
             $query->execute();
