@@ -5,7 +5,7 @@
  * Log the user in (requires OpenID)
  */
 function do_login() {
-    require_once 'lib/lightopenid/openid.php';
+    require_once dirname(__FILE__).'/lightopenid/openid.php';
     if (! in_array('logged_in', $_SESSION) && ! cfg('auth/assume_logged_in', False)) {
         $openid = new LightOpenID;
         if(!$openid->mode) {
