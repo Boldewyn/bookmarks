@@ -11,19 +11,19 @@ function delete($store) {
         messages_add(sprintf(__('A login error occurred: %s.'), $status), 'error');
         redirect('/login');
     }
-    $html = "";
     /* Main logic */
+    $url = v('url', '');
     $r = '';
-    if (v('url', '') === '') {
+    if ($url === '') {
         messages_add(__('No bookmark found to delete.'), 'error');
         redirect('/');
     } elseif (v('confirm', '') === '') {
-        $bookmark = $store->fetch(v('url'));
+        $bookmark = $store->fetch($url);
         $r = tpl('delete', array('body_id' => 'delete',
                                  'site_title' => __('Delete Bookmark'),
                                  'bookmark' => $bookmark));
     } else {
-        $result = $store->delete(v('url'));
+        $result = $store->delete($url);
         if ($result) {
             messages_add(__('Bookmark deleted.', 'success'));
             call_hook('delete', array($url));
