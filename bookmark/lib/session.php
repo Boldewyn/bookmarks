@@ -6,7 +6,7 @@
  */
 function start_session() {
     session_set_cookie_params(60*60*24*cfg('session/days', 1),
-        cfg('base_path', '/').'/', $_SERVER['HTTP_HOST'],
+        cfg('base_path', '/'), $_SERVER['HTTP_HOST'],
         cfg('session/secure', false), true);
     session_name('Bookmarks');
     session_start();

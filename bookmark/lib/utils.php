@@ -74,8 +74,8 @@ function tpl($file, $ctx=array(), $safe=array()) {
     }
     $ctx += array(
         'body_id' => 'default',
-        'base_path' => h(rtrim('/', dirname($_SERVER['SCRIPT_NAME']))).'/',
-        'script_path' => h(get_script_path()).'/',
+        'base_path' => h(cfg('base_path')),
+        'script_path' => h(get_script_path()),
         'f' => h(v('f')),
     );
     extract($ctx);
@@ -91,9 +91,9 @@ function tpl($file, $ctx=array(), $safe=array()) {
  *
  */
 function get_script_path() {
-    $base_path = rtrim('/', dirname($_SERVER['SCRIPT_NAME']));
+    $base_path = rtrim('/', dirname($_SERVER['SCRIPT_NAME'])).'/';
     if (isset($_SERVER['PATH_INFO'])) {
-        return $base_path.'/index.php';
+        return $base_path.'index.php/';
     } else {
         return $base_path;
     }
@@ -143,7 +143,7 @@ function is_bookmarklet() {
 function redirect($to) {
     $base_path = get_script_path();
     if (substr($to, 0, 1) === '/' && substr($to, 0, strlen($base_path)) !== $base_path) {
-        $to = "$base_path$to";
+        $to = $base_path . substr($to, 1);
     }
     header('Location: '.$to);
     die('Redirecting to '.h($to));
