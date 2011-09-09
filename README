@@ -17,9 +17,17 @@ F E A T U R E S :
 * Private bookmarks
 
 
+L I C E N S E :
+
+Double-licensed under terms of the GPL v3 and an MIT-style license. Please
+note, that this does not apply to the LightOpenID library, which is published
+under the MIT License alone.
+
+
 T O   D O :
 
 * Add Twitter option when sharing
 * Make API usable
 * Style
 * Add page metadata like FB or G+ do it
+* Make "AJAXy"
