@@ -17,6 +17,26 @@ F E A T U R E S :
 * Private bookmarks
 
 
+U S I N G   A S   D R O P - I N   F O R   D E L I C I O U S :
+
+In your Delicious bookmarklet change the URI from "http://delicious.com/save"
+to "http://your.domain/install/path/save" (note the "save"). In the config
+file make sure to have these lines included:
+
+    'plugins' => array(
+        'active' => array(
+            'delicious',
+        ),
+        'delicious' => array(
+            'auth' => base64_encode('delicious_username:delicious_password'),
+            'sync' => True,
+        ),
+    ),
+
+Ready! Your bookmarks are now saved locally, but always synchronized with
+Delicious.
+
+
 L I C E N S E :
 
 Double-licensed under terms of the GPL v3 and an MIT-style license. Please
