@@ -4,6 +4,7 @@ require_once 'lib/config.php';
 require_once 'lib/utils.php';
 require_once 'lib/session.php';
 require_once 'lib/auth.php';
+require_once 'lib/sql.php';
 require_once 'lib/bookmarks.class.php';
 
 start_session();

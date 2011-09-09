@@ -11,7 +11,11 @@ function install($store) {
         messages_add(__('You need to login for the setup.'), 'error');
         redirect('/login?next=install');
     }
-    $test = $db->query('SHOW TABLES LIKE "'.cfg('database/prefix', '').'bookmark%"');
+    $query = 'SHOW TABLES LIKE "'.cfg('database/prefix', '').'bookmark%"';
+    if (strtolower(substr(cfg('database/dsn', ''), 0, 6)) === 'sqlite') {
+        $query = 'SELECT name FROM sqlite_master WHERE type="master" AND name LIKE "'.cfg('database/prefix', '').'bookmark%"';
+    }
+    $test = $db->query($query);
     $not = array(cfg('database/prefix', '').'bookmarks',
                  cfg('database/prefix', '').'bookmark_tags');
     if ($test !== False) {

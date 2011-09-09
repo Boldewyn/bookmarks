@@ -1,6 +1,9 @@
 <?php defined('BOOKMARKS') or die('Access denied.');
 
 
+require_once dirname(__FILE__).'/sql.php';
+
+
 /**
  * Manage bookmarks
  */
@@ -39,7 +42,7 @@ class Bookmarks {
             $tag = Null;
             $stmt = $this->db->prepare('INSERT INTO '.cfg('database/prefix').
                                        'bookmarks (url, title, notes, private, created, modified)
-                                        VALUES (:url, :title, :notes, :private, NOW(), NOW())');
+                                        VALUES (:url, :title, :notes, :private, '.db_now().', '.db_now().')');
             $stmt->bindParam(':url', $url);
             $stmt->bindParam(':title', $title);
             $stmt->bindParam(':notes', $notes);
@@ -117,11 +120,11 @@ class Bookmarks {
      * Fetch a single bookmark
      */
     public function fetch($url) {
-        $query = 'SELECT url, title, notes, private, UNIX_TIMESTAMP(created) AS created,
-                         UNIX_TIMESTAMP(modified) AS modified
+        $query = 'SELECT url, title, notes, private, '.unix_timestamp('created').' AS created,
+                         '.unix_timestamp('modified').' AS modified
                     FROM '.cfg('database/prefix').'bookmarks WHERE url = :url';
         if (! $this->privates) {
-            $query .= ' AND private = False ';
+            $query .= ' AND private = 0 ';
         }
         $query = $this->db->prepare($query);
         $query->bindParam(':url', $url);
@@ -146,8 +149,8 @@ class Bookmarks {
                         b.title AS title,
                         b.notes AS notes,
                         b.private AS private,
-                        UNIX_TIMESTAMP(b.created) AS created,
-                        UNIX_TIMESTAMP(b.modified) AS modified
+                        '.unix_timestamp('b.created').' AS created,
+                        '.unix_timestamp('b.modified').' AS modified
                    FROM '.cfg('database/prefix').'bookmarks b
                           WHERE b.url REGEXP %1$s
                           OR b.title REGEXP %1$s
@@ -185,8 +188,8 @@ class Bookmarks {
             if (count($tags) > 1) {
                 $query = sprintf(
                          'SELECT url, title, notes, private,
-                                 UNIX_TIMESTAMP(created) AS created,
-                                 UNIX_TIMESTAMP(modified) AS modified
+                                 '.unix_timestamp('created').' AS created,
+                                 '.unix_timestamp('modified').' AS modified
                             FROM '.cfg('database/prefix').'bookmarks b
                            WHERE (
                                  SELECT COUNT(*)
@@ -197,26 +200,26 @@ class Bookmarks {
                             join(',', array_map(array($this->db, 'quote'), $tags))
                          );
                 if (! $this->privates) {
-                    $query .= ' AND private = False';
+                    $query .= ' AND private = 0';
                 }
             } elseif (count($tags) === 1) {
                 $query = 'SELECT b.url url, b.title title, b.notes notes, b.private private,
-                                 UNIX_TIMESTAMP(b.created) AS created,
-                                 UNIX_TIMESTAMP(b.modified) AS modified
+                                 '.unix_timestamp('b.created').' AS created,
+                                 '.unix_timestamp('b.modified').' AS modified
                             FROM '.cfg('database/prefix').'bookmarks b,
                                  '.cfg('database/prefix').'bookmark_tags t
                            WHERE b.url = t.url
                              AND t.tag = :tag';
                 if (! $this->privates) {
-                    $query .= ' AND b.private = False';
+                    $query .= ' AND b.private = 0';
                 }
             } else {
                 $query = 'SELECT url, title, notes, private,
-                                 UNIX_TIMESTAMP(created) AS created,
-                                 UNIX_TIMESTAMP(modified) AS modified
+                                 '.unix_timestamp('created').' AS created,
+                                 '.unix_timestamp('modified').' AS modified
                             FROM '.cfg('database/prefix').'bookmarks ';
                 if (! $this->privates) {
-                    $query .= 'WHERE private = False ';
+                    $query .= 'WHERE private = 0 ';
                 }
             }
             $query .= ' LIMIT :offset,:limit';
@@ -281,21 +284,29 @@ class Bookmarks {
         try {
             $this->db->exec('
             CREATE TABLE '.cfg('database/prefix').'bookmarks (
-                url VARCHAR(750) NOT NULL PRIMARY KEY,
+                id INTEGER PRIMARY KEY '.auto_increment().',
+                url VARCHAR(750) NOT NULL,
                 title TEXT,
                 notes TEXT,
-                private BOOLEAN NOT NULL DEFAULT TRUE,
+                private BOOLEAN NOT NULL DEFAULT 1,
                 modified TIMESTAMP NOT NULL,
-                created TIMESTAMP NOT NULL,
-                INDEX is_private (private)
+                created TIMESTAMP NOT NULL
             )');
             $this->db->exec('
+            CREATE INDEX has_url
+                ON '.cfg('database/prefix').'bookmarks (url)');
+            $this->db->exec('
+            CREATE INDEX is_private
+                ON '.cfg('database/prefix').'bookmarks (private)');
+            $this->db->exec('
             CREATE TABLE '.cfg('database/prefix').'bookmark_tags (
+                id INTEGER PRIMARY KEY '.auto_increment().',
                 url VARCHAR(750) NOT NULL,
-                tag VARCHAR(250) NOT NULL,
-                PRIMARY KEY (url, tag),
-                INDEX has_tag (tag)
+                tag VARCHAR(250) NOT NULL
             )');
+            $this->db->exec('
+            CREATE INDEX has_tag
+                ON '.cfg('database/prefix').'bookmark_tags (tag)');
         } catch (Exception $e) {
             return False;
         }
