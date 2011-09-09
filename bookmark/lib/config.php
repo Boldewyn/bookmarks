@@ -1,7 +1,7 @@
 <?php defined('BOOKMARKS') or die('Access denied.');
 
 
-require_once 'config.php';
+require_once dirname(__FILE__).'/../config.php';
 require_once dirname(__FILE__).'/utils.php';
 
 
@@ -26,7 +26,7 @@ function cfg($key, $default=NULL) {
     } elseif (array_key_exists($key, $bookmark_config)) {
         return $bookmark_config[$key];
     } elseif ($key === 'base_path') {
-        return rtrim('/', dirname($_SERVER['SCRIPT_NAME'])).'/';
+        return rtrim(dirname($_SERVER['SCRIPT_NAME']), '/').'/';
     }
     return $default;
 }

@@ -91,7 +91,7 @@ function tpl($file, $ctx=array(), $safe=array()) {
  *
  */
 function get_script_path() {
-    $base_path = rtrim('/', dirname($_SERVER['SCRIPT_NAME'])).'/';
+    $base_path = cfg('base_path');
     if (isset($_SERVER['PATH_INFO'])) {
         return $base_path.'index.php/';
     } else {
