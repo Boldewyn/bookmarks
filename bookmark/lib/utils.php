@@ -154,10 +154,8 @@ function redirect($to) {
  * update the current URL with new GET params
  */
 function update_url($params) {
-    $base = $_SERVER['PATH_INFO'];
-    if (isset($_SERVER['ORIG_PATH_INFO'])) {
-        $base = $_SERVER['ORIG_PATH_INFO'];
-    }
+    $base = explode('?', $_SERVER['REQUEST_URI'], 2);
+    $base = $base[0];
     return $base.'?'.http_build_query(array_merge($_GET, $params));
 }
 
