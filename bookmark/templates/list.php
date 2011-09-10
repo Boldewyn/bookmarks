@@ -12,6 +12,7 @@
           <span class="functions">
             <a class="edit" href="<?php echo $script_path?>save?edit=1&amp;url=<?php echo rawurlencode($bookmark['url'])?>"><?php _e('edit')?></a>
             <a class="edit" href="<?php echo $script_path?>delete?url=<?php echo rawurlencode($bookmark['url'])?>"><?php _e('delete')?></a>
+            <a class="edit" href="<?php echo $script_path?>share?url=<?php echo rawurlencode($bookmark['url'])?>"><?php _e('share')?></a>
           </span>
         <?php endif?>
       </li>
