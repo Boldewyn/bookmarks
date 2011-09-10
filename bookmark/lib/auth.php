@@ -50,4 +50,33 @@ function do_logout() {
 }
 
 
+/**
+ * Check, if a CSRF token is valid. If so, unset it
+ */
+function check_csrf($formname, $token) {
+    $r = (isset($_SESSION['csrf']) && isset($_SESSION['csrf'][$formname]) &&
+          $_SESSION['csrf'][$formname] === $token);
+    if ($r) {
+        unset($_SESSION['csrf'][$formname]);
+    }
+    return $r;
+}
+
+
+/**
+ * Set an CSRF token
+ */
+function set_csrf($formname) {
+    if (! isset($_SESSION['csrf'])) {
+        $_SESSION['csrf'] = array();
+    }
+    $t = '';
+    $s = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_';
+    while (strlen($t) < 16) {
+        $t .= $s[mt_rand(0, strlen($s)-1)];
+    }
+    return $_SESSION['csrf'][$formname] = $t;
+}
+
+
 //__END__

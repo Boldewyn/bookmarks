@@ -6,51 +6,61 @@
  */
 function save($store) {
     /* Authentication */
-    $status = do_login();
-    if ($status !== True) {
-        messages_add(sprintf(__('A login error occurred: %s.'), $status), 'error');
+    if (logged_in() !== True) {
+        messages_add(__('You need to log in to save a bookmark.'), 'error');
         redirect('/login?next=save');
     }
-    $html = "";
     /* Main logic */
-    if (! v('url') && ! v('save')):
+    $html = '';
+    $save = v('save', '', 'post');
+    if (! v('url') && ! $save):
         $html = format_template();
-    elseif (! v('save')):
-        $msg = '';
+    elseif (! $save):
         $bm = $store->fetch(v('url'));
         if ($bm !== False) {
             if (! v('edit')) {
-                $msg = sprintf('<p class="info">%s</p>',
-                            __('This bookmark already exists.'));
+                messages_add(__('This bookmark already exists.'), 'error');
             }
         } else {
             $bm = Null;
         }
-        $html = format_template($bm, $msg);
+        $html = format_template($bm);
     else:
-        $url = v('url');
-        $title = v('title', $url);
-        $tags = explode(' ', preg_replace('/\s+/', ' ', v('tags')));
-        $private = (bool)v('private');
-        $e = $store->save($url, $title, $tags, v('notes'), $private);
-        if ($e === True) {
-            call_hook('save', array($url, $title, $tags, $private));
-        } elseif ($e === Null) {
-            $e = $store->change($url, $title, $tags, v('notes'), $private);
-        }
-        if (! $e) {
-            $error = get_db()->errorInfo();
-            $msg = '<p class="error">'.sprintf(__('An error occurred: %s'), 
-                                            h($error[2])).'</p>';
-            $html = format_template(Null, $msg);
+        $url = filter_var(v('url', '', 'post'), FILTER_VALIDATE_URL);
+        $title = v('title', $url, 'post');
+        $tags = array_filter(array_map('trim',
+                             explode(' ', v('tags', '', 'post'))));
+        $notes = v('notes', '', 'post');
+        $private = (bool)v('private', '', 'post');
+        if (! check_csrf('save', v('ctoken', '', 'post'))) {
+            messages_add(__('You cannot save this bookmark without '.
+                'confirmation.'), 'error');
+            $html = format_template();
+        } elseif ($url === false) {
+            messages_add(__('This doesn’t seem to be a valid URL.'), 'error');
+            $html = format_template();
         } else {
-            if (is_bookmarklet()) {
-                $msg = '<script type="text/javascript">window.close()</script><p class="success"><a href="javascript:window.close()">'.
-                        __('Successfully saved bookmark.').'</a></p>';
+            $e = $store->save($url, $title, $tags, $notes, $private);
+            if ($e === True) {
+                call_hook('save', array($url, $title, $tags, $notes, $private));
+            } elseif ($e === Null) {
+                $e = $store->change($url, $title, $tags, $notes, $private);
+                call_hook('change', array($url, $title, $tags, $notes, $private));
+            }
+            if (! $e) {
+                $error = get_db()->errorInfo();
+                $msg = '<p class="error">'.sprintf(__('An error occurred: %s'), 
+                                                h($error[2])).'</p>';
                 $html = format_template(Null, $msg);
             } else {
-                messages_add(__('Successfully saved bookmark.'), 'success');
-                redirect('/');
+                if (is_bookmarklet()) {
+                    $msg = '<script type="text/javascript">window.close()</script><p class="success"><a href="javascript:window.close()">'.
+                            __('Successfully saved bookmark.').'</a></p>';
+                    $html = format_template(Null, $msg);
+                } else {
+                    messages_add(__('Successfully saved bookmark.'), 'success');
+                    redirect('/');
+                }
             }
         }
     endif;

@@ -5,11 +5,12 @@
  *
  * @param $s The key to look for
  * @param $default The return value, if nothing is found
+ * @param $limit_to_post If only post values should be taken into account
  */
-function v($s, $default='') {
+function v($s, $default='', $limit_to_post=False) {
     if (array_key_exists($s, $_POST)) {
         return trim(preg_replace('/[\p{C}\\\]/u', '', $_POST[$s]));
-    } elseif (array_key_exists($s, $_GET)) {
+    } elseif (! $limit_to_post && array_key_exists($s, $_GET)) {
         return trim(preg_replace('/[\p{C}\\\]/u', '', $_GET[$s]));
     } else {
         return $default;
@@ -130,6 +131,7 @@ function get_accept_type($whitelist=array(), $default='html') {
     return $type;
 }
 
+
 /**
  * Test, if we are called from a bookmarklet
  */
@@ -138,16 +140,36 @@ function is_bookmarklet() {
         (isset($_GET['noui']) && $_GET['noui'] === '1'));
 }
 
+
 /**
  * Redirect to another URL. Prepend site path, if necessary
  */
 function redirect($to) {
     $base_path = get_script_path();
-    if (substr($to, 0, 1) === '/' && substr($to, 0, strlen($base_path)) !== $base_path) {
+    if (substr($to, 0, 1) === '/' &&
+        substr($to, 0, strlen($base_path)) !== $base_path) {
         $to = $base_path . substr($to, 1);
     }
     header('Location: '.$to);
     die('Redirecting to '.h($to));
+}
+
+
+/**
+ * Redirect to referrer, if safe
+ */
+function refer($fallback='/') {
+    $referer = isset($_SERVER['HTTP_REFERER'])? $_SERVER['HTTP_REFERER']
+                                              : $fallback;
+    $base_path = get_script_path();
+    if ($referer === $fallback) {
+        redirect($referer);
+    } elseif (substr(parse_url($referer, PHP_URL_PATH), 0, strlen($base_path))
+        === $base_path) {
+        redirect($referer);
+    } else {
+        redirect($fallback);
+    }
 }
 
 
@@ -158,6 +180,25 @@ function update_url($params) {
     $base = explode('?', $_SERVER['REQUEST_URI'], 2);
     $base = $base[0];
     return $base.'?'.http_build_query(array_merge($_GET, $params));
+}
+
+
+/**
+ * Fallback for PHP < 5.2
+ */
+if (! defined('FILTER_VALIDATE_URL')) {
+    define('FILTER_VALIDATE_URL', 273);
+}
+if (! function_exists('filter_var')) {
+    function filter_var($item, $type, $params=NULL) {
+        if ($type === FILTER_VALIDATE_URL) {
+            $parts = parse_url($item);
+            if (! isset($parts['scheme']) && ! isset($parts['host'])) {
+                return false;
+            }
+        }
+        return $item;
+    }
 }
 
 

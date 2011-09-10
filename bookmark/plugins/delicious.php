@@ -4,7 +4,7 @@
 /**
  * Save a bookmark to delicious
  */
-function delicious_save($url, $title, $tags, $private) {
+function delicious_save($url, $title, $tags, $notes, $private) {
     if (cfg('plugins/delicious/auth', False)) {
         if (! cfg('plugins/delicious/sync', False)) {
             return False;
@@ -15,7 +15,7 @@ function delicious_save($url, $title, $tags, $private) {
             rawurlencode($title),
             rawurlencode(implode(' ', $tags)),
             ($private? 'no' : 'yes'),
-            rawurlencode(v('notes'))
+            rawurlencode($notes)
             ));
         if (!$fp) {
             messages_add(__('Couldn’t connect to the Delicious API server to sync bookmarks.'), 'error');

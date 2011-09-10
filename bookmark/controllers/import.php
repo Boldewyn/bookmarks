@@ -5,8 +5,7 @@
  * Import bookmarks from delicious
  */
 function import($store) {
-    $status = do_login();
-    if ($status !== True) {
+    if (logged_in() !== True) {
         messages_add(__('You need to login for this.'), 'error');
         redirect('/login?next=import');
     }

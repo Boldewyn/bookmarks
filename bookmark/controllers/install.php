@@ -5,8 +5,7 @@
  * Install application
  */
 function install($store) {
-    $status = do_login();
-    if ($status !== True) {
+    if (logged_in() !== True) {
         messages_add(__('You need to login for the setup.'), 'error');
         redirect('/login?next=install');
     }

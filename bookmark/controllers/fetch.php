@@ -38,7 +38,7 @@ function fetch($store, $tags='') {
                 'site_title' => __('Bookmarks'),
                 'tags' => $tags,
                 'page' => $page,
-                'pages' => ceil((float)$all/(float)cfg('display/pagination', 100)),
+                'pages' => (int)ceil((float)$all/(float)cfg('display/pagination', 100)),
                 'all' => $all,
                 'bookmarks' => $bookmarks));
             break;

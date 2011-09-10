@@ -6,32 +6,36 @@
  */
 function delete($store) {
     /* Authentication */
-    $status = do_login();
-    if ($status !== True) {
-        messages_add(sprintf(__('A login error occurred: %s.'), $status), 'error');
-        redirect('/login');
+    if (logged_in() !== True) {
+        messages_add(__('You need to log in to delete a bookmark.'), 'error');
+        redirect('/login?next=delete');
     }
     /* Main logic */
-    $url = v('url', '');
     $r = '';
-    if ($url === '') {
-        messages_add(__('No bookmark found to delete.'), 'error');
-        redirect('/');
-    } elseif (v('confirm', '') === '') {
+    if ('' !== ($url = v('url', '')) && v('confirm', '', 'post') === '') {
         $bookmark = $store->fetch($url);
         $r = tpl('delete', array('body_id' => 'delete',
                                  'site_title' => __('Delete Bookmark'),
+                                 'url' => $url,
                                  'bookmark' => $bookmark));
-    } else {
-        $result = $store->delete($url);
+    } elseif ('' !== ($purl = v('url', '', 'post'))) {
+        if (! check_csrf('delete', v('ctoken', '', 'post'))) {
+            messages_add(__('You cannot delete this bookmark without '.
+                'confirmation.'), 'error');
+            refer();
+        }
+        $result = $store->delete($purl);
         if ($result) {
             messages_add(__('Bookmark deleted.', 'success'));
-            call_hook('delete', array($url));
+            call_hook('delete', array($purl));
         } else {
             messages_add(__('There was an error deleting this bookmark.'),
                          'error');
         }
         redirect('/');
+    } else {
+        messages_add(__('No bookmark found to delete.'), 'error');
+        refer();
     }
     return $r;
 }
