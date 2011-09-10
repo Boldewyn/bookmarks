@@ -442,3 +442,38 @@ form .text {
 .tc_4 { font-size: 1.2em; }
 .tc_5 { font-size: 1.5em; }
 
+
+/**
+ * Pagination
+ */
+.pag-info,
+.paginate .first,
+.paginate .last {
+  display: none;
+}
+.paginate {
+  text-align: center;
+  margin-left: 5px;
+}
+.paginate li {
+  list-style: none;
+  display: inline;
+  margin-right: 5px;
+}
+.paginate a {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  text-align: center;
+}
+.paginate .prev a,
+.paginate .next a,
+.paginate .first a,
+.paginate .last a {
+  width: auto;
+}
+.paginate .active a {
+  color: #333;
+}
+

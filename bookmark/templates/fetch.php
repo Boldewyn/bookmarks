@@ -7,6 +7,7 @@
     <?php endforeach?>
   </ul>
 <?php endif?>
+<?php include 'pagination.php'?>
 <?php include 'list.php'?>
 <?php include 'pagination.php'?>
 <?php include 'footer.php'?>
