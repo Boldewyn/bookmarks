@@ -11,7 +11,7 @@ function login($store) {
         redirect('/');
     } else {
         messages_add(__('Successfully logged in. Welcome back.'), 'success');
-        redirect('/');
+        redirect('/'.v('next'));
     }
     return '';
 }
