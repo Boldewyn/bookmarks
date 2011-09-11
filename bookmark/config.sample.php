@@ -24,13 +24,22 @@ $bookmark_config = array(
     'plugins' => array(
         'active' => array(      // active plugins
             'delicious',        // allows syncing with Delicious
+            #'pinboard',        // allows syncing with Pinboard.in (THIS CODE
+                                // IS UNTESTED!)
             #'email',            // allows sharing via emails
+            #'twitter',          // allows sharing via Twitter
         ),
         'delicious' => array(   // Interact with Delicious:
             'auth' => '',       // The Delicious auth string. Set it to
                                 // base64_encode('username:password')
-            'sync' => True,     // whether newly created bookmarks should be
-                                // synced with Delicious
+            'sync' => False,    // whether newly created or deleted bookmarks
+                                // should be synced with Delicious
+        ),
+        'pinboard' => array(    // Interact with Pinboard:
+            'auth' => '',       // The Pinboard auth string. Set it to
+                                // base64_encode('username:password')
+            'sync' => False,    // whether newly created or deleted bookmarks
+                                // should be synced with Pinboard
         ),
         'email' => array(       // Share bookmarks via email
             'default' => 'info@example.com',

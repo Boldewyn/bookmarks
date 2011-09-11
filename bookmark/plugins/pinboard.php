@@ -1,15 +1,21 @@
 <?php defined('BOOKMARKS') or die('Access denied.');
+#
+# THIS IS UNTESTED, SINCE I HAVE NO PINBOARD ACCOUNT!
+# IF YOU DO AND USE THIS PLUGIN, PLEASE FILE AN ISSUE AND DESCRIBE YOUR
+# EXPERIENCES (EVEN IF EVERYTHING WORKS JUST FINE) AT
+# http://github.com/Boldewyn/bookmarks/issues
+#
 
 
 /**
- * Save a bookmark to delicious
+ * Save a bookmark to pinboard.in
  */
-function delicious_save($url, $title, $tags, $notes, $private) {
-    if (cfg('plugins/delicious/auth', False)) {
-        if (! cfg('plugins/delicious/sync', False)) {
+function pinboard_save($url, $title, $tags, $notes, $private) {
+    if (cfg('plugins/pinboard/auth', False)) {
+        if (! cfg('plugins/pinboard/sync', False)) {
             return False;
         }
-        $fp = _delicious_connect(sprintf(
+        $fp = _pinboard_connect(sprintf(
             '/v1/posts/add?url=%s&description=%s&tags=%s&shared=%s&extended=%s',
             rawurlencode($url),
             rawurlencode($title),
@@ -18,61 +24,61 @@ function delicious_save($url, $title, $tags, $notes, $private) {
             rawurlencode($notes)
             ));
         if (!$fp) {
-            messages_add(__('Couldn’t connect to the Delicious API server to sync bookmarks.'), 'error');
+            messages_add(__('Couldn’t connect to the Pinboard API server to sync bookmarks.'), 'error');
         } else {
             $data = $fp[1];
             if (strpos($data, 'code="done"') !== False) {
-                messages_add(__('The bookmark was exported to Delicious.'), 'success');
+                messages_add(__('The bookmark was exported to Pinboard.'), 'success');
                 return True;
             } else {
-                messages_add(sprintf(__('There was an error exporting the bookmark to Delicious: %s'), preg_replace('/.+code="([^"]*)".+/s', '\1', $data)), 'error');
+                messages_add(sprintf(__('There was an error exporting the bookmark to Pinboard: %s'), preg_replace('/.+code="([^"]*)".+/s', '\1', $data)), 'error');
             }
         }
     } else {
-        messages_add(__('You need to provide your access data for the Delicious API server to sync bookmarks.'), 'error');
+        messages_add(__('You need to provide your access data for the Pinboard API server to sync bookmarks.'), 'error');
     }
     return False;
 }
-register_for_hook('save', 'delicious_save');
+register_for_hook('save', 'pinboard_save');
 
 
 /**
- * Delete a bookmark from delicious
+ * Delete a bookmark from pinboard
  */
-function delicious_delete($url) {
-    if (cfg('plugins/delicious/auth', False)) {
-        if (! cfg('plugins/delicious/sync', False)) {
+function pinboard_delete($url) {
+    if (cfg('plugins/pinboard/auth', False)) {
+        if (! cfg('plugins/pinboard/sync', False)) {
             return False;
         }
-        $fp = _delicious_connect('/v1/posts/delete?url=' . rawurlencode($url));
+        $fp = _pinboard_connect('/v1/posts/delete?url=' . rawurlencode($url));
         if (!$fp) {
-            messages_add(__('Couldn’t connect to the Delicious API server to sync bookmarks.'), 'error');
+            messages_add(__('Couldn’t connect to the Pinboard API server to sync bookmarks.'), 'error');
         } else {
             $data = $fp[1];
             if (strpos($data, 'code="done"') !== False) {
-                messages_add(__('The bookmark was deleted from Delicious.'), 'success');
+                messages_add(__('The bookmark was deleted from Pinboard.'), 'success');
                 return True;
             } else {
-                messages_add(sprintf(__('There was an error deleting the bookmark from Delicious: %s'), preg_replace('/.+code="([^"]*)".+/s', '\1', $data)), 'error');
+                messages_add(sprintf(__('There was an error deleting the bookmark from Pinboard: %s'), preg_replace('/.+code="([^"]*)".+/s', '\1', $data)), 'error');
             }
         }
     } else {
-        messages_add(__('You need to provide your access data for the Delicious API server to sync bookmarks.'), 'error');
+        messages_add(__('You need to provide your access data for the Pinboard API server to sync bookmarks.'), 'error');
     }
     return False;
 }
-register_for_hook('delete', 'delicious_delete');
+register_for_hook('delete', 'pinboard_delete');
 
 
 /**
- * Import bookmarks from delicious
+ * Import bookmarks from pinboard
  */
-function delicious_import($store) {
+function pinboard_import($store) {
     $return = True;
-    if (cfg('plugins/delicious/auth', False)) {
-        $fp = _delicious_connect('/v1/posts/all');
+    if (cfg('plugins/pinboard/auth', False)) {
+        $fp = _pinboard_connect('/v1/posts/all');
         if (!$fp) {
-            messages_add(__('Couldn’t connect to the Delicious API server.'),
+            messages_add(__('Couldn’t connect to the Pinboard API server.'),
                          'error');
             $return = False;
         } else {
@@ -84,7 +90,7 @@ function delicious_import($store) {
                 }
                 $posts = $xml->xpath('/posts/post');
             } catch (Exception $e) {
-                messages_add(__('Couldn’t parse the response from Delicious.'),
+                messages_add(__('Couldn’t parse the response from Pinboard.'),
                              'error');
                 return False;
             }
@@ -111,15 +117,15 @@ function delicious_import($store) {
                 }
             }
             if ($added > 0) {
-                messages_add(sprintf(__('Added %s new bookmarks from Delicious.'), $added),
+                messages_add(sprintf(__('Added %s new bookmarks from Pinboard.'), $added),
                              'success');
             }
             if ($needs_update > 0) {
-                messages_add(sprintf(__('%s bookmarks were already imported from Delicious.'),
+                messages_add(sprintf(__('%s bookmarks were already imported from Pinboard.'),
                                      $needs_update), 'info');
             }
             if (count($posts) > $added + $needs_update) {
-                messages_add(sprintf(__('%s bookmarks could not be imported from Delicious.'),
+                messages_add(sprintf(__('%s bookmarks could not be imported from Pinboard.'),
                                      count($posts) - $added -$needs_update),
                              'error');
             }
@@ -127,24 +133,24 @@ function delicious_import($store) {
         }
     } else {
         messages_add(__('You need to provide your access data for the '.
-                        'Delicious API server.'), 'error');
+                        'Pinboard API server.'), 'error');
         $return = False;
     }
     return $return;
 }
-register_for_hook('import', 'delicious_import');
+register_for_hook('import', 'pinboard_import');
 
 
 /**
- * Utility: connect to delicious API
+ * Utility: connect to pinboard API
  */
-function _delicious_connect($url) {
-    $fp = fsockopen("ssl://api.delicious.com", 443);
+function _pinboard_connect($url) {
+    $fp = fsockopen("ssl://api.pinboard.in", 443);
     if ($fp) {
         $out  = "GET $url HTTP/1.1\r\n";
-        $out .= "Host: api.delicious.com\r\n";
+        $out .= "Host: api.pinboard.in\r\n";
         $out .= "User-Agent: Personal Bookmarks Manager\r\n";
-        $out .= "Authorization: Basic ".cfg('plugins/delicious/auth', '')."\r\n";
+        $out .= "Authorization: Basic ".cfg('plugins/pinboard/auth', '')."\r\n";
         $out .= "Connection: Close\r\n\r\n";
         fwrite($fp, $out);
         $data = '';
