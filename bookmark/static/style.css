@@ -239,6 +239,10 @@ nav li.save a {
   background-image: url(new.png);
 }
 
+nav li.import a {
+  background-image: url(export.png);
+}
+
 nav li.search a {
   background-image: url(magnifier.png);
 }

@@ -6,31 +6,32 @@
     <link rel="stylesheet" href="<?php echo $base_path?>static/style.css" />
     <link rel="shortcut icon" href="<?php echo $base_path?>static/favicon.ico" />
     <!--[if lt IE 9]>
-      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+      <script src="<?php echo $base_path?>static/html5.js"></script>
     <![endif]-->
 <?php call_hook('front_head')?>
-    <title><?php echo $site_title?></title>
+    <title><?php echo $site_title?> - <?php _e('Bookmarks')?></title>
   </head>
   <body id="<?php echo $body_id?>">
     <div id="global">
-        <nav>
+      <nav>
         <ul>
-            <li class="start <?php if (! $f):?>active<?php endif?>"><a href="<?php echo $script_path?>"><?php _e('Overview')?></a></li>
-            <li class="search <?php if ($f === 'search'):?>active<?php endif?>"><a href="<?php echo $script_path?>search"><?php _e('Search')?></a></li>
-            <?php if (in_array('logged_in', $_SESSION)):?>
-                <li class="save <?php if ($f === 'save'):?>active<?php endif?>"><a href="<?php echo $script_path?>save"><?php v('edit', False)? _e('Edit') : _e('Create new')?></a></li>
-                <li class="logout"><a href="<?php echo $script_path?>logout"><?php _e('Log out')?></a></li>
-            <?php else:?>
-                <li class="login"><a href="<?php echo $script_path?>login"><?php _e('Log in')?></a></li>
-            <?php endif?>
-            <li class="help <?php if ($f === 'help'):?>active<?php endif?>"><a href="<?php echo $script_path?>help"><?php _e('Help')?></a></li>
+          <li class="start <?php if (! $f):?>active<?php endif?>"><a href="<?php echo $script_path?>"><?php _e('Overview')?></a></li>
+          <li class="search <?php if ($f === 'search'):?>active<?php endif?>"><a href="<?php echo $script_path?>search"><?php _e('Search')?></a></li>
+          <?php if (in_array('logged_in', $_SESSION)):?>
+            <li class="save <?php if ($f === 'save'):?>active<?php endif?>"><a href="<?php echo $script_path?>save"><?php v('edit', False)? _e('Edit') : _e('Create new')?></a></li>
+            <li class="import <?php if ($f === 'import'):?>active<?php endif?>"><a href="<?php echo $script_path?>import"><?php _e('Import')?></a></li>
+            <li class="logout"><a href="<?php echo $script_path?>logout"><?php _e('Log out')?></a></li>
+          <?php else:?>
+            <li class="login"><a href="<?php echo $script_path?>login"><?php _e('Log in')?></a></li>
+          <?php endif?>
+          <li class="help <?php if ($f === 'help'):?>active<?php endif?>"><a href="<?php echo $script_path?>help"><?php _e('Help')?></a></li>
         </ul>
-        </nav>
-        <?php if (messages_have()):?>
-          <ul id="messages">
-            <?php foreach (messages_get() as $msg):?>
-              <li class="<?php echo $msg['type']?>"><?php echo $msg['message']?></li>
-            <?php endforeach?>
-          </ul>
-        <?php endif?>
-        <article>
+      </nav>
+      <?php if (messages_have()):?>
+        <ul id="messages">
+          <?php foreach (messages_get() as $msg):?>
+            <li class="<?php echo $msg['type']?>"><?php echo $msg['message']?></li>
+          <?php endforeach?>
+        </ul>
+      <?php endif?>
+      <article>
