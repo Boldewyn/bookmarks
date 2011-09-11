@@ -28,6 +28,9 @@ function save($store) {
     else:
         $url = filter_var(v('url', '', 'post'), FILTER_VALIDATE_URL);
         $title = v('title', $url, 'post');
+        if ($title === '') {
+            $title = $url;
+        }
         $tags = array_filter(array_map('trim',
                              explode(' ', v('tags', '', 'post'))));
         $notes = v('notes', '', 'post');
@@ -84,6 +87,7 @@ function format_template($v=Null, $msg='') {
         );
         $button = __('Save');
     } else {
+        $title = __('Edit Bookmark');
         $change = ' disabled="disabled" readonly="readonly';
         $button = __('Change');
     }
