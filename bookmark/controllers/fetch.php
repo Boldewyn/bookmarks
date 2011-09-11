@@ -35,7 +35,7 @@ function fetch($store, $tags='') {
             break;
         default:
             $html = tpl('fetch', array('body_id' => 'index',
-                'site_title' => __('Bookmarks'),
+                'site_title' => __('All Bookmarks'),
                 'tags' => $tags,
                 'page' => $page,
                 'pages' => (int)ceil((float)$all/(float)cfg('display/pagination', 100)),
