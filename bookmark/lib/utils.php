@@ -97,7 +97,7 @@ function tpl($file, $ctx=array(), $safe=array()) {
 
 
 /**
- *
+ * Get the path to wherefrom PHP is executed
  */
 function get_script_path() {
     $base_path = cfg('base_path');
@@ -106,6 +106,14 @@ function get_script_path() {
     } else {
         return $base_path;
     }
+}
+
+
+/**
+ * Get the Host name
+ */
+function get_host() {
+    return preg_replace('/[^a-zA-Z0-9.-]/', '', $_SERVER['HTTP_HOST']);
 }
 
 

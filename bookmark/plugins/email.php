@@ -59,7 +59,7 @@ function email_do_share($store) {
         sprintf(__('Bookmark recommendation: “%s”'), $bookmark['title']),
         $message.'Bookmark: '.$bookmark['url'].'
 You can find more bookmarks at
-- http://'.preg_replace('/[^a-zA-Z0-9.-]/', '', $_SERVER['HTTP_HOST']).get_script_path().'
+- http://'.get_host().get_script_path().'
 
 -------------------------------------
 Delivered by Bookmarks
