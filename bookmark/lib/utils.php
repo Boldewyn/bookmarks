@@ -64,6 +64,10 @@ function _e($s) {
  * @param $safe Parameters that should not be HTML-escaped
  */
 function tpl($file, $ctx=array(), $safe=array()) {
+    if (strpos($file, '/') === False) {
+        $file = "templates/$file";
+    }
+    $file .= '.php';
     foreach ($ctx as $k => $v) {
         if (! in_array($k, $safe)) {
             if (is_string($v)) {
@@ -81,10 +85,13 @@ function tpl($file, $ctx=array(), $safe=array()) {
         'site_title' => __('Bookmarks'),
     );
     extract($ctx);
+    $__include_path = ini_get('include_path');
+    ini_set('include_path', '.:'.dirname(__FILE__).'/../templates:'.dirname($file));
     ob_start();
-    include("templates/$file.php");
+    include $file;
     $result = ob_get_contents();
     ob_end_clean();
+    ini_set('include_path', $__include_path);
     return $result;
 }
 
@@ -190,12 +197,19 @@ function update_url($params) {
 if (! defined('FILTER_VALIDATE_URL')) {
     define('FILTER_VALIDATE_URL', 273);
 }
+if (! defined('FILTER_VALIDATE_URL')) {
+    define('FILTER_VALIDATE_URL', 274);
+}
 if (! function_exists('filter_var')) {
-    function filter_var($item, $type, $params=NULL) {
+    function filter_var($item, $type=513, $params=NULL) {
         if ($type === FILTER_VALIDATE_URL) {
             $parts = parse_url($item);
             if (! isset($parts['scheme']) && ! isset($parts['host'])) {
                 return false;
+            }
+        } elseif ($type === FILTER_VALIDATE_EMAIL) {
+            if (! preg_match('/[a-z0-9_+*.-]+@[a-z0-9.-]+/i', $item)) {
+                return false; // this is really a silly validation. Use PHP 5.2
             }
         }
         return $item;

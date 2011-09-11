@@ -11,6 +11,8 @@ $bookmark_config = array(
     ),
     'auth' => array(
         'openid' => '',         // OpenID you want to use for login
+        'login_to_share' => True,
+                                // whether only the logged-in user may share
     ),
     'display' => array(
         'pagination' => 100,    // pagination length
@@ -22,12 +24,20 @@ $bookmark_config = array(
     'plugins' => array(
         'active' => array(      // active plugins
             'delicious',        // allows syncing with Delicious
+            #'email',            // allows sharing via emails
         ),
         'delicious' => array(   // Interact with Delicious:
             'auth' => '',       // The Delicious auth string. Set it to
                                 // base64_encode('username:password')
             'sync' => True,     // whether newly created bookmarks should be
                                 // synced with Delicious
+        ),
+        'email' => array(       // Share bookmarks via email
+            'default' => 'info@example.com',
+                                // Email to send a shared link from. It's
+                                // important to change this to a valid address
+                                // or else spam filters will just swallow
+                                // the emails
         ),
     ),
 );

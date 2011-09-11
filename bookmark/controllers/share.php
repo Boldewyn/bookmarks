@@ -5,6 +5,11 @@
  * share a bookmark
  */
 function share($store) {
+    if (cfg('auth/login_to_share', True) === True && logged_in() !== True) {
+        messages_add(__('You need to log in to share a bookmark.'), 'error');
+        redirect('/login?next=share?url%3D'.v('url'));
+    }
+    $r = '';
     $url = v('url');
     if (! $url) {
         messages_add(__('No URL to share given.'), 'error');
