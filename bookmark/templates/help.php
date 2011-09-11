@@ -3,4 +3,5 @@
   <p>
     <?php _e('The help is not written, yet!')?>
   </p>
+<?php call_hook('front_help')?>
 <?php include "footer.php" ?>

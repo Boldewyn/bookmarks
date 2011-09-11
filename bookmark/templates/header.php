@@ -8,6 +8,7 @@
     <!--[if lt IE 9]>
       <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+<?php call_hook('front_head')?>
     <title><?php echo $site_title?></title>
   </head>
   <body id="<?php echo $body_id?>">
