@@ -82,7 +82,8 @@ function tpl($file, $ctx=array(), $safe=array()) {
         'base_path' => h(cfg('base_path')),
         'script_path' => h(get_script_path()),
         'f' => h(v('f')),
-        'site_title' => __('Bookmarks'),
+        'site_title' => h(__('Bookmarks')),
+        'global_site_title' => h(cfg('display/title', __('Bookmarks'))),
     );
     extract($ctx);
     $__include_path = ini_get('include_path');

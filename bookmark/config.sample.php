@@ -16,6 +16,7 @@ $bookmark_config = array(
     ),
     'display' => array(
         'pagination' => 100,    // pagination length
+        'title' => 'Bookmarks', // site title
     ),
     'session' => array(
         'days' => 365,          // Session length before login needs renewal

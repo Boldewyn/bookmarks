@@ -9,7 +9,7 @@
       <script src="<?php echo $base_path?>static/html5.js"></script>
     <![endif]-->
 <?php call_hook('front_head')?>
-    <title><?php echo $site_title?> - <?php _e('Bookmarks')?></title>
+    <title><?php echo $site_title?> - <?php echo $global_site_title?></title>
   </head>
   <body id="<?php echo $body_id?>">
     <div id="global">
