@@ -1,15 +1,67 @@
 <?php defined('BOOKMARKS') or die('Access denied.');
 
 
-require_once dirname(__FILE__).'/../config.php';
 require_once dirname(__FILE__).'/utils.php';
+
+
+/**
+ * Config storage class
+ */
+class BookmarkConfig {
+
+    protected static $cfg = NULL;
+
+    public static function get() {
+        if (self::$cfg === NULL) {
+            self::load();
+        }
+        return self::$cfg;
+    }
+
+    /**
+     * Load config
+     */
+    public static function load($from=NULL) {
+        if ($from === NULL) {
+            $from = dirname(__FILE__).'/../config.php';
+        }
+        if (! is_file($from)) {
+            if (self::$cfg === NULL) {
+                self::$cfg = array();
+            }
+            return false;
+        }
+        require_once $from;
+        if (! isset($bookmark_config)) {
+            if (self::$cfg === NULL) {
+                self::$cfg = array();
+            }
+            return false;
+        }
+        self::$cfg = $bookmark_config;
+        return true;
+    }
+
+    /**
+     * Set a config value
+     */
+    public static function set($k, $v=NULL) {
+        self::get();
+        if (is_array($k)) {
+            self::$cfg = array_merge(self::$cfg, $k);
+        } else {
+            self::$cfg[$k] = $v;
+        }
+    }
+
+}
 
 
 /**
  * Get a config setting
  */
 function cfg($key, $default=NULL) {
-    global $bookmark_config;
+    $bookmark_config = BookmarkConfig::get();
     if (strpos($key, '/') !== False) {
         $key = explode('/', $key);
     }
