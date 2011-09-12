@@ -8,10 +8,6 @@ function email_share($service, $bookmark) {
     if ($service !== 'email') {
         return False;
     }
-    if (cfg('auth/login_to_share', True) === True && logged_in() !== True) {
-        messages_add(__('You need to log in to share a bookmark.'), 'error');
-        redirect('/login?next=share?url%3D'.v('url'));
-    }
     echo tpl('plugins/email/share', array('bookmark' => $bookmark));
     return True;
 }
