@@ -7,7 +7,8 @@
 function plugin($store) {
     $plugin = v('plugin');
     $function = v('function');
-    if ($plugin && is_file(dirname(__FILE__).'/../plugins/'.$plugin.'.php')) {
+    if ($plugin && is_file(dirname(__FILE__).'/../plugins/'.$plugin.'.php') &&
+        in_array($plugin, cfg('plugins/active', array()))) {
         require_once dirname(__FILE__).'/../plugins/'.$plugin.'.php';
         if (function_exists($function)) {
             return $function($store);
