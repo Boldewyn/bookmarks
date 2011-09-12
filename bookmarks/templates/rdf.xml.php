@@ -2,6 +2,12 @@
 <channel rdf:about="http://<?php echo get_host().$script_path.'?type=rdf'?>">
   <title>Bookmarks</title>
   <link>http://<?php echo get_host().$script_path.'?type=rdf'?></link>
+  <description><?php _e('Bookmark feed')?></description>
+  <items>
+    <rdf:Seq>
+      <?php foreach ($bookmarks as $bookmark):?><rdf:li rdf:ressource="<?php echo $bookmark['url']?>" />
+      <?php endforeach?>  </rdf:Seq>
+  </items>
 </channel>
 <?php foreach ($bookmarks as $bookmark):?><item rdf:about="<?php echo $bookmark['url']?>">
   <title><?php echo $bookmark['title']?></title>
