@@ -132,7 +132,7 @@ class Bookmarks {
      * Fetch a single bookmark
      */
     public function fetch($url) {
-        $query = 'SELECT url, title, notes, private, '.unix_timestamp('created').' AS created,
+        $query = 'SELECT id, url, title, notes, private, '.unix_timestamp('created').' AS created,
                          '.unix_timestamp('modified').' AS modified
                     FROM '.cfg('database/prefix').'bookmarks WHERE url = :url';
         if (! $this->privates) {
@@ -144,7 +144,31 @@ class Bookmarks {
         $bookmark = $query->fetch(PDO::FETCH_ASSOC);
         $query->closeCursor();
         if ($bookmark !== False) {
+            $bookmark['shortcut'] = '-'.base_convert($bookmark['id'], 10, 36);
             $bookmark['tags'] = $this->fetch_tags($url);
+        }
+        return $bookmark;
+    }
+
+    /**
+     * Fetch bookmark by ID
+     */
+    public function fetch_by_id($id) {
+        $id = intval(substr($id, 1), 36);
+        $query = 'SELECT id, url, title, notes, private, '.unix_timestamp('created').' AS created,
+                         '.unix_timestamp('modified').' AS modified
+                    FROM '.cfg('database/prefix').'bookmarks WHERE id = :id';
+        if (! $this->privates) {
+            $query .= ' AND private = 0 ';
+        }
+        $query = $this->db->prepare($query);
+        $query->bindParam(':id', $id);
+        $query->execute();
+        $bookmark = $query->fetch(PDO::FETCH_ASSOC);
+        $query->closeCursor();
+        if ($bookmark !== False) {
+            $bookmark['shortcut'] = $id;
+            $bookmark['tags'] = $this->fetch_tags($bookmark['url']);
         }
         return $bookmark;
     }
@@ -176,7 +200,8 @@ class Bookmarks {
         $bookmarks = array();
         try {
             $query = sprintf(
-                'SELECT b.url AS url,
+                'SELECT b.id AS id,
+                        b.url AS url,
                         b.title AS title,
                         b.notes AS notes,
                         b.private AS private,
@@ -201,6 +226,7 @@ class Bookmarks {
             $query->execute();
             $bookmarks = $query->fetchAll(PDO::FETCH_ASSOC);
             for ($i = 0; $i < count($bookmarks); $i++) {
+                $bookmarks[$i]['shortcut'] = '-'.base_convert($bookmarks[$i]['id'], 10, 36);
                 $bookmarks[$i]['tags'] = $this->fetch_tags($bookmarks[$i]['url']);
             }
             $query->closeCursor();
@@ -215,7 +241,7 @@ class Bookmarks {
      */
     public function fetch_all($tags=array(), $offset=0, $limit=1000) {
         $limit = min($limit, $this->hard_limit);
-        $select = 'b.url url, b.title title, b.notes notes, b.private private,
+        $select = 'b.id id, b.url url, b.title title, b.notes notes, b.private private,
                   '.unix_timestamp('b.created').' AS created,
                   '.unix_timestamp('b.modified').' AS modified';
         if ($offset === 'count') {
@@ -271,6 +297,7 @@ class Bookmarks {
                 $bookmarks = $bookmarks[0]['count'];
             } else {
                 for ($i = 0; $i < count($bookmarks); $i++) {
+                    $bookmarks[$i]['shortcut'] = '-'.base_convert($bookmarks[$i]['id'], 10, 36);
                     $bookmarks[$i]['tags'] = $this->fetch_tags($bookmarks[$i]['url']);
                 }
             }
