@@ -28,20 +28,12 @@ if ($f === '') {
         $f = 'fetch';
     }
 }
-if (substr($f, 0, 5) === 'tags/') {
-    require_once 'controllers/fetch.php';
-    $tags = v('tags');
-    if (! $tags) {
-        $tags = substr($f, 5);
-    }
-    echo fetch($store, $tags);
-} elseif (substr($f, 0, 8) === 'all_tags') {
-    $prefix = substr($f, 9);
-    if ($prefix === False) { $prefix = ''; }
-    $tags = $store->fetch_all_tags($prefix);
-    header('Content-Type: application/json');
-    die(json_encode($tags));
-} elseif (ctype_alnum($f) && is_file("controllers/$f.php")) {
+if (strpos($f, '/') !== False) {
+    $parts = explode('/', $f);
+    $f = array_shift($parts);
+    $_GET['_info'] = join('/', $parts);
+}
+if (ctype_alnum($f) && is_file("controllers/$f.php")) {
     require_once "controllers/$f.php";
     echo $f($store);
 } else {
