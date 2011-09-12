@@ -5,7 +5,7 @@
   <description><?php _e('Bookmark feed')?></description>
   <items>
     <rdf:Seq>
-      <?php foreach ($bookmarks as $bookmark):?><rdf:li rdf:ressource="<?php echo $bookmark['url']?>" />
+      <?php foreach ($bookmarks as $bookmark):?><rdf:li rdf:resource="<?php echo $bookmark['url']?>" />
       <?php endforeach?>  </rdf:Seq>
   </items>
 </channel>
