@@ -41,14 +41,14 @@ if (substr($f, 0, 5) === 'tags/') {
     $tags = $store->fetch_all_tags($prefix);
     header('Content-Type: application/json');
     die(json_encode($tags));
-} elseif (in_array($f, array('plugin', 'share', 'delete', 'login', 'logout', 'fetch', 'help', 'search', 'import', 'install', 'save'))) {
-    require_once 'controllers/'.$f.'.php';
+} elseif (ctype_alnum($f) && is_file("controllers/$f.php")) {
+    require_once "controllers/$f.php";
     echo $f($store);
 } else {
-    require_once 'controllers/fetch.php';
-    messages_add(sprintf(__('The site %s couldn’t be found.'), '<var>'.h(urlencode($f)).'</var>'),
-        'error', True);
+    messages_add(sprintf(__('The site %s couldn’t be found.'),
+                 '<var>'.h(urlencode($f)).'</var>'), 'error', True);
     header('HTTP/1.0 404 Not Found');
+    require_once 'controllers/fetch.php';
     echo fetch($store);
 }
 
