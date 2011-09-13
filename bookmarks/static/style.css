@@ -481,3 +481,29 @@ form .text {
   color: #333;
 }
 
+
+/**
+ * Tag cloud
+ */
+.tagcloud {
+  list-style: none;
+  margin: 10px 0;
+  text-align: justify;
+}
+.tagcloud li {
+  margin: 0;
+  padding: 0;
+  display: inline;
+  line-height: 15px;
+}
+.tagcloud .t1 { font-size: .7em; opacity: .667; }
+.tagcloud .t2 { font-size: .85em; }
+.tagcloud .t3 { font-size: 1em; }
+.tagcloud .t4 { font-size: 1.2em; }
+.tagcloud .t5 { font-size: 1.5em; }
+.tagcloud .t6 { font-size: 2.0em; }
+.tagcloud li a {
+  display: inline-block;
+  padding-right: 0px;
+  height: 15px;
+}

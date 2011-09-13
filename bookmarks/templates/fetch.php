@@ -10,4 +10,5 @@
 <?php include 'pagination.php'?>
 <?php include 'list.php'?>
 <?php include 'pagination.php'?>
+<?php include 'aside.php'?>
 <?php include 'footer.php'?>

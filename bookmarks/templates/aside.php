@@ -1,0 +1,1 @@
+<?php include 'tagcloud.php'?>

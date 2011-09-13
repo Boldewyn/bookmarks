@@ -257,13 +257,13 @@ class Bookmarks {
                 redirect('/install');
             }
             if ($offset !== 'count') {
-                $query->bindParam(':offset', $offset, PDO::PARAM_INT);
-                $query->bindParam(':limit', $limit, PDO::PARAM_INT);
+                $query->bindValue(':offset', $offset, PDO::PARAM_INT);
+                $query->bindValue(':limit', $limit, PDO::PARAM_INT);
             }
             if (count($tags) === 1) {
-                $query->bindParam(':tag', $tags[0]);
+                $query->bindValue(':tag', $tags[0]);
             } elseif (count($tags) > 1) {
-                $query->bindParam(':n', count($tags));
+                $query->bindValue(':n', count($tags));
             }
             $query->execute();
             $bookmarks = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -309,7 +309,6 @@ class Bookmarks {
                         AND b.private = 0 ) > 0').'
            GROUP BY t.tag');
         $query->execute(array(':prefix' => $prefix.'%'));
-        //$query->debugDumpParams();
         $return = $query->fetchAll(PDO::FETCH_ASSOC);
         $query->closeCursor();
         return $return;

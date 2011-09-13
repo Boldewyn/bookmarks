@@ -35,8 +35,9 @@ function fetch($store, $tags='') {
             break;
         default:
             $html = tpl('fetch', array('body_id' => 'index',
-                'site_title' => __('All Bookmarks'),
+                'site_title' => count($tags)? sprintf(__('Bookmarks Tagged “%s”'), join(' ', $tags)) : __('All Bookmarks'),
                 'tags' => $tags,
+                'tagcloud' => weight_tagcloud($store->fetch_all_tags()),
                 'page' => $page,
                 'pages' => (int)ceil((float)$all/(float)cfg('display/pagination', 100)),
                 'all' => $all,

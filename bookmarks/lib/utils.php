@@ -201,6 +201,37 @@ function update_url($params) {
 
 
 /**
+ * Weight the counts on a tagcloud
+ */
+function weight_tagcloud($tc) {
+    $max = 0;
+    $min = 10000000;
+    foreach ($tc as $tag) {
+        if (trim($tag['tag']) === '') {
+            continue;
+        }
+        if ($tag['n'] < $min) {
+            $min = $tag['n'];
+        }
+        if ($tag['n'] > $max) {
+            $max = $tag['n'];
+        }
+    }
+    $tc2 = array();
+    foreach ($tc as $tag) {
+        if (trim($tag['tag']) === '') {
+            continue;
+        }
+        $tc2[] = array(
+            'tag' => $tag['tag'],
+            'n' => floor(5 * ($tag['n'] - $min)/($max - $min)) + 1,
+        );
+    }
+    return $tc2;
+}
+
+
+/**
  * Fallback for PHP < 5.2
  */
 if (! defined('FILTER_VALIDATE_URL')) {

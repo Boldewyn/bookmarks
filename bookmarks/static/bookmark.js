@@ -1,6 +1,6 @@
 jQuery(function ($) {
   $('#tag-list li').click(function () {
-    var tag = $.trim($(this).text()), l = window.location;
+    var tag = encodeURIComponent($.trim($(this).text())), l = window.location;
     var re = new RegExp('(\\+?)'+tag.replace(/[.*+?|()\[\]{}\\]/g, '\\$1') + '\\+?');
     if (l.search.search(/[\?&]tags=/) > -1) {
       l.search = l.search.replace(re, '$1');
