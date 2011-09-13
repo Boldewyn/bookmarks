@@ -36,7 +36,12 @@ function call_hook($hookname, $data=NULL) {
  */
 function load_plugins() {
     foreach (cfg('plugins/active', array()) as $plugin) {
-        require_once dirname(__FILE__).'/../plugins/'.$plugin.'.php';
+        if (is_file(dirname(__FILE__).'/../plugins/'.$plugin.'.php')) {
+            require_once dirname(__FILE__).'/../plugins/'.$plugin.'.php';
+        } else {
+            require_once dirname(__FILE__).'/../plugins/'.$plugin.'/plugin.php';
+        }
+        // deliberately fail, if none of the above can be found
     }
 }
 
