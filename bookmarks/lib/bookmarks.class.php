@@ -47,21 +47,22 @@ class Bookmarks {
         try {
             $tag = Null;
             $stmt = $this->db->prepare('INSERT INTO '.cfg('database/prefix').
-                                       'bookmarks (url, title, notes, private, created, modified)
-                                        VALUES (:url, :title, :notes, :private, '.$time_statement.')');
-            $stmt->bindParam(':url', $url);
-            $stmt->bindParam(':title', $title);
-            $stmt->bindParam(':notes', $notes);
-            $stmt->bindParam(':private', $private, db_bool());
+                                       'bookmarks (url, title, notes, private, created, modified, shortcut)
+                                        VALUES (:url, :title, :notes, :private, '.$time_statement.', :shortcut)');
+            $stmt->bindValue(':url', $url);
+            $stmt->bindValue(':title', $title);
+            $stmt->bindValue(':notes', $notes);
+            $stmt->bindValue(':private', $private, db_bool());
+            $stmt->bindValue(':shortcut', base_convert(crc32($url), 10, 36));
             if ($time !== NULL) {
-                $stmt->bindParam(':created', $time);
-                $stmt->bindParam(':modified', $time);
+                $stmt->bindValue(':created', $time);
+                $stmt->bindValue(':modified', $time);
             }
             $stmt->execute();
             $stmt->closeCursor();
             $stmt = $this->db->prepare('INSERT INTO '.cfg('database/prefix').'bookmark_tags
                                         (url, tag) VALUES (:url, :tag)');
-            $stmt->bindParam(':url', $url);
+            $stmt->bindValue(':url', $url);
             $stmt->bindParam(':tag', $tag);
             foreach ($tags as $tag) {
                 $stmt->execute();
@@ -103,10 +104,10 @@ class Bookmarks {
                                         notes = :notes,
                                         private = :private
                                         WHERE url = :url');
-            $stmt->bindParam(':url', $url);
-            $stmt->bindParam(':title', $title);
-            $stmt->bindParam(':notes', $notes);
-            $stmt->bindParam(':private', $private, db_bool());
+            $stmt->bindValue(':url', $url);
+            $stmt->bindValue(':title', $title);
+            $stmt->bindValue(':notes', $notes);
+            $stmt->bindValue(':private', $private, db_bool());
             $stmt->execute();
             $stmt->closeCursor();
             # TODO: Only diff change
@@ -116,7 +117,7 @@ class Bookmarks {
             $stmt->closeCursor();
             $stmt = $this->db->prepare('INSERT INTO '.cfg('database/prefix').'bookmark_tags
                                         (url, tag) VALUES (:url, :tag)');
-            $stmt->bindParam(':url', $url);
+            $stmt->bindValue(':url', $url);
             $stmt->bindParam(':tag', $tag);
             foreach ($tags as $tag) {
                 $stmt->execute();
@@ -132,19 +133,20 @@ class Bookmarks {
      * Fetch a single bookmark
      */
     public function fetch($url) {
-        $query = 'SELECT id, url, title, notes, private, '.unix_timestamp('created').' AS created,
-                         '.unix_timestamp('modified').' AS modified
+        $query = 'SELECT id, url, title, notes, private, ' .
+                         unix_timestamp('created').' AS created, ' .
+                         unix_timestamp('modified').' AS modified,
+                         shortcut
                     FROM '.cfg('database/prefix').'bookmarks WHERE url = :url';
         if (! $this->privates) {
             $query .= ' AND private = 0 ';
         }
         $query = $this->db->prepare($query);
-        $query->bindParam(':url', $url);
+        $query->bindValue(':url', $url);
         $query->execute();
         $bookmark = $query->fetch(PDO::FETCH_ASSOC);
         $query->closeCursor();
         if ($bookmark !== False) {
-            $bookmark['shortcut'] = '-'.base_convert($bookmark['id'], 10, 36);
             $bookmark['tags'] = $this->fetch_tags($url);
         }
         return $bookmark;
@@ -154,20 +156,20 @@ class Bookmarks {
      * Fetch bookmark by ID
      */
     public function fetch_by_id($id) {
-        $id = intval(substr($id, 1), 36);
+        $id = ltrim($id, '-');
         $query = 'SELECT id, url, title, notes, private, '.unix_timestamp('created').' AS created,
-                         '.unix_timestamp('modified').' AS modified
-                    FROM '.cfg('database/prefix').'bookmarks WHERE id = :id';
+                         '.unix_timestamp('modified').' AS modified, shortcut
+                    FROM '.cfg('database/prefix').'bookmarks WHERE shortcut = :id';
         if (! $this->privates) {
             $query .= ' AND private = 0 ';
         }
+        $query .= ' LIMIT 1'; // this shouldn't be needed
         $query = $this->db->prepare($query);
         $query->bindParam(':id', $id);
         $query->execute();
         $bookmark = $query->fetch(PDO::FETCH_ASSOC);
         $query->closeCursor();
         if ($bookmark !== False) {
-            $bookmark['shortcut'] = $id;
             $bookmark['tags'] = $this->fetch_tags($bookmark['url']);
         }
         return $bookmark;
@@ -205,6 +207,7 @@ class Bookmarks {
                         b.title AS title,
                         b.notes AS notes,
                         b.private AS private,
+                        b.shortcut AS shortcut,
                         '.str_replace('%', '%%', unix_timestamp('b.created')).' AS created,
                         '.str_replace('%', '%%', unix_timestamp('b.modified')).' AS modified
                    FROM '.cfg('database/prefix').'bookmarks b
@@ -226,7 +229,6 @@ class Bookmarks {
             $query->execute();
             $bookmarks = $query->fetchAll(PDO::FETCH_ASSOC);
             for ($i = 0; $i < count($bookmarks); $i++) {
-                $bookmarks[$i]['shortcut'] = '-'.base_convert($bookmarks[$i]['id'], 10, 36);
                 $bookmarks[$i]['tags'] = $this->fetch_tags($bookmarks[$i]['url']);
             }
             $query->closeCursor();
@@ -241,7 +243,8 @@ class Bookmarks {
      */
     public function fetch_all($tags=array(), $offset=0, $limit=1000) {
         $limit = min($limit, $this->hard_limit);
-        $select = 'b.id id, b.url url, b.title title, b.notes notes, b.private private,
+        $select = 'b.id id, b.url url, b.title title, b.notes notes,
+                   b.private private, b.shortcut shortcut,
                   '.unix_timestamp('b.created').' AS created,
                   '.unix_timestamp('b.modified').' AS modified';
         if ($offset === 'count') {
@@ -297,7 +300,6 @@ class Bookmarks {
                 $bookmarks = $bookmarks[0]['count'];
             } else {
                 for ($i = 0; $i < count($bookmarks); $i++) {
-                    $bookmarks[$i]['shortcut'] = '-'.base_convert($bookmarks[$i]['id'], 10, 36);
                     $bookmarks[$i]['tags'] = $this->fetch_tags($bookmarks[$i]['url']);
                 }
             }
@@ -355,11 +357,15 @@ class Bookmarks {
                 notes TEXT,
                 private BOOLEAN NOT NULL DEFAULT 1,
                 modified TIMESTAMP NOT NULL,
-                created TIMESTAMP NOT NULL
+                created TIMESTAMP NOT NULL,
+                shortcut VARCHAR(15) NOT NULL
             )');
             $this->db->exec('
             CREATE INDEX has_url
                 ON '.cfg('database/prefix').'bookmarks (url)');
+            $this->db->exec('
+            CREATE INDEX sc
+                ON '.cfg('database/prefix').'bookmarks (shortcut)');
             $this->db->exec('
             CREATE INDEX is_private
                 ON '.cfg('database/prefix').'bookmarks (private)');
