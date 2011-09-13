@@ -17,6 +17,8 @@ $bookmark_config = array(
     'display' => array(
         'pagination' => 100,    // pagination length
         'title' => 'Bookmarks', // site title
+        'use_shortcut' => False,// whether to link directly or use the shortcut
+                                // feature
     ),
     'session' => array(
         'days' => 365,          // Session length before login needs renewal
