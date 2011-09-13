@@ -7,9 +7,12 @@
 function plugin($store) {
     $plugin = v('plugin');
     $function = v('function');
-    if ($plugin && is_file(dirname(__FILE__).'/../plugins/'.$plugin.'.php') &&
-        in_array($plugin, cfg('plugins/active', array()))) {
-        require_once dirname(__FILE__).'/../plugins/'.$plugin.'.php';
+    if ($plugin && in_array($plugin, cfg('plugins/active', array()))) {
+        if (is_file(dirname(__FILE__).'/../plugins/'.$plugin.'.php')) {
+            require_once dirname(__FILE__).'/../plugins/'.$plugin.'.php';
+        } elseif (is_file(dirname(__FILE__).'/../plugins/'.$plugin.'/plugin.php')) {
+            require_once dirname(__FILE__).'/../plugins/'.$plugin.'/plugin.php';
+        }
         if (function_exists($function)) {
             return $function($store);
         }
