@@ -2,7 +2,13 @@
   <ul id="bookmarks">
     <?php foreach ($bookmarks as $bookmark):?>
       <li>
-        <a class="url" rel="external" href="<?php echo $bookmark['url']?>"><?php echo $bookmark['title']?></a>
+        <a class="url" rel="external" href="<?php
+          if (cfg('display/use_shortcut', False)):
+            echo $script_path.'-'.$bookmark['shortcut'];
+          else:
+            echo $bookmark['url'];
+          endif;
+        ?>"><?php echo $bookmark['title']?></a>
         <span class="tags">
           <?php foreach ($bookmark['tags'] as $tag):?>
             <a rel="tag" href="<?php echo "${script_path}tags/".rawurlencode($tag)?>"><?php echo $tag?></a>
