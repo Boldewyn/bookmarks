@@ -8,7 +8,7 @@
     <input type="hidden" name="url" value="<?php echo $url?>" />
     <input type="hidden" name="ctoken" value="<?php echo set_csrf('delete')?>" />
     <button type="submit" class="delete"><?php _e('Delete')?></button>
-    <button type="button" class="cancel" onclick="window.location.href='<?php echo $script_path?>'"><?php _e('Cancel')?></button>
+    <a class="ui-button cancel" href="<?php echo $script_path?>"><?php _e('Cancel')?></a>
   </p>
 </form>
 <?php include 'footer.php'?>

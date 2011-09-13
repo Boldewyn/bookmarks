@@ -26,7 +26,7 @@
     <input type="hidden" name="save" value="1" />
     <input type="hidden" name="ctoken" value="<?php echo set_csrf('save')?>" />
     <button type="submit"><?php echo $button?></button>
-    <button type="button" class="cancel" onclick="window.location.href='<?php echo $script_path?>'"><?php _e('Cancel')?></button>
+    <a class="ui-button cancel" href="<?php echo $script_path?>"><?php _e('Cancel')?></a>
   </p>
 </form>
 <?php include 'footer.php'?>

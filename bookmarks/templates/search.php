@@ -7,7 +7,7 @@
         </p>
         <p>
           <button type="submit"><?php _e('search')?></button>
-          <button type="button" class="cancel" onclick="window.location.href='<?php echo $script_path?>'"><?php _e('Cancel')?></button>
+          <a class="ui-button cancel" href="<?php echo $script_path?>"><?php _e('Cancel')?></a>
         </p>
       </form>
 <?php include 'list.php'?>

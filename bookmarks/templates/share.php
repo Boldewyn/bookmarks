@@ -13,7 +13,7 @@
       <input type="hidden" name="share_private" value="1" />
     <?php endif?>
     <button type="submit" class="delete"><?php _e('Share')?></button>
-    <button type="button" class="cancel" onclick="window.location.href='<?php echo $script_path?>'"><?php _e('Cancel')?></button>
+    <a class="ui-button cancel" href="<?php echo $script_path?>"><?php _e('Cancel')?></a>
   </p>
 </form>
 <?php include 'footer.php'?>

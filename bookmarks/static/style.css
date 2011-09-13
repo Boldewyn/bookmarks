@@ -381,6 +381,7 @@ article {
 }
 
 
+.ui-button,
 button {
   padding: .625em .625em .625em 2.5em;
   background-color: #FFEFF4;
@@ -388,26 +389,33 @@ button {
   background-position: .625em 8px;
   border: .0625em solid white;
   outline: none;
+  color: #4c4c4c;
 }
 
+.ui-button.submit,
 button[type=submit] {
   background-image: url(save.png);
 }
 
+.ui-button.cancel,
 button.cancel {
   background-image: url(cancel.png);
 }
 
+.ui-button:focus, .ui-button:hover,
 button:focus, button:hover {
   background-color: #FDFDFD;
   color: #95002B;
   background-position: .625em -88px;
+  outline: 0;
 }
 
+.ui-button:active,
 button:active {
   background-color: #E60042;
   background-position: .625em -40px;
   color: #FFFFFF;
+  outline: 0;
 }
 
 
