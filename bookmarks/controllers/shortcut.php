@@ -14,6 +14,7 @@ function shortcut($store) {
         messages_add(__('This shortcut doesn’t exist.'), 'error');
         refer();
     }
+    call_hook('shortcut', array($bookmark));
     header('HTTP/1.0 301 Moved Permanently');
     header('Location: '.$bookmark['url']);
     return 'Redirect to '.h($bookmark['url']);
