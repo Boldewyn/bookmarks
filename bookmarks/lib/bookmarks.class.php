@@ -239,6 +239,34 @@ class Bookmarks {
     }
 
     /**
+     * Count search results
+     */
+    public function count_search($qarray) {
+        try {
+            $query = sprintf(
+                'SELECT COUNT(*) AS count
+                   FROM '.cfg('database/prefix').'bookmarks b
+                  WHERE b.url REGEXP %1$s
+                     OR b.title REGEXP %1$s
+                     OR b.notes REGEXP %1$s',
+                        join('|', array_map(array($this->db, 'quote'),
+                            $qarray))
+                        );
+            if (! $this->privates) {
+                $query .= ' AND private = 0';
+            }
+            $query = $this->db->prepare($query);
+            $query->execute();
+            $count = $query->fetchAll(PDO::FETCH_ASSOC);
+            $query->closeCursor();
+            $count = $count[0]['count'];
+        } catch (PDOException $e) {
+            return NULL;
+        }
+        return $count;
+    }
+
+    /**
      * Fetch all (or some) bookmarks
      */
     public function fetch_all($tags=array(), $offset=0, $limit=1000) {
