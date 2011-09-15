@@ -55,10 +55,9 @@ function email_do_share($store) {
         sprintf(__('Bookmark recommendation: “%s”'), $bookmark['title']),
         $message.'Bookmark: '.$bookmark['url'].'
 You can find more bookmarks at
-- http://'.get_host().get_script_path().'
+- '.get_url().'
 
 -------------------------------------
-Delivered by Bookmarks
 Host your own bookmarks:
 http://boldewyn.github.com/bookmarks/',
         $additional_headers);

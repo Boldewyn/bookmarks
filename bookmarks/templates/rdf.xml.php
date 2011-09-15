@@ -1,7 +1,7 @@
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://purl.org/rss/1.0/">
-<channel rdf:about="http://<?php echo get_host().$script_path.'?type=rdf'?>">
+<channel rdf:about="<?php echo h(get_url()).'?type=rdf'?>">
   <title>Bookmarks</title>
-  <link>http://<?php echo get_host().$script_path.'?type=rdf'?></link>
+  <link><?php echo h(get_url()).'?type=rdf'?></link>
   <description><?php _e('Bookmark feed')?></description>
   <items>
     <rdf:Seq>

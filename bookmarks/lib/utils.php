@@ -101,12 +101,29 @@ function tpl($file, $ctx=array(), $safe=array()) {
  * Get the path to wherefrom PHP is executed
  */
 function get_script_path() {
-    $base_path = cfg('base_path');
-    if (isset($_SERVER['PATH_INFO'])) {
-        return $base_path.'index.php/';
-    } else {
-        return $base_path;
+    static $base_path = NULL;
+    if ($base_path === NULL) {
+        $base_path = cfg('base_path') .
+                    (have_mod_rewrite()? '' : 'index.php/');
     }
+    return $base_path;
+}
+
+
+/**
+ * Check, if we have mod_rewrite support
+ *
+ * thanks to Christian Roy for the following:
+ *  http://christian.roy.name/blog/detecting-modrewrite-using-php
+ */
+function have_mod_rewrite() {
+    if (function_exists('apache_get_modules')) {
+        $modules = apache_get_modules();
+        $mod_rewrite = in_array('mod_rewrite', $modules);
+    } else {
+        $mod_rewrite = getenv('HTTP_MOD_REWRITE') === 'On'? true : false;
+    }
+    return $mod_rewrite;
 }
 
 
@@ -114,7 +131,29 @@ function get_script_path() {
  * Get the Host name
  */
 function get_host() {
-    return preg_replace('/[^a-zA-Z0-9.-]/', '', $_SERVER['HTTP_HOST']);
+    static $host = NULL;
+     if ($host === NULL) {
+        if (isset($_SERVER['HTTP_HOST'])) {
+            $host = preg_replace('/[^a-zA-Z0-9.-]/', '', $_SERVER['HTTP_HOST']);
+        } else {
+            $host = 'localhost';
+        }
+    }
+    return $host;
+}
+
+
+/**
+ * Get the full URI to this installation
+ */
+function get_url() {
+    static $url  = NULL;
+    if ($url === NULL) {
+        $url  = (isset($_SERVER['HTTPS']) &&
+                strtolower($_SERVER['HTTPS']) !== 'off' ? 'https' : 'http');
+        $url .= '://' . get_host() . get_script_path();
+    }
+    return $url;
 }
 
 

@@ -1,11 +1,14 @@
-# -MultiViews, otherwise /store becomes /store.php before redirecting
-Options -MultiViews FollowSymLinks
+Options +FollowSymLinks
 
 <IfModule rewrite_module>
-RewriteEngine On
+    <IfModule env_module>
+        SetEnv HTTP_MOD_REWRITE On
+    </IfModule>
 
-RewriteRule index.php - [L]
-RewriteRule ^static/ - [L]
+    RewriteEngine On
 
-RewriteRule ^(.+)$ index.php?f=$1 [L,QSA]
+    RewriteRule index.php - [L]
+    RewriteRule ^static/ - [L]
+
+    RewriteRule ^(.+)$ index.php?f=$1 [L,QSA]
 </IfModule>

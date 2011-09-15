@@ -10,6 +10,6 @@
         <a rel="tag" href="<?php echo "${script_path}tags/".rawurlencode($tag)?>"><?php echo $tag?></a>
       <?php endforeach ?></span></p>
     <?php endif?>
-    <p><strong><?php _e('Short Link:')?></strong> <a href="<?php echo $script_path.'-'.$bookmark['shortcut']?>">http://<?php echo get_host().$script_path.'-'.$bookmark['shortcut']?></a></p>
+    <p><strong><?php _e('Short Link:')?></strong> <a href="<?php echo h(get_url()).'-'.$bookmark['shortcut']?>"><?php echo h(get_url()).'-'.$bookmark['shortcut']?></a></p>
   </div>
 <?php endif?>
