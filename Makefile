@@ -1,29 +1,29 @@
-ICONIDS := $(shell sed -n '/id=/p' bookmark/static/icons.svg |grep translate | sed 's/.*id="\([^"]\+\)".*/\1/')
+ICONIDS := $(shell sed -n '/id=/p' bookmarks/static/icons.svg |grep translate | sed 's/.*id="\([^"]\+\)".*/\1/')
 
 all: icons
 
-icons: bookmark/static/*.png
+icons: bookmarks/static/*.png
 
-bookmark/static/*.png: bookmark/static/icons.svg
-	tools/create_icons.sh '#e60042'
-	tools/create_icons.sh '#ffffff'
-	tools/create_icons.sh '#95002b'
-	tools/create_icons.sh '#ff9fbc'
+bookmarks/static/*.png: bookmarks/static/icons.svg
+	tools/create_icons.sh --half '#e60042'
+	tools/create_icons.sh --half '#ffffff'
+	tools/create_icons.sh --half '#95002b'
+	tools/create_icons.sh --half '#ff9fbc'
 	for item in $(ICONIDS); do \
 		montage -background transparent -tile 1x7 -geometry 24x24 \
-		  bookmark/static/$$item.e60042.png \
+		  bookmarks/static/$$item.e60042.png \
 		  NULL: \
-		  bookmark/static/$$item.ffffff.png \
+		  bookmarks/static/$$item.ffffff.png \
 		  NULL: \
-		  bookmark/static/$$item.95002b.png \
+		  bookmarks/static/$$item.95002b.png \
 		  NULL: \
-		  bookmark/static/$$item.ff9fbc.png \
-		  bookmark/static/$$item.uncrushed.png; \
-		pngcrush -b bookmark/static/$$item.uncrushed.png bookmark/static/$$item.png; \
+		  bookmarks/static/$$item.ff9fbc.png \
+		  bookmarks/static/$$item.png; \
+		optipng -o7 bookmarks/static/$$item.png; \
 	done
-	rm -f bookmark/static/*.*.png
+	rm -f bookmarks/static/*.*.png
 
 .PHONY: clean
 
 clean:
-	rm -f bookmark/static/*.png
+	rm -f bookmarks/static/*.png
