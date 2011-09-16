@@ -8,7 +8,7 @@ icons: bookmarks/static/icons.svg
 	tools/create_icons.sh --half '#95002b'
 	tools/create_icons.sh --half '#ff9fbc'
 	for item in $(ICONIDS); do \
-		montage -background transparent -tile 1x7 -geometry 12x12 \
+		montage -background transparent -tile 1x10 -geometry 12x12 \
 		  bookmarks/static/$$item.e60042.png \
 		  NULL: \
 		  NULL: \
