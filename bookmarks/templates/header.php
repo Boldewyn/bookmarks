@@ -4,10 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="<?php echo $base_path?>static/style.css" />
+    <link rel="stylesheet" href="<?php echo $base_path?>static/jquery-ui.css" />
     <link rel="shortcut icon" href="<?php echo $base_path?>static/favicon.ico" />
     <!--[if lt IE 9]>
       <script src="<?php echo $base_path?>static/html5.js"></script>
     <![endif]-->
+    <script>var Bookmarks={url:'<?php echo get_url()?>',script_path:'<?php echo $script_path?>'}</script>
 <?php call_hook('front_head')?>
     <title><?php echo $site_title?> - <?php echo $global_site_title?></title>
   </head>
