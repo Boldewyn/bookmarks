@@ -2,9 +2,7 @@ ICONIDS := $(shell sed -n '/id=/p' bookmarks/static/icons.svg |grep translate | 
 
 all: icons
 
-icons: bookmarks/static/*.png
-
-bookmarks/static/*.png: bookmarks/static/icons.svg
+icons: bookmarks/static/icons.svg
 	tools/create_icons.sh --half '#e60042'
 	tools/create_icons.sh --half '#ffffff'
 	tools/create_icons.sh --half '#95002b'
@@ -26,7 +24,7 @@ bookmarks/static/*.png: bookmarks/static/icons.svg
 	done
 	rm -f bookmarks/static/*.*.png
 
-.PHONY: clean
+.PHONY: clean icons
 
 clean:
 	rm -f bookmarks/static/*.png
