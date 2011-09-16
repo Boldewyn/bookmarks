@@ -13,7 +13,7 @@
 <?php call_hook('front_head')?>
     <title><?php echo $site_title?> - <?php echo $global_site_title?></title>
   </head>
-  <body id="<?php echo $body_id?>">
+  <body id="<?php echo $body_id?>" class="<?php if (logged_in()):?>logged-in<?php else:?>anonymous<?php endif?>">
     <div id="global">
       <nav>
         <ul>
