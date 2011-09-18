@@ -6,7 +6,7 @@
     <input type="text" class="text" name="q" id="q" value="<?php echo h(v('q', ''))?>" autofocus="autofocus" />
   </p>
   <p>
-    <button type="submit"><?php _e('search')?></button>
+    <button type="submit"><?php _e('Search')?></button>
     <a class="ui-button cancel" href="<?php echo $script_path?>"><?php _e('Cancel')?></a>
   </p>
 </form>

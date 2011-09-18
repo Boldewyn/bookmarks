@@ -22,6 +22,9 @@ jQuery(function ($) {
     .end()
     .filter('.cancel').button('option', 'icons', {primary:'ui-icon-closethick'})
     .end();
+  $('.search-form [type="submit"]').button('option', {
+    icons: {primary:'ui-icon-search'},
+    text: false});
   var tagfields = $('#save_form input[name="tags"], #change_form input[name="tags"]');
   tagfields.autocomplete({
     minLength: 2,

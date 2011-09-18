@@ -16,16 +16,22 @@
   <body id="<?php echo $body_id?>" class="<?php if (logged_in()):?>logged-in<?php else:?>anonymous<?php endif?>">
     <div id="global">
       <nav>
-        <ul>
-          <li class="start <?php if (! $f):?>active<?php endif?>"><a href="<?php echo $script_path?>"><?php _e('Overview')?></a></li>
-          <li class="search <?php if ($f === 'search'):?>active<?php endif?>"><a href="<?php echo $script_path?>search"><?php _e('Search')?></a></li>
+        <ul class="level2">
+          <li class="search <?php if ($f === 'search'):?>active<?php endif?>">
+            <?php include 'searchform.php'?>
+          </li>
           <?php if (in_array('logged_in', $_SESSION)):?>
-            <li class="save <?php if ($f === 'save'):?>active<?php endif?>"><a href="<?php echo $script_path?>save"><?php v('edit', False)? _e('Edit') : _e('Create new')?></a></li>
-            <li class="import <?php if ($f === 'import'):?>active<?php endif?>"><a href="<?php echo $script_path?>import"><?php _e('Import')?></a></li>
-            <li class="logout"><a href="<?php echo $script_path?>logout"><?php _e('Log out')?></a></li>
-            <li class="help <?php if ($f === 'help'):?>active<?php endif?>"><a href="<?php echo $script_path?>help"><?php _e('Help')?></a></li>
+            <li class="logout"><a href="<?php echo $script_path?>logout" tabindex="7"><?php _e('Log out')?></a></li>
+            <li class="help <?php if ($f === 'help'):?>active<?php endif?>"><a href="<?php echo $script_path?>help" tabindex="6"><?php _e('Help')?></a></li>
           <?php else:?>
-            <li class="login"><a href="<?php echo $script_path?>login"><?php _e('Log in')?></a></li>
+            <li class="login"><a href="<?php echo $script_path?>login" tabindex="6"><?php _e('Log in')?></a></li>
+          <?php endif?>
+        </ul>
+        <ul class="level1">
+          <li class="start <?php if (! $f):?>active<?php endif?>"><a href="<?php echo $script_path?>" tabindex="3"><?php _e('Overview')?></a></li>
+          <?php if (in_array('logged_in', $_SESSION)):?>
+            <li class="save <?php if ($f === 'save'):?>active<?php endif?>"><a href="<?php echo $script_path?>save" tabindex="4"><?php v('edit', False)? _e('Edit') : _e('Create new')?></a></li>
+            <li class="import <?php if ($f === 'import'):?>active<?php endif?>"><a href="<?php echo $script_path?>import" tabindex="5"><?php _e('Import')?></a></li>
           <?php endif?>
         </ul>
       </nav>

@@ -1,36 +1,8 @@
 @charset "UTF-8";
 
 /**
- * R E S E T =============================================================== *
- *
- * This part resets many of the browsers' default rendering properties that
- * are mostly incompatible to one another.
- *
- * @see Bases loosely on Eric Meyer's reset stylesheet,
- *      <http://meyerweb.com/eric/tools/css/reset/>
+ * Normalization ===========================================
  */
-html, body, div, span, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote,
-ul, ol, dl, li, dt, dd,
-form, fieldset, pre, label, legend,
-a, abbr, address, cite, code,
-del, dfn, em, img, ins, kbd, q, samp,
-strong, sub, sup, tt, var, hr,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, dialog, figcaption, figure, footer, header,
-hgroup, menu, nav, section, summary,
-time, mark, audio, video {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  outline: 0;
-  font-weight: inherit;
-  font-style: inherit;
-  font-size: 100%;
-  font-family: inherit;
-  vertical-align: baseline;
-}
-
 article, aside, dialog, figcaption, figure, footer, header,
 hgroup, menu, nav, section {
   display: block;
@@ -41,93 +13,45 @@ html {
 }
 
 body {
-  font: 100%/1.25em "Droid Serif","DejaVu Serif",Times,serif;
+  font: 100%/1.25em "Droid Sans","DejaVu Sans",Arial,sans-serif;
   color: #333;
   background: #F5FBF0;
   margin: 0;
 }
 
-table {
-  border-spacing: 0;
-  border-collapse: collapse;
-}
-
-caption, td, th {
-  text-align: left;
-}
-
 h1 {
   font-size:  2.0em;
   line-height: 1.25;
-  margin-bottom: .3125em;
+  margin: 0 0 .3125em;
 }
 
 h2 {
   font-size:  1.5em;
   line-height: 1.25;
-  margin-bottom: .41666em;
+  margin: 0 0 .41666em;
 }
 
 h3 {
   font-size:  1.25em;
   line-height: 1.0;
-  margin-bottom: .5em;
+  margin: 0 0 .5em;
 }
 
-label, button, input[type=submit], input[type=image], .ui-clickable {
+label, button, input[type=submit],
+input[type=image], .ui-clickable {
   cursor: pointer;
 }
 
-/**
- * these are 'magic' statements to remove the also 'magic'
- * padding in some browsers.
- *
- * @see <http://jehiah.cz/archive/button-width-in-ie>
- * @bugfix
- */
-button, input[type=submit] {
-  font: 100%/1.25em "Droid Serif","DejaVu Serif",Times,serif;
-  padding: 0.084em;
-  width: auto;
-  overflow: visible;
-  background: white;
-}
-
-input[type=url], input[type=text], input[type=password], select, textarea {
+input[type=url], input[type=email],
+input[type=phone], input[type=text],
+input[type=password], select, textarea {
   padding: 0.084em;
   font: normal 1em/1.25em Helvetica,Arial,sans-serif;
   border: 0.084em solid #333;
+  border-radius: .168em;
   background-color: white;
   color: #333;
   vertical-align: middle;
-}
-
-abbr[title], dfn[title] {
-  cursor: help;
-}
-
-blockquote:before, blockquote:after {
-  content: "";
-}
-
-q:lang(en) {
-  quotes: "\201C" "\201D" "\2018" "\2019";
-}
-
-q:lang(bar), q:lang(de) {
-  quotes: "\201E" "\201C" "\201A" "\2018";
-}
-
-q:before {
-  content: open-quote;
-}
-
-q:after {
-  content: close-quote;
-}
-
-em, i, var {
-  font-style: italic;
 }
 
 strong, b {
@@ -136,48 +60,15 @@ strong, b {
 
 sub, sup {
   font-size: 0.84em;
-  /** This is needed, so that these two don't destroy the carefully
-   * arranged line height of surrounding elements. See
-   * <http://www.velvetblues.com/web-development-blog/superscripts-subscripts-uneven-line-height/>
-   */
   line-height: 0;
-}
-
-sub {
-  vertical-align: sub;
-}
-
-sup {
-  vertical-align: super;
-}
-
-ins {
-  text-decoration: underline;
-}
-
-del {
-  text-decoration: line-through;
 }
 
 
 /**
- * L A Y O U T ============================================================= *
+ * Basic layout ============================================
  */
-#global {
-  background: #FDFDFD;
-  padding: 0 0 .625em;
-  max-width: 60em;
-  margin: 0 auto;
-  border: .625em solid white;
-  border-top-width: 0;
-}
-
-em em {
-  font-style: normal;
-}
-
-pre, code, kbd, samp {
-  font: 100%/1.25em "Droid Sans Mono","DejaVu SansMono",Inconsolata,Courier,monospace;
+article {
+  padding: .625em;
 }
 
 a {
@@ -200,101 +91,126 @@ a:active {
 }
 
 
-
-
+/**
+ * Navigation ==============================================
+ */
 nav {
-  background: #FFDFE9;
-  border-bottom: .0625em solid #95002B;
-  height: 2.4375em;
+  background: #1C1C1C;
+  background: -moz-linear-gradient(top, #1C1C1C 33%, #333333);
+  border-bottom: .0625em solid #000;
+  padding: 0 .0625em;
 }
 
+nav:after {
+  clear: both;
+  content: "";
+  display: block;
+}
+
+nav label {
+  display: none;
+}
+
+nav p,
 nav ul {
-  padding: 0 .625em;
   list-style: none;
-  background: #FFEFF4;
-  border-bottom: .0625em solid #FFE7EF;
-  height: 2.25em;
+  padding: 0;
+  margin: 0;
 }
 
 nav li {
   float: left;
+  padding: 0;
+  margin: 0 .0625em 0 0;
+  background: -moz-linear-gradient(top, #444, #1c1c1c);
+  border-radius: 2px 2px 0 0;
+  line-height: 20px;
+}
+
+nav ul.level2 li {
+  float: right;
 }
 
 nav li a {
+  position: relative;
+  top: 1px;
   display: block;
-  padding: .625em;
-  padding-left: 2.5em;
+  height: 20px;
+  padding: 6px 6px 6px 24px;
   background-repeat: no-repeat;
-  background-position: .625em 8px;
+  background-position: 8px 10px;
+  border-radius: 2px 2px 0 0;
   color: #E60042;
-  text-shadow: 0 .0625em .0625em rgba(0,0,0,.3);
+  text-shadow: 0 1px 0px black;
   outline: none;
-}
-
-nav li.start a {
-  background-image: url(list.png);
-}
-
-nav li.save a {
-  background-image: url(new.png);
-}
-
-nav li.import a {
-  background-image: url(export.png);
-}
-
-nav li.search a {
-  background-image: url(magnifier.png);
-}
-
-nav li.logout a {
-  background-image: url(logout.png);
-}
-
-nav li.login a {
-  background-image: url(login.png);
-}
-
-nav li.help a {
-  background-image: url(help.png);
+  -moz-transition: background, text-shadow;
+  -moz-transition-duration: .25s;
 }
 
 nav li a:visited {
-  color: #DB0041;
+  color: #E60042;
+}
+
+nav li.start a {
+  background-image: url(icons/list.png);
+}
+
+nav li.save a {
+  background-image: url(icons/bookmark.png);
+}
+
+nav li.import a {
+  background-image: url(icons/import.png);
+}
+
+nav li.logout a {
+  background-image: url(icons/logout.png);
+}
+
+nav li.login a {
+  background-image: url(icons/login.png);
+}
+
+nav li.help a {
+  background-image: url(icons/help.png);
 }
 
 nav li.active a,
 nav li a:hover, nav li a:focus {
   background-color: #FDFDFD;
-  color: #95002B;
-  background-position: .625em -88px;
+  text-shadow: 0 1px 0px rgba(0,0,0,.2);
 }
 
 nav li a:active {
   background-color: #E60042;
-  background-position: .625em -40px;
+  text-shadow: 0 0 5px #f78;
+  background-position: 8px -26px;
   color: #FFFFFF;
 }
 
-nav li a:active,
-nav li a:hover,
-nav li a:focus {
-  text-shadow: 0 0 .3125em rgba(255,255,0,1);
+@media (max-width: 40.5em) {
+  #global nav li a {
+    padding-left: .375em;
+    background-position: 999999px 999999px;
+  }
 }
 
-@media (min-width: 60em) {
-  nav li.help,
-  nav li.login,
-  nav li.logout {
-    float: right;
+@media (max-width: 26em) {
+  #global nav li a {
+    background-position: center 8px;
+    text-indent: -9999px;
+    width: 1.25em;
   }
 }
 
 
-
+/**
+ * Messages ================================================
+ */
 #messages {
+  margin: 0;
   padding: .625em;
-  border-bottom: .0625em #409300 solid;
+  border-bottom: .0625em #666666 solid;
 }
 
 #messages li {
@@ -326,137 +242,36 @@ nav li a:focus {
 }
 
 
-
-article {
-  padding: .625em;
-}
-
-#bookmarks {
-  border-top: .0625em #409300 solid;
-}
-
-#bookmarks li {
-  border-bottom: .0625em #409300 solid;
-  list-style: none;
-  overflow: auto;
-}
-
-#bookmarks a.url {
-  display: block;
-  min-width: 62%;
-  float: left;
-  padding: .625em;
-}
-
-#bookmarks .tags {
-  text-align: right;
-  display: block;
-  font-size: 80%;
-}
-
-
-
-#tag-list {
-  overflow: auto;
-  margin: 0 0 .625em;
-}
-
-#tag-list li {
-  list-style: none;
-  margin-right: .625em;
-  float: left;
-  padding: .125em;
-  background: #F5FBF0;
-  cursor: pointer;
-}
-
-#tag-list li:after {
-  content: "\00A0\00D7";
-  font-weight: bold;
-  color: #999;
-}
-
-#tag-list li:hover:after {
-  color: #333;
-}
-
-
-.ui-button,
-button {
-  padding: .625em .625em .625em 2.5em;
-  background-color: #FFEFF4;
-  background-repeat: no-repeat;
-  background-position: .625em 8px;
-  border: .0625em solid white;
-  outline: none;
-  color: #4c4c4c;
-}
-
-.ui-button.submit,
-button[type=submit] {
-  background-image: url(save.png);
-}
-
-.ui-button.cancel,
-button.cancel {
-  background-image: url(cancel.png);
-}
-
-.ui-button:focus, .ui-button:hover,
-button:focus, button:hover {
-  background-color: #FDFDFD;
-  color: #95002B;
-  background-position: .625em -88px;
-  outline: 0;
-}
-
-.ui-button:active,
-button:active {
-  background-color: #E60042;
-  background-position: .625em -40px;
-  color: #FFFFFF;
-  outline: 0;
-}
-
-
-
-
-form p {
-  margin: 0 0 .625em;
-  overflow: auto;
-}
-
-form label {
-  display: block;
-  font-size: .8em;
-}
-
-form .text {
-  width: 100%;
-  padding: .1875em;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  font: normal 1em/1.25 "Droid Serif","DejaVu Serif",serif;
-}
-
-
-
 /**
- * T A G   C L O U D ======================================================= *
+ * Tag cloud ===============================================
  */
-.tagcloud a {
-  border: none;
+.tagcloud {
+  list-style: none;
+  margin: 0;
+  padding: .625em;
+  text-align: justify;
 }
-.tc_1 { font-size: .75em; opacity: .6; }
-.tc_2 { font-size: .90em; opacity: .8; }
-.tc_3 { font-size: 1.0em; }
-.tc_4 { font-size: 1.2em; }
-.tc_5 { font-size: 1.5em; }
+.tagcloud li {
+  margin: 0;
+  padding: 0;
+  display: inline;
+  line-height: 15px;
+}
+.tagcloud .t1 { font-size: .7em; opacity: .667; }
+.tagcloud .t2 { font-size: .85em; }
+.tagcloud .t3 { font-size: 1em; }
+.tagcloud .t4 { font-size: 1.2em; }
+.tagcloud .t5 { font-size: 1.5em; }
+.tagcloud .t6 { font-size: 2.0em; }
+.tagcloud li a {
+  display: inline-block;
+  padding-right: 0px;
+  height: 15px;
+}
 
 
 /**
- * Pagination
+ * Pagination ==============================================
  */
 .pag-info,
 .paginate .first,
@@ -491,27 +306,92 @@ form .text {
 
 
 /**
- * Tag cloud
+ * Tag list for result filtering ===========================
  */
-.tagcloud {
-  list-style: none;
-  margin: 10px 0;
-  text-align: justify;
+#tag-list {
+  overflow: auto;
+  margin: 0 0 .625em;
 }
-.tagcloud li {
+
+#tag-list li {
+  list-style: none;
+  margin-right: .625em;
+  float: left;
+  padding: .125em;
+  background: #F5FBF0;
+  cursor: pointer;
+}
+
+#tag-list li:after {
+  content: "\00A0\00D7";
+  font-weight: bold;
+  color: #999;
+}
+
+#tag-list li:hover:after {
+  color: #333;
+}
+
+
+/**
+ * Bookmark list ===========================================
+ */
+#bookmarks {
+  border-top: .0625em #ddd solid;
   margin: 0;
   padding: 0;
-  display: inline;
-  line-height: 15px;
 }
-.tagcloud .t1 { font-size: .7em; opacity: .667; }
-.tagcloud .t2 { font-size: .85em; }
-.tagcloud .t3 { font-size: 1em; }
-.tagcloud .t4 { font-size: 1.2em; }
-.tagcloud .t5 { font-size: 1.5em; }
-.tagcloud .t6 { font-size: 2.0em; }
-.tagcloud li a {
-  display: inline-block;
-  padding-right: 0px;
-  height: 15px;
+
+#bookmarks li {
+  border-bottom: .0625em #ddd solid;
+  list-style: none;
+  overflow: auto;
 }
+
+#bookmarks a.url {
+  display: block;
+  float: left;
+  padding: 6px 3px;
+}
+
+#bookmarks .functions,
+#bookmarks .tags {
+  display: block;
+  font-size: .75em;
+}
+
+#bookmarks .tags {
+  float: right;
+}
+
+#bookmarks .functions a {
+  padding: 3px 3px 3px 6px;
+  color: #ccc;
+  -moz-transition-duration: .25s;
+}
+
+#bookmarks li:hover .functions a {
+  color: #222;
+}
+
+#bookmarks li .functions a:focus,
+#bookmarks li .functions a:hover {
+  background-color: #FDFDFD;
+  color: #62E200;
+}
+
+#bookmarks .tags a {
+  background: #ddd;
+  color: #222;
+  text-shadow: 0 1px white;
+  padding: .25em;
+  -moz-transition-duration: .25s;
+}
+
+#bookmarks .tags a:hover,
+#bookmarks .tags a:focus {
+  background: #222;
+  color: #ddd;
+  text-shadow: 0 1px black;
+}
+

@@ -1,3 +1,4 @@
+<?php if (isset($all) && isset($page) && isset($pages)):?>
 <p class="pag-info"><?php printf(__('%d bookmarks'), $all)?></p>
 <?php if ($pages > 1):?>
   <ol class="paginate" start="0">
@@ -18,4 +19,5 @@
       <li class="next"><a href="<?php echo h(update_url(array('page'=>$page+1)))?>"><?php _e('Next')?></a></li>
     <?php endif?>
   </ol>
+<?php endif?>
 <?php endif?>
