@@ -19,8 +19,8 @@
     <textarea class="text" name="notes" id="notes" rows="4" cols="30"><?php echo $notes?></textarea>
   </p>
   <p>
-    <label for="private"><?php _e('Private')?></label>
     <input type="checkbox" name="private" id="private" <?php echo $private?> />
+    <label for="private"><?php _e('Private')?></label>
   </p>
   <p>
     <input type="hidden" name="save" value="1" />
