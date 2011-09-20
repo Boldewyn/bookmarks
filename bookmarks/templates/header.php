@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="<?php echo $base_path?>static/style.css" />
     <link rel="stylesheet" href="<?php echo $base_path?>static/jquery-ui.css" />
     <link rel="shortcut icon" href="<?php echo $base_path?>static/favicon.ico" />
+    <link rel="alternate" type="application/rss+xml" href="<?php echo $script_path?>?type=rdf" />
+    <link rel="alternate" type="application/json" href="<?php echo $script_path?>?type=json" />
     <!--[if lt IE 9]>
       <script src="<?php echo $base_path?>static/html5.js"></script>
     <![endif]-->
