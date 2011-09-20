@@ -1,6 +1,6 @@
-Options +FollowSymLinks
-
 <IfModule rewrite_module>
+    Options +FollowSymLinks
+
     <IfModule env_module>
         SetEnv HTTP_MOD_REWRITE On
     </IfModule>
