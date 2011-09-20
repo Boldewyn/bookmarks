@@ -38,46 +38,6 @@ jQuery(function ($) {
       return false;
     }
   });
-  tagfields.live('xkeypress', function(e) {
-    var $this = $(this).attr('autocomplete', 'off');
-    if ($this.val().length > 0 && e.which > 32/*ASCII SP*/) {
-      var val = $this.val()+String.fromCharCode(e.which);
-      if ($this.data('req')) {
-        $this.data('req').abort();
-      }
-      if ($this.data('complist')) {
-        $this.data('complist').slideUp();
-      } else {
-        $this.data('complist', $('<ul class="complist"></ul>').css({
-          position: 'absolute',
-          top: $this.offset().top + $this.outerHeight(),
-          left: $this.offset().left
-        }).appendTo($('body')).slideUp());
-      }
-      $this.data('req',
-        $.ajax({
-          url: Bookmarks.url+'alltags/'+encodeURIComponent(val),
-          success: function(data) {
-            var i = 0, cl = $this.data('complist').empty();
-            for (i; i < data.length; i++) {
-              cl.append($('<li></li>').text(data[i].tag));
-            }
-            cl.find('li').bind('click', function() {
-              var tag = $(this).text();
-              $this.val(function(i, v) {
-                var curtags = v.split(/\s+/), last = curtags.pop();
-                if (last && tag.indexOf(last) === 0) {
-                  return $.trim(curtags.join(" ") + " " + tag) + " ";
-                } else {
-                  return $.trim(v + " " + tag) + " ";
-                }
-              }).focus().data('complist').slideUp();
-            }).end().slideDown();
-          },
-          dataType: 'json'
-        }));
-    }
-  });
   var $ts = $('#tagselection');
   if ($ts.length) {
     $btnset = $('<div></div>');
