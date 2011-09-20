@@ -431,6 +431,13 @@ nav li.search input[type="text"]:focus {
   overflow: auto;
 }
 
+#bookmarks .time {
+  float:left;
+  padding: 6px 6px 0 0;
+  color: #777;
+  font-size: .75em;
+}
+
 #bookmarks a.url {
   display: block;
   float: left;
@@ -476,6 +483,12 @@ nav li.search input[type="text"]:focus {
   background: #222;
   color: #ddd;
   text-shadow: 0 1px black;
+}
+
+@media (max-width: 50em) {
+  #bookmarks .time {
+    display: none;
+  }
 }
 
 
