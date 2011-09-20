@@ -33,6 +33,7 @@
             <li class="save <?php if ($f === 'save'):?>active<?php endif?>"><a href="<?php echo $script_path?>save" tabindex="4"><?php v('edit', False)? _e('Edit') : _e('Create new')?></a></li>
             <li class="import <?php if ($f === 'import'):?>active<?php endif?>"><a href="<?php echo $script_path?>import" tabindex="5"><?php _e('Import')?></a></li>
           <?php endif?>
+          <?php call_hook('front_nav')?>
         </ul>
       </nav>
       <?php if (messages_have()):?>
