@@ -19,7 +19,7 @@ function register_for_hook($hookname, $callback) {
 /**
  * Fire a hook
  */
-function call_hook($hookname, $data=NULL) {
+function call_hook($hookname, $data=array()) {
     global $_HOOK_REGISTRY;
     $r = True;
     if (array_key_exists($hookname, $_HOOK_REGISTRY)) {
