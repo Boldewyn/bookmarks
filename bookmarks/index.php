@@ -37,6 +37,7 @@ if ($f[0] === '-') {
     $_GET['_shortcut'] = substr($f, 1);
     $f = 'shortcut';
 }
+
 if (ctype_alnum($f) && is_file("controllers/$f.php")) {
     require_once "controllers/$f.php";
     echo $f($store);

@@ -9,8 +9,16 @@ function tags($store) {
     if (! $tags) {
         $tags = v('_info');
     }
-    require_once dirname(__FILE__).'/fetch.php';
-    return fetch($store, $tags);
+    if (! $tags) {
+        return tpl('tags', array('body_id' => 'tags',
+            'site_title' => __('All Tags'),
+            'tagcloud' => weight_tagcloud($store->fetch_all_tags()),
+            'toptags' => weight_tagcloud($store->fetch_top_tags()),
+            ));
+    } else {
+        require_once dirname(__FILE__).'/fetch.php';
+        return fetch($store, $tags);
+    }
 }
 
 

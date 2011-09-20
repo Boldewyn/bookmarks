@@ -373,6 +373,29 @@ class Bookmarks {
     }
 
     /**
+     * Fetch top used tags
+     * @param $limit the number of tags to be returned
+     */
+    public function fetch_top_tags($limit=100) {
+        $query = $this->db->prepare(
+            'SELECT COUNT(t.tag) AS n, t.tag AS tag
+               FROM '.cfg('database/prefix').'bookmark_tags t
+              WHERE 1 = 1 '.
+             ($this->privates?'':'
+                AND (SELECT COUNT(*) FROM '.cfg('database/prefix').'bookmarks b
+                      WHERE b.url = t.url
+                        AND b.private = 0 ) > 0').'
+           GROUP BY tag
+           ORDER BY n DESC
+              LIMIT 0,:limit');
+        $query->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $query->execute();
+        $return = $query->fetchAll(PDO::FETCH_ASSOC);
+        $query->closeCursor();
+        return $return;
+    }
+
+    /**
      * Create the necessary tables
      */
     public function install() {
