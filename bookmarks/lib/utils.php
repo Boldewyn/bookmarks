@@ -256,6 +256,9 @@ function weight_tagcloud($tc) {
             $max = $tag['n'];
         }
     }
+    if ($max === $min) {
+        $max += 1;
+    }
     $tc2 = array();
     foreach ($tc as $tag) {
         if (trim($tag['tag']) === '') {
