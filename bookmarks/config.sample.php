@@ -33,6 +33,7 @@ $bookmark_config = array(
             #'email',            // allows sharing via emails
             #'twitter',          // allows sharing via Twitter
             #'facebook',         // allows sharing via Facebook
+            #'random',           // displays a random link in the navigation
         ),
         'delicious' => array(   // Interact with Delicious:
             'auth' => '',       // The Delicious auth string. Set it to
