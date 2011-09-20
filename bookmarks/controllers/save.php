@@ -60,9 +60,11 @@ function save($store) {
                     $msg = '<script type="text/javascript">window.close()</script><p class="success"><a href="javascript:window.close()">'.
                             __('Successfully saved bookmark.').'</a></p>';
                     $html = format_template(Null, $msg);
-                } else {
+                } elseif (v('ajax') !== '1') {
                     messages_add(__('Successfully saved bookmark.'), 'success');
                     redirect('/');
+                } else {
+                    return 'true';
                 }
             }
         }

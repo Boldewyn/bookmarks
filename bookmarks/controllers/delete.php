@@ -26,8 +26,13 @@ function delete($store) {
         }
         $result = $store->delete($purl);
         if ($result) {
-            messages_add(__('Bookmark deleted.', 'success'));
+            if (v('ajax') !== '1') {
+                messages_add(__('Bookmark deleted.', 'success'));
+            }
             call_hook('delete', array($purl));
+            if (v('ajax') === '1') {
+                return 'true';
+            }
         } else {
             messages_add(__('There was an error deleting this bookmark.'),
                          'error');
