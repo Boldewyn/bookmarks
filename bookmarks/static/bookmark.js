@@ -234,6 +234,21 @@ $(function() {
     });
     $btnset.buttonset().prependTo($ts);
   }
+  var taglist = $('#tag-list');
+  if (taglist.length) {
+    $('<li><input type="text" placeholder="' + _('type a tag') +
+        '" name="tags" class="nexttag" /></li>').appendTo(taglist).editform()
+      .find('.nexttag').keypress(function(e) {
+      if (e.which === 13) {
+        if (location.href.substring(0, Bookmarks.url.length + 5) === Bookmarks.url+'tags/') {
+          location.href += '+' + this.value;
+        } else {
+          location.href = Bookmarks.url + 'tags/' + this.value;
+        }
+        return false;
+      }
+    });
+  }
 });
 
 //})(jQuery, this);

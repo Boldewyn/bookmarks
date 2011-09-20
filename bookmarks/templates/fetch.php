@@ -1,9 +1,8 @@
 <?php include 'header.php'?>
 <h1><?php echo $site_title?></h1>
-<?php if (isset($tags) && count($tags) > 0):?>
-  <ul id="tag-list">
-    <?php foreach ($tags as $tag):?>
-      <li title="<?php _e('remove this tag')?>"><a href="<?php
+<ul id="tag-list">
+  <?php foreach ($tags as $tag):?>
+    <li title="<?php _e('remove this tag')?>"><a href="<?php
 echo get_script_path();
 $nl = array();
 foreach($tags as $tag2):
@@ -15,9 +14,8 @@ if (count($nl)):
     echo 'tags/'.join('+', $nl);
 endif;
 ?>"><?php echo h($tag)?></a></li>
-    <?php endforeach?>
-  </ul>
-<?php endif?>
+  <?php endforeach?>
+</ul>
 <?php include 'pagination.php'?>
 <?php include 'list.php'?>
 <?php include 'pagination.php'?>
