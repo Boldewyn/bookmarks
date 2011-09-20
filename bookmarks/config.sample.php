@@ -19,6 +19,7 @@ $bookmark_config = array(
         'title' => 'Bookmarks', // site title
         'use_shortcut' => False,// whether to link directly or use the shortcut
                                 // feature
+        'new_window' => False,  // whether to open links in a new window
     ),
     'session' => array(
         'days' => 365,          // Session length before login needs renewal
