@@ -1,0 +1,22 @@
+#
+# S T A T I C   C O N T E N T
+#
+
+# See YSlow tips: INode can be problematic
+FileETag MTime Size
+
+# All files should be utf-8 encoded
+AddDefaultCharset utf-8
+
+# Common types to be delivered
+AddType application/json .json
+AddType application/rdf+xml .rdf
+AddType application/xslt+xml .xsl .xslt
+AddType image/svg+xml .svg .svgz
+AddType image/vnd.microsoft.icon .ico
+
+<IfModule expires_module>
+  # Lets files expire never (== 1 year)
+  ExpiresActive On
+  ExpiresDefault "access plus 1 year"
+</IfModule>
