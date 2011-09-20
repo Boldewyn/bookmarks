@@ -90,7 +90,7 @@ function format_template($v=Null, $msg='') {
         $button = __('Save');
     } else {
         $title = __('Edit Bookmark');
-        $change = ' disabled="disabled" readonly="readonly"';
+        $change = ' readonly="readonly"';
         $button = __('Change');
     }
     return tpl('save', array(
