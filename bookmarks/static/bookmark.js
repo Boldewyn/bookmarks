@@ -205,7 +205,7 @@ $(function() {
   });
   if (Bookmarks.new_window) {
     $('[rel="external"]').live('click', function() {
-      window.open(this.href);
+      window.open(this.href, '_blank');
       return false;
     });
   }
