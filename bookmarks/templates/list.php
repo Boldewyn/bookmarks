@@ -2,7 +2,7 @@
   <ul id="bookmarks">
     <?php foreach ($bookmarks as $bookmark):?>
       <li<?php if ($bookmark['private']):?> data-private="1"<?php endif?>>
-        <small class="time"><?php echo date(__('j F y'), $bookmark['created'])?></small>
+        <small class="time"><?php echo date(__('j M y'), $bookmark['created'])?></small>
         <a class="url" rel="external" href="<?php
           if (cfg('display/use_shortcut', False)):
             echo $script_path.'-'.$bookmark['shortcut'];
