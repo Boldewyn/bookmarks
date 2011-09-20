@@ -3,7 +3,18 @@
 <?php if (isset($tags) && count($tags) > 0):?>
   <ul id="tag-list">
     <?php foreach ($tags as $tag):?>
-      <li title="<?php _e('remove this tag')?>"><?php echo h($tag)?></li>
+      <li title="<?php _e('remove this tag')?>"><a href="<?php
+echo get_script_path();
+$nl = array();
+foreach($tags as $tag2):
+    if ($tag2 !== $tag):
+        $nl[] = $tag2;
+    endif;
+endforeach;
+if (count($nl)):
+    echo 'tags/'.join('+', $nl);
+endif;
+?>"><?php echo h($tag)?></a></li>
     <?php endforeach?>
   </ul>
 <?php endif?>

@@ -391,7 +391,11 @@ nav li.search input[type="text"]:focus {
   list-style: none;
   margin-right: .625em;
   float: left;
-  padding: 3px;
+}
+
+#tag-list li a {
+  display: block;
+  padding: 3px 6px;
   background: #ddd;
   color: #222;
   text-shadow: 0 1px white;
@@ -399,13 +403,13 @@ nav li.search input[type="text"]:focus {
   -moz-transition-duration: .25s;
 }
 
-#tag-list li:after {
+#tag-list li a:after {
   content: "\00A0\00D7";
   font-weight: bold;
   color: #999;
 }
 
-#tag-list li:hover {
+#tag-list li a:hover {
   color: #ddd;
   background: #222;
   text-shadow: 0 1px black;
