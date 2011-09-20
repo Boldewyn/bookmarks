@@ -113,6 +113,7 @@ class Bookmarks {
             # TODO: Only diff change
             $stmt = $this->db->prepare('DELETE FROM '.cfg('database/prefix').'bookmark_tags
                                         WHERE url = :url');
+            $stmt->bindValue(':url', $url);
             $stmt->execute();
             $stmt->closeCursor();
             $stmt = $this->db->prepare('INSERT INTO '.cfg('database/prefix').'bookmark_tags
