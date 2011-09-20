@@ -5,6 +5,9 @@ require_once 'lib/config.php';
 if (cfg('debug')) {
     error_reporting(-1);
     ini_set('display_errors', 1);
+} else {
+    error_reporting(0);
+    ini_set('display_errors', 0);
 }
 require_once 'lib/utils.php';
 require_once 'lib/hooks.php';
