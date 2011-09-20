@@ -21,5 +21,6 @@ endif;
 <?php include 'pagination.php'?>
 <?php include 'list.php'?>
 <?php include 'pagination.php'?>
+<h2><?php _e('Top Tags')?> <small><a href="<?php echo $script_path?>tags"><?php _e('(show all tags)')?></a></small></h2>
 <?php include 'aside.php'?>
 <?php include 'footer.php'?>
