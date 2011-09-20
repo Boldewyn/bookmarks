@@ -1,7 +1,7 @@
 <?php if (isset($bookmarks)):?>
   <ul id="bookmarks">
     <?php foreach ($bookmarks as $bookmark):?>
-      <li>
+      <li<?php if ($bookmark['private']):?> data-private="1"<?php endif?>>
         <a class="url" rel="external" href="<?php
           if (cfg('display/use_shortcut', False)):
             echo $script_path.'-'.$bookmark['shortcut'];
