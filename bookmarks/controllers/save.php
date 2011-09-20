@@ -88,7 +88,7 @@ function format_template($v=Null, $msg='') {
         $button = __('Save');
     } else {
         $title = __('Edit Bookmark');
-        $change = ' disabled="disabled" readonly="readonly';
+        $change = ' disabled="disabled" readonly="readonly"';
         $button = __('Change');
     }
     return tpl('save', array(
@@ -99,7 +99,7 @@ function format_template($v=Null, $msg='') {
         'msg' => $msg,
         'private' => ($v['private']? 'checked="checked"' : ''),
         'tags' => join(' ', $v['tags']),
-    ) + $v, array('msg'));
+    ) + $v, array('msg', 'change'));
 }
 
 
