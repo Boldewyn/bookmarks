@@ -1,5 +1,5 @@
 <?php if (isset($tagcloud) && is_array($tagcloud)):?>
-  <ul class="tagcloud">
+  <ul class="tagcloud<?php if (isset($tagcloud_class)): echo " $tagcloud_class"; endif?>">
     <?php foreach($tagcloud as $tag):?>
     <li class="t<?php echo $tag['n']?>"><a href="<?php echo $script_path?>tags/<?php
       if (isset($tags)):
