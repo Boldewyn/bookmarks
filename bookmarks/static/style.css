@@ -14,8 +14,8 @@ html {
 
 body {
   font: 100%/1.25em "Droid Sans","DejaVu Sans",Arial,sans-serif;
-  color: #333;
-  background: #F5FBF0;
+  color: #001902;
+  background: #F9FFEE;
   margin: 0;
 }
 
@@ -50,7 +50,7 @@ input[type=password], select, textarea {
   border: 0.084em solid #333;
   border-radius: .168em;
   background-color: white;
-  color: #333;
+  color: #001902;
   vertical-align: middle;
 }
 
@@ -69,26 +69,25 @@ sub, sup {
  */
 article {
   padding: .625em;
-  background: -moz-linear-gradient(top, #fff, #F5FBF0 30px);
+  background: -moz-linear-gradient(top, #fff, #F9FFEE 30px);
 }
 
 a {
-  color: #409300;
+  color: #008008;
   text-decoration: none;
 }
 
 a:visited {
-  color: #326F00;
+  color: #005F06;
 }
 
 a:hover, a:focus {
-  background-color: #FDFDFD;
   color: #62E200;
 }
 
 a:active {
   background-color: #62E200;
-  color: #D3FFAF;
+  color: #ECFFC7;
 }
 
 label {
@@ -117,7 +116,7 @@ textarea {
   border: 0.084em solid #333;
   border-radius: 2px;
   background-color: white;
-  color: #333;
+  color: #001902;
   vertical-align: middle;
 }
 
@@ -125,7 +124,7 @@ input[type="url"]:focus,
 input[type="text"]:focus,
 textarea:focus {
   box-shadow: 0 0 2px 2px rgba(98, 226, 0, .5);
-  border-color: rgb(98,226,0);
+  border-color: #62E200;
 }
 
 textarea {
@@ -137,8 +136,8 @@ textarea {
  * Navigation ==============================================
  */
 nav {
-  background: #1C1C1C;
-  background: -moz-linear-gradient(top, #1C1C1C 33%, #333333);
+  background: #001902;
+  background: -moz-linear-gradient(top, #001902 33%, #1A331B);
   border-bottom: .0625em solid #000;
   padding: 0 .0625em;
 }
@@ -164,7 +163,7 @@ nav li {
   float: left;
   padding: 0;
   margin: 0 .0625em 0 0;
-  background: -moz-linear-gradient(top, #444, #333 50%, #000 50%, #1c1c1c);
+  background: -moz-linear-gradient(top, #444, #333 50%, #000 50%, #001902);
   border-radius: 2px 2px 0 0;
   line-height: 20px;
   position: relative;
@@ -282,8 +281,8 @@ nav li.search input[type="text"]:focus {
 
 #messages li {
   list-style: none;
-  background: #CFCFCF;
-  color: black;
+  background: #BAC89E;
+  color: #001902;
   padding: .625em;
   margin: 0 0 .0625em;
   -moz-border-radius: .125em;
@@ -374,7 +373,7 @@ nav li.search input[type="text"]:focus {
   width: auto;
 }
 .paginate .active a {
-  color: #333;
+  color: #001902;
 }
 
 
@@ -396,9 +395,9 @@ nav li.search input[type="text"]:focus {
 #tag-list li a {
   display: block;
   padding: 3px 6px;
-  background: #ddd;
-  color: #222;
-  text-shadow: 0 1px white;
+  background: #ACC598;
+  color: #29352A;
+  text-shadow: 0 1px #ECFFC7;
   cursor: pointer;
   -moz-transition-duration: .25s;
 }
@@ -406,13 +405,19 @@ nav li.search input[type="text"]:focus {
 #tag-list li a:after {
   content: "\00A0\00D7";
   font-weight: bold;
-  color: #999;
+  color: #001902;
 }
 
+#tag-list li a:focus,
 #tag-list li a:hover {
-  color: #ddd;
-  background: #222;
-  text-shadow: 0 1px black;
+  color: #ACC598;
+  background: #29352A;
+  text-shadow: 0 1px #001902;
+}
+
+#tag-list li a:focus:after,
+#tag-list li a:hover:after {
+  color: #ECFFC7;
 }
 
 
@@ -434,7 +439,7 @@ nav li.search input[type="text"]:focus {
 #bookmarks .time {
   float:left;
   padding: 6px 6px 0 0;
-  color: #777;
+  color: #6E7E62;
   font-size: .75em;
 }
 
@@ -456,33 +461,33 @@ nav li.search input[type="text"]:focus {
 
 #bookmarks .functions a {
   padding: 3px 3px 3px 6px;
-  color: #ccc;
+  color: #BAC89E;
   -moz-transition-duration: .25s;
 }
 
 #bookmarks li:hover .functions a {
-  color: #222;
+  color: #29352A;
 }
 
 #bookmarks li .functions a:focus,
 #bookmarks li .functions a:hover {
-  background-color: #FDFDFD;
+  background-color: #ECFFC7;
   color: #62E200;
 }
 
 #bookmarks .tags a {
-  background: #ddd;
-  color: #222;
-  text-shadow: 0 1px white;
+  background: #ACC598;
+  color: #29352A;
+  text-shadow: 0 1px #ECFFC7;
   padding: .25em;
   -moz-transition-duration: .25s;
 }
 
 #bookmarks .tags a:hover,
 #bookmarks .tags a:focus {
-  background: #222;
-  color: #ddd;
-  text-shadow: 0 1px black;
+  background: #29352A;
+  color: #ACC598;
+  text-shadow: 0 1px #001902;
 }
 
 @media (max-width: 50em) {
