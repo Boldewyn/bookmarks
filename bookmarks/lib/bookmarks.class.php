@@ -340,6 +340,26 @@ class Bookmarks {
     }
 
     /**
+     * Fetch timestamp of newest bookmark
+     */
+    public function fetch_newest() {
+        try {
+            $query = 'SELECT '.unix_timestamp('created').' AS c,
+                             '.unix_timestamp('modified').' AS m
+                        FROM '.cfg('database/prefix').'bookmarks
+                    ORDER BY '.db_max().'(modified, created) DESC
+                       LIMIT 1';
+            $query = $this->db->prepare($query);
+            $query->execute();
+            $dates = $query->fetchAll(PDO::FETCH_ASSOC);
+            $query->closeCursor();
+        } catch (PDOException $e) {
+            return 0;
+        }
+        return max((int)$dates[0]['c'], (int)$dates[0]['m']);
+    }
+
+    /**
      * Fetch all tags for a given bookmark
      * @param $url The URL of the bookmark
      */

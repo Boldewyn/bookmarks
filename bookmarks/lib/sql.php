@@ -80,6 +80,20 @@ function db_now() {
 
 
 /**
+ * Return db-specific max() statement
+ */
+function db_max() {
+    switch (db_type()) {
+        case 'sqlite':
+            return 'max';
+            break;
+        default:
+            return 'GREATEST';
+    }
+}
+
+
+/**
  * Return db-specific auto-increment
  */
 function auto_increment() {
