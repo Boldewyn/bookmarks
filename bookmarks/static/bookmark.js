@@ -20,6 +20,7 @@ function get_and_submit_form(title, url, id, onsubmit) {
     form.buttonize();
     form.find('a.cancel').click(function() {
       dialog.dialog("destroy").remove();
+      return false;
     });
     form.submit(function() {
       var method = form.attr('method').toLowerCase() || 'get';
@@ -121,14 +122,14 @@ $.fn.bookmarklist = function() {
       var $this = $(this);
       get_and_submit_form(_('Edit Bookmark:'), this.href, 'save_form',
         function(form, data) {
-        var li = $this.closest('li').animate({opacity:0}, 300)
-                                    .animate({opacity:1}, 300);
-        window.setTimeout(function() {
-          li.find('a.url').text(form.find('[name="title"]').val()).end()
-            .find('.tags').empty().html(
-              build_tag_list(form.find('[name="tags"]').val())
-            ).end();
-        }, 300);
+          var li = $this.closest('li').animate({opacity:0}, 300)
+                                      .animate({opacity:1}, 300);
+          window.setTimeout(function() {
+            li.find('a.url').text(form.find('[name="title"]').val()).end()
+              .find('.tags').empty().html(
+                build_tag_list(form.find('[name="tags"]').val())
+              ).end();
+          }, 300);
       });
       return false;
     });
