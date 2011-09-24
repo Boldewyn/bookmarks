@@ -49,13 +49,43 @@ input[type=image], .ui-clickable {
 input[type=url], input[type=email],
 input[type=phone], input[type=text],
 input[type=password], select, textarea {
-  padding: 0.084em;
-  font: normal 1em/1.25em Helvetica,Arial,sans-serif;
-  border: 0.084em solid #333;
-  border-radius: .168em;
+  padding: 3px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  font: normal 1em/1.25 "Droid Sans","DejaVu Sans",sans-serif;
+  border: 0.084em solid #29352A;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
   background-color: white;
   color: #001902;
   vertical-align: middle;
+}
+
+input[type=url]:focus,
+input[type=email]:focus,
+input[type=phone]:focus,
+input[type=text]:focus,
+input[type=password]:focus,
+select:focus,
+textarea:focus {
+  box-shadow: 0 0 2px 2px rgba(98, 226, 0, .5);
+  border-color: #62E200;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+  vertical-align: middle;
+}
+
+input[type="radio"] + label,
+input[type="checkbox"] + label {
+  display: inline;
+}
+
+textarea {
+  resize: vertical;
 }
 
 strong, b {
@@ -117,42 +147,6 @@ label {
   font-size: .8em;
 }
 
-input[type="radio"],
-input[type="checkbox"] {
-  vertical-align: middle;
-}
-
-input[type="radio"] + label,
-input[type="checkbox"] + label {
-  display: inline;
-}
-
-input[type="url"],
-input[type="text"],
-textarea {
-  padding: 3px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  font: normal 1em/1.25 "Droid Sans","DejaVu Sans",sans-serif;
-  border: 0.084em solid #333;
-  border-radius: 2px;
-  background-color: white;
-  color: #001902;
-  vertical-align: middle;
-}
-
-input[type="url"]:focus,
-input[type="text"]:focus,
-textarea:focus {
-  box-shadow: 0 0 2px 2px rgba(98, 226, 0, .5);
-  border-color: #62E200;
-}
-
-textarea {
-  resize: vertical;
-}
-
 footer {
   border-top: 1px #ECFFC7 solid;
   padding: 10px 0;
@@ -168,7 +162,11 @@ footer {
  */
 nav {
   background: #001902;
+  background: -webkit-linear-gradient(top, #001902 33%, #1A331B);
   background: -moz-linear-gradient(top, #001902 33%, #1A331B);
+  background: -ms-linear-gradient(top, #001902 33%, #1A331B);
+  background: -o-linear-gradient(top, #001902 33%, #1A331B);
+  background: linear-gradient(top, #001902 33%, #1A331B);
   border-bottom: .0625em solid #000;
   padding: 0 .0625em;
 }
@@ -194,7 +192,13 @@ nav li {
   float: left;
   padding: 0;
   margin: 0 .0625em 0 0;
+  background: -webkit-linear-gradient(top, #444, #333 50%, #000 50%, #001902);
   background: -moz-linear-gradient(top, #444, #333 50%, #000 50%, #001902);
+  background: -ms-linear-gradient(top, #444, #333 50%, #000 50%, #001902);
+  background: -o-linear-gradient(top, #444, #333 50%, #000 50%, #001902);
+  background: linear-gradient(top, #444, #333 50%, #000 50%, #001902);
+  -webkit-border-radius: 2px 2px 0 0;
+  -moz-border-radius: 2px 2px 0 0;
   border-radius: 2px 2px 0 0;
   line-height: 20px;
   position: relative;
@@ -207,8 +211,20 @@ nav li.search {
   font-size: .75em;
 }
 
+nav li:hover {
+  background: -webkit-linear-gradient(top, #444, #333 50%, #000 50%, #007F08);
+  background: -moz-linear-gradient(top, #444, #333 50%, #000 50%, #007F08);
+  background: -ms-linear-gradient(top, #444, #333 50%, #000 50%, #007F08);
+  background: -o-linear-gradient(top, #444, #333 50%, #000 50%, #007F08);
+  background: linear-gradient(top, #444, #333 50%, #000 50%, #007F08);
+}
+
 nav li.active {
+  background: -webkit-linear-gradient(top, #e6bd00, #e6bd00 2px, #fff 3px);
   background: -moz-linear-gradient(top, #e6bd00, #e6bd00 2px, #fff 3px);
+  background: -ms-linear-gradient(top, #e6bd00, #e6bd00 2px, #fff 3px);
+  background: -o-linear-gradient(top, #e6bd00, #e6bd00 2px, #fff 3px);
+  background: linear-gradient(top, #e6bd00, #e6bd00 2px, #fff 3px);
 }
 
 nav ul.level2 li {
@@ -221,11 +237,15 @@ nav li a {
   padding: 6px 6px 6px 24px;
   background-repeat: no-repeat;
   background-position: 8px 10px;
+  -webkit-border-radius: 2px 2px 0 0;
+  -moz-border-radius: 2px 2px 0 0;
   border-radius: 2px 2px 0 0;
   color: #E60042;
   text-shadow: 0 1px 0px black;
   outline: none;
+  -webkit-transition: background, text-shadow;
   -moz-transition: background, text-shadow;
+  -webkit-transition-duration: .25s;
   -moz-transition-duration: .25s;
 }
 
@@ -259,12 +279,7 @@ nav li.help a {
 
 nav li.active a,
 nav li a:hover, nav li a:focus {
-  background-color: #FDFDFD;
   text-shadow: 0 1px 0px rgba(0,0,0,.2);
-}
-
-nav li.active a {
-  background-color: transparent;
 }
 
 nav li a:active {
@@ -291,7 +306,11 @@ nav li a:active {
 
 @media (min-height: 40em) {
   nav {
-    padding: 20px 10px 0;
+    padding: 20px 1px 0;
+    margin: 10px 10px 0;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
   }
 }
 
@@ -307,7 +326,14 @@ nav li.search input[type="text"]:focus {
 #messages {
   margin: 0;
   padding: .625em;
-  border-bottom: .0625em #666666 solid;
+  border-bottom: .0625em #ECFFC7 solid;
+}
+
+@media (min-height: 40em) {
+  #messages {
+    margin: 0 10px;
+    padding: 10px 0;
+  }
 }
 
 #messages li {
@@ -316,8 +342,8 @@ nav li.search input[type="text"]:focus {
   color: #001902;
   padding: .625em;
   margin: 0 0 .0625em;
-  -moz-border-radius: .125em;
   -webkit-border-radius: .125em;
+  -moz-border-radius: .125em;
   border-radius: .125em;
 }
 
@@ -412,9 +438,15 @@ nav li.search input[type="text"]:focus {
  * Tag list for result filtering ===========================
  */
 #tag-list {
-  overflow: auto;
   margin: 0 0 .625em;
   padding: 0;
+}
+
+#tag-list:after {
+  clear: left;
+  content: "\00A0";
+  display: block;
+  height: 0;
 }
 
 #tag-list li {
@@ -430,6 +462,7 @@ nav li.search input[type="text"]:focus {
   color: #29352A;
   text-shadow: 0 1px #ECFFC7;
   cursor: pointer;
+  -webkit-transition-duration: .25s;
   -moz-transition-duration: .25s;
 }
 
@@ -456,22 +489,25 @@ nav li.search input[type="text"]:focus {
  * Bookmark list ===========================================
  */
 #bookmarks {
-  border-top: .0625em #ddd solid;
+  border-top: 1px #ECFFC7 solid;
   margin: 0;
   padding: 0;
 }
 
 #bookmarks li {
-  border-bottom: .0625em #ddd solid;
+  border-bottom: 1px #ECFFC7 solid;
   list-style: none;
   overflow: auto;
 }
 
 #bookmarks .time {
   float:left;
+  width: 60px;
+  text-align: right;
   padding: 6px 6px 0 0;
   color: #6E7E62;
   font-size: .75em;
+  white-space: nowrap;
 }
 
 #bookmarks a.url {
@@ -488,11 +524,17 @@ nav li.search input[type="text"]:focus {
 
 #bookmarks .tags {
   float: right;
+  margin-bottom: 3px;
+}
+
+#bookmarks .functions {
+  padding-top: 6px;
 }
 
 #bookmarks .functions a {
   padding: 3px 3px 3px 6px;
   color: #BAC89E;
+  -webkit-transition-duration: .25s;
   -moz-transition-duration: .25s;
 }
 
@@ -511,6 +553,7 @@ nav li.search input[type="text"]:focus {
   color: #29352A;
   text-shadow: 0 1px #ECFFC7;
   padding: .25em;
+  -webkit-transition-duration: .25s;
   -moz-transition-duration: .25s;
 }
 
