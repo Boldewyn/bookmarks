@@ -37,6 +37,10 @@ h3 {
   margin: 0 0 .5em;
 }
 
+p {
+  margin: 0 0 10px;
+}
+
 label, button, input[type=submit],
 input[type=image], .ui-clickable {
   cursor: pointer;
@@ -68,8 +72,26 @@ sub, sup {
  * Basic layout ============================================
  */
 article {
-  padding: .625em;
+  padding: 10px;
+  background: -webkit-linear-gradient(top, #fff, #F9FFEE 30px);
   background: -moz-linear-gradient(top, #fff, #F9FFEE 30px);
+  background: -ms-linear-gradient(top, #fff, #F9FFEE 30px);
+  background: -o-linear-gradient(top, #fff, #F9FFEE 30px);
+  background: linear-gradient(top, #fff, #F9FFEE 30px);
+  max-width: 900px;
+}
+
+@media (min-width: 1200px) {
+  article {
+    position: relative;
+  }
+  article aside {
+    position: absolute;
+    top: 0;
+    right: -270px;
+    width: 260px;
+    padding: 10px 0;
+  }
 }
 
 a {
@@ -129,6 +151,15 @@ textarea:focus {
 
 textarea {
   resize: vertical;
+}
+
+footer {
+  border-top: 1px #ECFFC7 solid;
+  padding: 10px 0;
+  margin: 10px;
+  font-size: 75%;
+  clear: both;
+  width: 900px;
 }
 
 
@@ -243,14 +274,14 @@ nav li a:active {
   color: #FFFFFF;
 }
 
-@media (max-width: 40.5em) {
+@media (max-width: 740px) {
   #global nav li a {
     padding-left: .375em;
     background-position: 999999px 999999px;
   }
 }
 
-@media (max-width: 26em) {
+@media (max-width: 630px) {
   #global nav li a {
     background-position: center 8px;
     text-indent: -9999px;
