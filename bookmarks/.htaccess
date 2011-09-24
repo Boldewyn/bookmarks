@@ -9,6 +9,7 @@
 
     RewriteRule index.php - [L]
     RewriteRule ^static/ - [L]
+    RewriteRule ^i18n/ - [L]
 
     RewriteRule ^(.+)$ index.php?f=$1 [L,QSA]
 </IfModule>

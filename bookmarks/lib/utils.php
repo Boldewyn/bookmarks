@@ -39,22 +39,6 @@ function h_array($a) {
 }
 
 /**
- * Poor man's i18n
- *
- * @todo Implement me
- */
-function __($s) {
-    return $s;
-}
-
-/**
- * Shortcut for printing a translated string
- */
-function _e($s) {
-    echo __($s);
-}
-
-/**
  * Render a template
  *
  * Templates are simple PHP files, executed in this semi-controlled

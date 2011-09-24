@@ -6,7 +6,7 @@
  */
 function logout($store) {
     do_logout();
-    messages_add(__('Logged out. See you!.'), 'success');
+    messages_add(__('Logged out. See you!'), 'success');
     redirect('/');
     return '';
 }

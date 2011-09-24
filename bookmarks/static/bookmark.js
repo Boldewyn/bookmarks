@@ -1,7 +1,10 @@
-//;(function($, window) {
+;(function($, window) {
 var $win = $(window);
 
 function _(s) {
+  if (s in Bookmarks.i18n.catalog) {
+    return Bookmarks.i18n.catalog[s];
+  }
   return s;
 };
 
@@ -252,4 +255,4 @@ $(function() {
   }
 });
 
-//})(jQuery, this);
+})(jQuery, this);

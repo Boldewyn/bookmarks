@@ -11,7 +11,10 @@
     <!--[if lt IE 9]>
       <script src="<?php echo $base_path?>static/html5.js"></script>
     <![endif]-->
-<script>var Bookmarks={url:'<?php echo get_url()?>',script_path:'<?php echo $script_path?>',new_window:<?php echo cfg('display/new_window')?'1':'0'?>}</script>
+    <script>var Bookmarks={url:'<?php echo get_url()?>',script_path:'<?php echo $script_path?>',new_window:<?php echo cfg('display/new_window')?'1':'0'?>,i18n:{catalog:{}}}</script>
+    <?php if (cfg('display/lang') && is_file(dirname(__FILE__).'/../i18n/'.cfg('display/lang').'.js')):?>
+      <script src="<?php echo h(cfg('base_path'))?>i18n/<?php echo h(cfg('display/lang'))?>.js"></script>
+    <?php endif?>
 <?php call_hook('front_head')?>
     <title><?php echo $site_title?> - <?php echo $global_site_title?></title>
   </head>

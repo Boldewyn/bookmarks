@@ -10,6 +10,7 @@ if (cfg('debug')) {
     ini_set('display_errors', 0);
 }
 require_once 'lib/utils.php';
+require_once 'lib/i18n.php';
 require_once 'lib/hooks.php';
 require_once 'lib/session.php';
 require_once 'lib/auth.php';
