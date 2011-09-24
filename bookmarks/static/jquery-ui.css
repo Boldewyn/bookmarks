@@ -364,6 +364,8 @@
 	margin: 0;
 	display:block;
 	float: left;
+	border: 1px solid white;
+	box-shadow: 1px 1px 2px rgba(0,0,0,.3);
 }
 .ui-menu .ui-menu {
 	margin-top: -3px;
