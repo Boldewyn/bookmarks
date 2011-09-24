@@ -1,4 +1,4 @@
-<?php define('BOOKMARKS', '0.9');
+<?php define('BOOKMARKS', '1.0');
 
 
 require_once 'lib/config.php';
