@@ -1,0 +1,16 @@
+#
+# S T A T I C   C O N T E N T
+#
+
+# See YSlow tips: INode can be problematic
+FileETag MTime Size
+
+# All files should be utf-8 encoded
+AddDefaultCharset utf-8
+
+<IfModule expires_module>
+  ExpiresActive On
+  ExpiresByType text/javascript "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType application/ecmascript "access plus 1 year"
+</IfModule>
