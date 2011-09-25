@@ -1,2 +1,10 @@
 /bookmarks/config.php
 /bookmarks/bookmarks.sqlite
+/bookmarks/plugins/*
+!/bookmarks/plugins/delicious.php
+!/bookmarks/plugins/email.php
+!/bookmarks/plugins/email/
+!/bookmarks/plugins/facebook.php
+!/bookmarks/plugins/pinboard.php
+!/bookmarks/plugins/random.php
+!/bookmarks/plugins/twitter.php
